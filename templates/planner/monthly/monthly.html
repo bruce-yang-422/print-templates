@@ -31,7 +31,7 @@ body.sel-b .mode-b { display: block; }
 .pg-num  { position: absolute; bottom: 4mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
 
 /* ════ Mode A：月曆格 A4橫 ════ */
-.cal-wrap  { width: 297mm; height: 210mm; display: flex; flex-direction: column; }
+.cal-wrap  { width: 100%; height: 100%; display: flex; flex-direction: column; min-height: 0; }
 .cal-head  { padding: 7mm 12mm 4mm; border-bottom: 0.75pt solid #111; display: flex; align-items: baseline; gap: 8mm; flex-shrink: 0; }
 .cal-month { font-size: 18pt; font-weight: 700; letter-spacing: .04em; line-height: 1; }
 .cal-sub   { font-size: 6pt; color: #aaa; letter-spacing: .12em; }
@@ -42,7 +42,7 @@ body.sel-b .mode-b { display: block; }
 .cal-wday.sat, .cal-wday.sun { color: #ccc; }
 
 /* 日期格 */
-.cal-grid { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); }
+.cal-grid { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); min-height: 0; }
 .cal-cell { border-right: 0.4pt solid #e8e8e8; border-bottom: 0.4pt solid #e8e8e8; padding: 2mm 2.5mm 1.5mm; display: flex; flex-direction: column; overflow: hidden; }
 .cal-cell:nth-child(7n) { border-right: none; }
 .cal-cell.sat, .cal-cell.sun { background: #fafafa; }
@@ -53,15 +53,15 @@ body.sel-b .mode-b { display: block; }
 .cal-line { border-bottom: 0.4pt solid #efefef; flex: 1; margin-bottom: 0.5mm; }
 
 /* ════ Mode B：目標追蹤 A4橫 ════ */
-.trk-wrap  { width: 297mm; height: 210mm; display: flex; }
+.trk-wrap  { width: 100%; height: 100%; display: flex; min-height: 0; }
 
 /* 左側：月曆（縮小版） */
-.trk-cal   { width: 46%; border-right: 0.75pt solid #111; display: flex; flex-direction: column; }
+.trk-cal   { width: 46%; border-right: 0.75pt solid #111; display: flex; flex-direction: column; min-height: 0; }
 .trk-ch    { padding: 7mm 10mm 4mm; border-bottom: 0.75pt solid #111; flex-shrink: 0; }
 .trk-month { font-size: 16pt; font-weight: 700; letter-spacing: .04em; }
 .trk-wdays { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 0.5pt solid #ddd; flex-shrink: 0; }
 .trk-wday  { text-align: center; font-size: 5.5pt; color: #aaa; padding: 1.5mm 0; }
-.trk-grid  { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); }
+.trk-grid  { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); min-height: 0; }
 .trk-cell  { border-right: 0.3pt solid #efefef; border-bottom: 0.3pt solid #efefef; padding: 1mm; display: flex; flex-direction: column; }
 .trk-cell:nth-child(7n) { border-right: none; }
 .trk-num   { font-size: 6.5pt; color: #555; }
@@ -70,7 +70,7 @@ body.sel-b .mode-b { display: block; }
 .trk-dot   { flex: 1; }
 
 /* 右側：目標追蹤 */
-.trk-right { flex: 1; padding: 7mm 12mm 7mm 10mm; display: flex; flex-direction: column; gap: 0; }
+.trk-right { flex: 1; padding: 7mm 12mm 7mm 10mm; display: flex; flex-direction: column; gap: 0; min-height: 0; }
 .trk-rhead { margin-bottom: 4mm; }
 .trk-goals { display: flex; flex-direction: column; gap: 5mm; }
 .trk-goal  { border-left: 2pt solid #111; padding-left: 4mm; }
@@ -87,7 +87,8 @@ body.sel-b .mode-b { display: block; }
   body { background: none; }
   .ui, .page-label { display: none !important; }
   .pages { padding: 0 !important; gap: 0 !important; }
-  .page  { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .page  { box-shadow: none !important; page-break-after: always; break-after: page; break-inside: avoid-page; }
+  .cal-wrap, .trk-wrap { break-inside: avoid-page; }
   .mode-a, .mode-b { display: none !important; }
   body.sel-a .mode-a { display: block !important; }
   body.sel-b .mode-b { display: block !important; }

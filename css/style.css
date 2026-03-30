@@ -668,6 +668,12 @@ body.template-page .page {
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.14);
   overflow: hidden;
   position: relative;
+  isolation: isolate;
+}
+
+body.template-page .page > * {
+  position: relative;
+  z-index: 1;
 }
 
 body.template-page .pages {
@@ -694,7 +700,7 @@ body.template-page .page::before {
   left: 0;
   width: var(--bind-gap);
   background: #fff;
-  z-index: 4;
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -705,7 +711,7 @@ body.template-page .page::after {
   bottom: 0;
   left: var(--bind-gap);
   border-left: 0.6pt solid #d6d6d6;
-  z-index: 5;
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -730,6 +736,26 @@ body.template-page .page-a5-land {
   --bind-gap: 12mm;
   width: 210mm;
   height: 148mm;
+}
+
+body.template-page .page > .wrap,
+body.template-page .page > .a-wrap,
+body.template-page .page > .b-wrap,
+body.template-page .page > .c-wrap,
+body.template-page .page > .rpt-wrap,
+body.template-page .page > .cal-wrap,
+body.template-page .page > .trk-wrap,
+body.template-page .page > .topic-shell,
+body.template-page .page > .quick-shell,
+body.template-page .page > .pr-shell,
+body.template-page .page > .inner-a4,
+body.template-page .page > .wk-tbl,
+body.template-page .page > table {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  min-height: 0;
 }
 
 body.template-page .page-port > .a-wrap,
@@ -1306,5 +1332,22 @@ body.template-page .trk-cell.empty {
     box-shadow: none !important;
     page-break-after: always;
     break-after: page;
+    break-inside: avoid-page;
+  }
+
+  body.template-page .page > .wrap,
+  body.template-page .page > .a-wrap,
+  body.template-page .page > .b-wrap,
+  body.template-page .page > .c-wrap,
+  body.template-page .page > .rpt-wrap,
+  body.template-page .page > .cal-wrap,
+  body.template-page .page > .trk-wrap,
+  body.template-page .page > .topic-shell,
+  body.template-page .page > .quick-shell,
+  body.template-page .page > .pr-shell,
+  body.template-page .page > .inner-a4,
+  body.template-page .page > .wk-tbl,
+  body.template-page .page > table {
+    break-inside: avoid-page;
   }
 }
