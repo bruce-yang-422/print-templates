@@ -9,21 +9,19 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; color: #1a1a1a; }
 a { color: inherit; text-decoration: none; }
-.mode-a, .mode-b { display: none; }
+.mode-a, .mode-b, .mode-c { display: none; }
 body.sel-a .mode-a { display: block; }
 body.sel-b .mode-b { display: block; }
-
+body.sel-c .mode-c { display: block; }
 .pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
 .page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
 .page { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.2); position: relative; width: 210mm; height: 297mm; }
-
 .mtg-wrap { padding: 12mm 15mm 12mm calc(var(--bind-gap) + 10mm); height: 100%; display: flex; flex-direction: column; }
 .mtg-head { border-bottom: 1.5pt solid #111; padding-bottom: 4mm; margin-bottom: 5mm; }
 .mtg-title { font-size: 20pt; font-weight: 700; letter-spacing: .05em; margin-bottom: 3mm; }
 .mtg-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
 .blank { border-bottom: 0.5pt solid #444; height: 5mm; display: inline-block; }
 .label { font-size: 6.5pt; letter-spacing: .15em; color: #888; text-transform: uppercase; margin-right: 2mm; }
-
 .mtg-body { flex: 1; display: flex; flex-direction: column; gap: 5mm; }
 .mtg-section { display: flex; flex-direction: column; flex: 1; min-height: 0; }
 .mtg-section.fixed { flex: none; }
@@ -31,117 +29,29 @@ body.sel-b .mode-b { display: block; }
 .lines { flex: 1; background-image: linear-gradient(to bottom, #ddd 1px, transparent 1px); background-size: 100% 8mm; background-position: 0 8mm; min-height: 24mm; }
 .line-box { border: 1px solid #ccc; padding: 2mm; flex: 1; display:flex; flex-direction:column; }
 .blank-box { border: 1px solid #ccc; padding: 4mm; flex: 1; background: #fcfcfc; position: relative; }
-
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; flex: 1; }
-
 .action-items { border: 1.5px solid #222; padding: 4mm; flex: none; height: 50mm; display: flex; flex-direction: column; }
 .action-title { font-size: 11pt; font-weight: 700; margin-bottom: 3mm; text-transform: uppercase; }
 .action-row { display: flex; gap: 2mm; margin-bottom: 3mm; align-items: flex-end; }
 .box { width: 4mm; height: 4mm; border: 1px solid #666; flex-shrink: 0; }
-
-@media print {
-  .ui, .page-label { display: none !important; }
-  .pages { padding: 0 !important; gap: 0 !important; }
-  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
-  .mode-a, .mode-b { display: none !important; }
-  body.sel-a .mode-a { display: block !important; }
-  body.sel-b .mode-b { display: block !important; }
-}
+.example-note { font-size: 8pt; line-height: 1.55; color: #334155; }
+.example-bullet { display:grid; grid-template-columns:3mm 1fr; gap:2mm; margin-bottom:1.6mm; }
+.example-bullet:last-child { margin-bottom:0; }
+.example-bullet .box { width:3mm; height:3mm; border-color:#7b8794; margin-top:1.5mm; }
+.example-map { border: 1px solid #ccc; padding: 4mm; flex: 1; background: linear-gradient(180deg,#fbfdff 0%,#f7fbff 100%); display:grid; grid-template-columns:1fr 1fr; gap:3mm; }
+.example-node { border:.4pt solid #d8e1ea; border-radius:2mm; padding:2mm; font-size:7.5pt; line-height:1.45; color:#334155; background:#fff; }
+@media print {.ui,.page-label { display: none !important; } .pages { padding: 0 !important; gap: 0 !important; } .page { box-shadow: none !important; page-break-after: always; break-after: page; } .mode-a,.mode-b,.mode-c { display: none !important; } body.sel-a .mode-a { display: block !important; } body.sel-b .mode-b { display: block !important; } body.sel-c .mode-c { display: block !important; }}
 </style>
 </head>
 <body class="template-page sel-a">
-
-<div class="ui">
-  <div class="ui-nav">
-    <a href="../../../index.html" class="back-link"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg></a>
-    <span class="nav-sep">/</span><div class="ui-title">創意與產品 <small>Creative Meetings</small></div>
-  </div>
-  <div class="ui-toolbar">
-    <span class="toolbar-label">版面</span>
-    <div class="mode-cards">
-      <button class="card active" onclick="setMode('a')"><strong>A</strong> Brainstorm <span style="font-size:9px;opacity:.5">腦力激盪</span></button>
-      <button class="card" onclick="setMode('b')"><strong>B</strong> Workshop <span style="font-size:9px;opacity:.5">工作坊</span></button>
-    </div>
-    <span class="toolbar-label">尺寸</span>
-    <div class="size-cards">
-      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
-      <button type="button" class="card size-card" data-print-size="a5">A5</button>
-      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
-    </div>
-    <div class="toolbar-right">
-      <button class="btn-print" onclick="window.print()">列印 / PDF</button>
-    </div>
-  </div>
-</div>
-
+<div class="ui"><div class="ui-nav"><a href="../../../index.html" class="back-link"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg></a><span class="nav-sep">/</span><div class="ui-title">創意與產品 <small>Creative Meetings</small></div></div><div class="ui-toolbar"><span class="toolbar-label">版面</span><div class="mode-cards"><button class="card active" onclick="setMode('a')"><strong>A</strong> Brainstorm <span style="font-size:9px;opacity:.5">腦力激盪</span></button><button class="card" onclick="setMode('b')"><strong>B</strong> Workshop <span style="font-size:9px;opacity:.5">工作坊</span></button><button class="card" onclick="setMode('c')"><strong>C</strong> 範例頁 <span style="font-size:9px;opacity:.5">A4直・預填內容</span></button></div><span class="toolbar-label">尺寸</span><div class="size-cards"><button type="button" class="card size-card active" data-print-size="a4">A4</button><button type="button" class="card size-card" data-print-size="a5">A5</button><button type="button" class="card size-card" data-print-size="cut">A4裁A5</button></div><div class="toolbar-right"><button class="btn-print" onclick="window.print()">列印 / PDF</button></div></div></div>
 <div class="pages">
-  <!-- Mode A -->
-  <div class="page-label mode-a">▸ 模式 A — Brainstorm 腦力激盪</div>
-  <div class="page mode-a">
-    <div class="mtg-wrap">
-      <div class="mtg-head">
-        <div class="mtg-title">Brainstorming / 腦力激盪</div>
-        <div class="mtg-meta">
-          <div><span class="label">Topic 主題</span><span class="blank" style="flex:1"></span></div>
-          <div><span class="label">Date 日期</span><span class="blank" style="flex:1"></span></div>
-        </div>
-      </div>
-      <div class="mtg-body">
-        <div class="mtg-section" style="flex:3;"><div class="sec-title">Mind Map / Ideas Sketch 點子發散區</div><div class="blank-box" style="background-image: radial-gradient(circle, rgba(130,130,130,.4) 0.45mm, transparent 0.5mm); background-size: 8mm 8mm;"></div></div>
-        
-        <div class="two-col fixed" style="height:70mm">
-          <div class="mtg-section"><div class="sec-title">Crazy Ideas! 瘋狂點子</div><div class="line-box"><div class="lines"></div></div></div>
-          <div class="mtg-section"><div class="sec-title">Top Selections 最佳收斂精選</div><div class="line-box"><div class="lines"></div></div></div>
-        </div>
-        
-        <div class="mtg-section fixed"><div class="sec-title">Next Steps 下一步</div><div class="line-box" style="height:35mm"><div class="lines"></div></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mode B -->
-  <div class="page-label mode-b">▸ 模式 B — Workshop 工作坊</div>
-  <div class="page mode-b">
-    <div class="mtg-wrap">
-      <div class="mtg-head">
-        <div class="mtg-title">Workshop / 工作坊</div>
-        <div class="mtg-meta">
-          <div><span class="label">Topic 主題</span><span class="blank" style="flex:1"></span></div>
-          <div><span class="label">Date 日期</span><span class="blank" style="flex:1"></span></div>
-        </div>
-      </div>
-      <div class="mtg-body">
-        <div class="mtg-section fixed"><div class="sec-title">Workshop Objectives 工作坊目標</div><div class="line-box" style="height:35mm"><div class="lines"></div></div></div>
-        <div class="two-col">
-          <div class="mtg-section"><div class="sec-title">Key Activities 流程與活動</div><div class="lines"></div></div>
-          <div class="mtg-section"><div class="sec-title">Participant Notes 觀察與紀錄</div><div class="line-box" style="background:#fcfcfc;"><div class="lines"></div></div></div>
-        </div>
-        <div class="mtg-section"><div class="sec-title">Outcomes & Synthesis 產出成果收斂</div><div class="line-box"><div class="lines"></div></div></div>
-        
-        <div class="action-items" style="height:45mm">
-          <div class="action-title">Action Items / Follow-up</div>
-          <div class="action-row"><div class="box"></div><span class="blank" style="flex:1"></span><span class="label">Owner</span><span class="blank" style="width:25mm"></span></div>
-          <div class="action-row"><div class="box"></div><span class="blank" style="flex:1"></span><span class="label">Owner</span><span class="blank" style="width:25mm"></span></div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="page-label mode-a">▸ 模式 A — Brainstorm 腦力激盪</div><div class="page mode-a"><div class="mtg-wrap"><div class="mtg-head"><div class="mtg-title">Brainstorming / 腦力激盪</div><div class="mtg-meta"><div><span class="label">Topic 主題</span><span class="blank" style="flex:1"></span></div><div><span class="label">Date 日期</span><span class="blank" style="flex:1"></span></div></div></div><div class="mtg-body"><div class="mtg-section" style="flex:3;"><div class="sec-title">Mind Map / Ideas Sketch 點子發散區</div><div class="blank-box" style="background-image: radial-gradient(circle, rgba(130,130,130,.4) 0.45mm, transparent 0.5mm); background-size: 8mm 8mm;"></div></div><div class="two-col fixed" style="height:70mm"><div class="mtg-section"><div class="sec-title">Crazy Ideas! 瘋狂點子</div><div class="line-box"><div class="lines"></div></div></div><div class="mtg-section"><div class="sec-title">Top Selections 最佳收斂精選</div><div class="line-box"><div class="lines"></div></div></div></div><div class="mtg-section fixed"><div class="sec-title">Next Steps 下一步</div><div class="line-box" style="height:35mm"><div class="lines"></div></div></div></div></div></div>
+<div class="page-label mode-b">▸ 模式 B — Workshop 工作坊</div><div class="page mode-b"><div class="mtg-wrap"><div class="mtg-head"><div class="mtg-title">Workshop / 工作坊</div><div class="mtg-meta"><div><span class="label">Topic 主題</span><span class="blank" style="flex:1"></span></div><div><span class="label">Date 日期</span><span class="blank" style="flex:1"></span></div></div></div><div class="mtg-body"><div class="mtg-section fixed"><div class="sec-title">Workshop Objectives 工作坊目標</div><div class="line-box" style="height:35mm"><div class="lines"></div></div></div><div class="two-col"><div class="mtg-section"><div class="sec-title">Key Activities 流程與活動</div><div class="lines"></div></div><div class="mtg-section"><div class="sec-title">Participant Notes 觀察與紀錄</div><div class="line-box" style="background:#fcfcfc;"><div class="lines"></div></div></div></div><div class="mtg-section"><div class="sec-title">Outcomes & Synthesis 產出成果收斂</div><div class="line-box"><div class="lines"></div></div></div><div class="action-items" style="height:45mm"><div class="action-title">Action Items / Follow-up</div><div class="action-row"><div class="box"></div><span class="blank" style="flex:1"></span><span class="label">Owner</span><span class="blank" style="width:25mm"></span></div><div class="action-row"><div class="box"></div><span class="blank" style="flex:1"></span><span class="label">Owner</span><span class="blank" style="width:25mm"></span></div></div></div></div></div>
+<div class="page-label mode-c">▸ 模式 C — A4 直向・預先填寫範例頁</div><div class="page mode-c"><div class="mtg-wrap"><div class="mtg-head"><div class="mtg-title">Creative Meeting / 範例頁</div><div class="mtg-meta"><div><span class="label">Topic 主題</span><span class="example-note">春季活動主視覺與宣傳方向</span></div><div><span class="label">Date 日期</span><span class="example-note">2026-03-31</span></div></div></div><div class="mtg-body"><div class="mtg-section" style="flex:2.6;"><div class="sec-title">Mind Map / Ideas Sketch 點子發散區</div><div class="example-map"><div class="example-node">核心訊息：讓新手也敢參加，主打易上手與實作感。</div><div class="example-node">視覺方向：明亮、留白、帶一點工作桌感。</div><div class="example-node">內容鉤子：三小時能帶走什麼成果？</div><div class="example-node">CTA：先收藏，再引導報名。</div></div></div><div class="two-col fixed" style="height:74mm"><div class="mtg-section"><div class="sec-title">Crazy Ideas! 瘋狂點子</div><div class="line-box"><div class="example-note">1. 用「前後對比」做首波貼文。<br>2. 把活動流程畫成桌面便條風。<br>3. 找學員口吻寫一版文案測試。</div></div></div><div class="mtg-section"><div class="sec-title">Top Selections 最佳收斂精選</div><div class="line-box"><div class="example-note">保留「新手友善 + 實作成果」主軸，首圖先強調課後可立即使用的產出。</div></div></div></div><div class="mtg-section fixed"><div class="sec-title">Next Steps 下一步</div><div class="line-box" style="height:38mm"><div class="example-bullet"><div class="box"></div><div class="example-note">明天前出三版首圖方向</div></div><div class="example-bullet"><div class="box"></div><div class="example-note">整理活動亮點與講者簡介</div></div><div class="example-bullet"><div class="box"></div><div class="example-note">週五前確認最終文案主標</div></div></div></div></div></div></div>
+<div class="page mode-c"><div class="mtg-wrap"><div class="mtg-head"><div class="mtg-title">Workshop / 範例頁</div><div class="mtg-meta"><div><span class="label">Topic 主題</span><span class="example-note">服務流程工作坊</span></div><div><span class="label">Date 日期</span><span class="example-note">2026-04-02</span></div></div></div><div class="mtg-body"><div class="mtg-section"><div class="sec-title">Workshop Objectives 工作坊目標</div><div class="line-box"><div class="example-note">對齊活動報名流程中的主要卡點，找出最該優先改善的兩個區段，並定義下一輪優化重點。</div></div></div><div class="two-col fixed" style="height:62mm"><div class="mtg-section"><div class="sec-title">Key Activities 核心活動</div><div class="line-box"><div class="example-bullet"><div class="box"></div><div class="example-note">Journey Mapping：走一次報名流程</div></div><div class="example-bullet"><div class="box"></div><div class="example-note">問題排序：標出高摩擦點</div></div><div class="example-bullet"><div class="box"></div><div class="example-note">解法草圖：各組提一版修正方案</div></div></div></div><div class="mtg-section"><div class="sec-title">Participant Notes 參與者觀察</div><div class="line-box"><div class="example-note">1. 報名表欄位太多，第一屏就讓人猶豫。<br>2. 付款方式說明不夠明確。<br>3. 手機版在 FAQ 後面很難找到 CTA。<br>4. 使用者想先知道課後能拿到什麼。</div></div></div></div><div class="mtg-section"><div class="sec-title">Outcomes &amp; Synthesis 產出與結論</div><div class="line-box"><div class="example-note">本輪先縮短表單欄位、補上付款說明與退款規則，並把手機版 CTA 提前到課綱後。文案主軸改成「看完就能開始做」。</div></div></div><div class="mtg-section fixed"><div class="sec-title">Action Items / Follow-up 後續行動</div><div class="line-box" style="height:42mm"><div class="example-bullet"><div class="box"></div><div class="example-note">小安：整理簡化表單版，4/04 前提出</div></div><div class="example-bullet"><div class="box"></div><div class="example-note">Hank：重排手機版 CTA 與付款說明區塊</div></div><div class="example-bullet"><div class="box"></div><div class="example-note">Joy：補一版更聚焦成果的主標與副標</div></div></div></div></div></div></div>
 </div>
-
-<script src="../../../js/template-size.js"></script>
-<script>
-const pageStyles = { a: 'A4 portrait', b: 'A4 portrait' };
-let styleTag = document.createElement('style');
-document.head.appendChild(styleTag);
-function setMode(mode) {
-  document.body.classList.remove('sel-a', 'sel-b');
-  document.body.classList.add('template-page', 'sel-' + mode);
-  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
-  document.querySelectorAll('.mode-cards .card').forEach((card, i) => {
-    card.classList.toggle('active', ['a', 'b'][i] === mode);
-  });
-}
-setMode('a');
-</script>
+<script src="../../../js/template-size.js"></script><script>const pageStyles={a:'A4 portrait',b:'A4 portrait',c:'A4 portrait'};let styleTag=document.createElement('style');document.head.appendChild(styleTag);function setMode(mode){document.body.classList.remove('sel-a','sel-b','sel-c');document.body.classList.add('template-page','sel-'+mode);styleTag.textContent='@media print { @page { size: '+pageStyles[mode]+'; margin: 0; } }';document.querySelectorAll('.mode-cards .card').forEach((card,i)=>{card.classList.toggle('active',['a','b','c'][i]===mode);});}setMode('a');</script>
 </body>
 </html>
+

@@ -237,7 +237,6 @@ body.sel-b .mode-b { display: block; }
 
     <div class="cal-grid" id="cal-grid-a"></div>
   </div>
-  <div class="pg-num">A · Monthly</div>
 </div>
 
 
@@ -304,7 +303,6 @@ body.sel-b .mode-b { display: block; }
     </div>
 
   </div>
-  <div class="pg-num">B · Monthly</div>
 </div>
 
 </div><!-- /pages -->
@@ -313,7 +311,27 @@ body.sel-b .mode-b { display: block; }
 <script src="../../../js/calendar-data.js"></script>
 <script>
 const Calendar = window.TemplateCalendar;
-let monthStartMode = localStorage.getItem('monthlyStartMode') || 'sun'; // 'sun' or 'mon'
+const WEEK_START_STORAGE_KEY = 'preferredWeekStartMode';
+const WEEK_START_MODES = new Set(['mon', 'sun']);
+
+function getStoredWeekStartMode(defaultMode) {
+  const candidates = [
+    localStorage.getItem(WEEK_START_STORAGE_KEY),
+    localStorage.getItem('monthlyStartMode'),
+    localStorage.getItem('weeklyStartMode')
+  ];
+
+  const storedMode = candidates.find((value) => WEEK_START_MODES.has(value));
+  return storedMode || defaultMode;
+}
+
+function saveWeekStartMode(mode) {
+  localStorage.setItem(WEEK_START_STORAGE_KEY, mode);
+  localStorage.setItem('monthlyStartMode', mode);
+  localStorage.setItem('weeklyStartMode', mode);
+}
+
+let monthStartMode = getStoredWeekStartMode('sun'); // 'sun' or 'mon'
 
 (function () {
   const now = new Date();
@@ -591,7 +609,7 @@ document.getElementById('monthStartChips') && document.getElementById('monthStar
   const button = event.target.closest('[data-week-start]');
   if (!button) return;
   monthStartMode = button.dataset.weekStart;
-  localStorage.setItem('monthlyStartMode', monthStartMode);
+  saveWeekStartMode(monthStartMode);
   syncMonthStartButtons();
   renderCal();
 });
@@ -601,3 +619,4 @@ Calendar.load('../../../assets/2026_calendar.json').finally(renderCal);
 </script>
 </body>
 </html>
+

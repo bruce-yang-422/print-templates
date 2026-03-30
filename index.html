@@ -35,7 +35,7 @@
         <button class="card" data-cat="work">工作</button>
         <button class="card" data-cat="business">商務</button>
         <button class="card" data-cat="meeting">會議</button>
-        <button class="card" data-cat="goals">目標</button>
+        <button class="card" data-cat="goals">任務</button>
         <button class="card" data-cat="life">生活</button>
         <button class="card" data-cat="learning">學習</button>
         <button class="card" data-cat="ecommerce">電商</button>
@@ -88,6 +88,14 @@ const TEMPLATES = [
   {
     id: 'yearly-plan', name: '年計畫', category: 'planner', tags: ['排程管理', '目標追蹤', 'OKR'],
     desc: '12 個月一覽與年度主題版，適合全年節奏與重點規劃。', href: 'templates/planner/yearly/yearly.html', preview: 'previews/planner/yearly.svg'
+  },
+  {
+    id: 'bujo-index', name: '子彈筆記索引', category: 'planner', tags: ['結構筆記', '網格與點陣', '檢查表'],
+    desc: '頁碼、主題與集合索引整理，適合 Bullet Journal 總索引。', href: 'templates/notes/bujo-index/bujo-index.html', preview: 'previews/notes/bujo-index.svg'
+  },
+  {
+    id: 'dot-grid', name: '方格 / 點陣 / 橫線頁', category: 'planner', tags: ['網格與點陣', '企劃草圖', '空白與橫線'],
+    desc: '方格紙、點陣紙、米字格與橫線紙，適合草稿手帳與日常書寫。', href: 'templates/notes/dot-grid/dot-grid.html', preview: 'previews/notes/dot-grid.svg'
   },
 
   // --- HABIT / SELF-MANAGEMENT ---
@@ -144,14 +152,25 @@ const TEMPLATES = [
     desc: '完整逐日行程與 A5 快速攜帶版，適合旅遊規劃與行李整理。', href: 'templates/planner/travel/travel.html', preview: 'previews/planner/travel.svg'
   },
   {
-    id: 'bujo-index', name: '子彈筆記索引', category: 'life', tags: ['結構筆記', '網格與點陣', '檢查表'],
-    desc: '頁碼、主題與集合索引整理，適合 Bullet Journal 總索引。', href: 'templates/notes/bujo-index/bujo-index.html', preview: 'previews/notes/bujo-index.svg'
+    id: 'daily-log', name: '每日日記', category: 'life', tags: ['結構筆記', '時間軸', '空白與橫線'],
+    desc: '用最低成本連續記錄每天做了什麼、最重要的一件事與當日狀態。', href: 'templates/life/daily-log/daily-log.html', preview: 'previews/life/daily-log.svg'
   },
   {
-    id: 'dot-grid', name: '方格 / 點陣 / 橫線頁', category: 'life', tags: ['網格與點陣', '企劃草圖', '空白與橫線'],
-    desc: '方格紙、點陣紙、米字格與橫線紙，適合草稿手帳與日常書寫。', href: 'templates/notes/dot-grid/dot-grid.html', preview: 'previews/notes/dot-grid.svg'
+    id: 'event-journal', name: '事件日記', category: 'life', tags: ['結構筆記', '時間軸', '空白與橫線'],
+    desc: '專門記錄聚會、旅行、重要決策等單一事件的經過、感受與影響。', href: 'templates/life/event-journal/event-journal.html', preview: 'previews/life/event-journal.svg'
   },
-
+  {
+    id: 'memory-log', name: '回憶日記', category: 'life', tags: ['結構筆記', '空白與橫線', '進度檢討'],
+    desc: '整理過去的人、時期與事件，對照當時想法與現在看法。', href: 'templates/life/memory-log/memory-log.html', preview: 'previews/life/memory-log.svg'
+  },
+  {
+    id: 'thematic-log', name: '生活主題日記', category: 'life', tags: ['結構筆記', '營運與數據', '進度檢討'],
+    desc: '長期追蹤飲食、消費、健康或行程等單一生活面向的變化。', href: 'templates/life/thematic-log/thematic-log.html', preview: 'previews/life/thematic-log.svg'
+  },
+  {
+    id: 'fragment-log', name: '片段記錄', category: 'life', tags: ['時間軸', '空白與橫線', '結構筆記'],
+    desc: '快速捕捉零碎念頭與當下片段，不必寫成完整敘事。', href: 'templates/life/fragment-log/fragment-log.html', preview: 'previews/life/fragment-log.svg'
+  },
   // --- WORK ---
   {
     id: 'work-journal', name: '工作日誌', category: 'work', tags: ['進度檢討', '工作回報', '結構筆記'],
@@ -194,8 +213,8 @@ const TEMPLATES = [
 
   // --- GOALS ---
   {
-    id: 'goals', name: '目標分解', category: 'goals', tags: ['目標追蹤', 'OKR', '企劃草圖'],
-    desc: '主題拆解、里程碑與 OKR 草稿，適合個人規劃或團隊協作。', href: 'templates/goals/goals.html', preview: 'previews/goals/goals.svg'
+    id: 'goals', name: '任務拆解表', category: 'goals', tags: ['目標追蹤', 'OKR', '企劃草圖'],
+    desc: '把任務拆成大項、子任務、截止與下一步，適合個人規劃或團隊協作。', href: 'templates/goals/goals.html', preview: 'previews/goals/goals.svg'
   },
 
   // --- LEARNING ---
@@ -289,6 +308,11 @@ const TEMPLATE_SUBTITLES = {
   'body-metrics': 'Body Metrics Tracker',
   'blood-pressure': 'Blood Pressure Log',
   'travel-itinerary': 'Travel Itinerary',
+  'daily-log': 'Daily Log',
+  'event-journal': 'Event Journal',
+  'memory-log': 'Memory Log',
+  'thematic-log': 'Thematic Log',
+  'fragment-log': 'Fragment Log',
   'reading-notes': 'Reading Notes',
   'bujo-index': 'BuJo Index',
   'dot-grid': 'Grid / Dot / Lines',
@@ -301,7 +325,7 @@ const TEMPLATE_SUBTITLES = {
   'daily-ops': 'Daily Ops Meeting',
   'project-meeting': 'Project Meetings',
   'creative-meeting': 'Creative Meetings',
-  'goals': 'Goal Breakdown',
+  'goals': 'Task Breakdown',
   'cornell': 'Cornell Notes',
   'topic-notes': 'Topic Notes',
   'lecture-notes': 'Lecture Notes',
@@ -319,6 +343,7 @@ const TEMPLATE_SUBTITLES = {
 
 let activeCat = 'all';
 let activeTags = [];
+const FILTER_STATE_KEY = 'template-library-filter-state';
 const filterToggle = document.getElementById('filterToggle');
 const filterClose = document.getElementById('filterClose');
 const filterBackdrop = document.getElementById('filterBackdrop');
@@ -349,6 +374,40 @@ function syncTagButtons() {
     const isClear = chip.dataset.tag === '__clear__';
     chip.classList.toggle('active', isClear ? activeTags.length === 0 : activeTags.includes(chip.dataset.tag));
   });
+}
+
+function syncCategoryButtons() {
+  document.querySelectorAll('#optCategory .card').forEach(chip => {
+    chip.classList.toggle('active', chip.dataset.cat === activeCat);
+  });
+}
+
+function saveFilterState() {
+  sessionStorage.setItem(FILTER_STATE_KEY, JSON.stringify({
+    activeCat,
+    activeTags
+  }));
+}
+
+function restoreFilterState() {
+  const rawState = sessionStorage.getItem(FILTER_STATE_KEY);
+  if (!rawState) return;
+
+  try {
+    const savedState = JSON.parse(rawState);
+    const validCategories = new Set(['all', ...new Set(TEMPLATES.map(template => template.category))]);
+    const validTags = new Set(ALL_TAGS);
+
+    if (typeof savedState.activeCat === 'string' && validCategories.has(savedState.activeCat)) {
+      activeCat = savedState.activeCat;
+    }
+
+    if (Array.isArray(savedState.activeTags)) {
+      activeTags = savedState.activeTags.filter(tag => typeof tag === 'string' && validTags.has(tag));
+    }
+  } catch (error) {
+    sessionStorage.removeItem(FILTER_STATE_KEY);
+  }
 }
 
 function syncFilterDrawerState() {
@@ -462,9 +521,8 @@ document.getElementById('optCategory').addEventListener('click', (e) => {
   const btn = e.target.closest('.card');
   if (!btn) return;
   activeCat = btn.dataset.cat;
-  document.querySelectorAll('#optCategory .card').forEach(chip => {
-    chip.classList.toggle('active', chip.dataset.cat === activeCat);
-  });
+  syncCategoryButtons();
+  saveFilterState();
   render();
 });
 
@@ -478,10 +536,13 @@ document.getElementById('optTags').addEventListener('click', (e) => {
   else activeTags.push(val);
 
   syncTagButtons();
+  saveFilterState();
   render();
 });
 
 initTags();
+restoreFilterState();
+syncCategoryButtons();
 syncTagButtons();
 syncFilterDrawerState();
 render();

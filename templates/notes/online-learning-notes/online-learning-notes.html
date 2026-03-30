@@ -9,32 +9,92 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; color: #1a1a1a; }
 a { color: inherit; text-decoration: none; }
-.mode-a, .mode-b { display: none; }
+.mode-a, .mode-b, .mode-c { display: none; }
 body.sel-a .mode-a { display: block; }
 body.sel-b .mode-b { display: block; }
+body.sel-c .mode-c { display: block; }
 .learn-pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
 .learn-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
 .learn-shell { height: 297mm; display: flex; flex-direction: column; }
-.learn-shell.quick { height: 210mm; padding: 9mm 10mm 7mm 10mm; }
-.learn-meta { display: grid; grid-template-columns: 1.2fr .8fr .7fr .7fr; gap: 3mm; margin-top: 3mm; }
+.learn-shell.quick { height: 210mm; padding: 8.5mm 9mm 7mm; }
+.learn-meta { display: grid; grid-template-columns: 1.3fr .8fr .7fr .65fr .75fr; gap: 3mm; margin-top: 3mm; }
 .learn-meta.quick { grid-template-columns: 1fr 1fr; margin-top: 2.5mm; }
-.learn-grid { display: grid; grid-template-columns: 1.18fr .82fr; gap: 4mm; flex: 1; min-height: 0; margin-top: 4mm; }
-.learn-main, .learn-side { display: flex; flex-direction: column; gap: 4mm; min-height: 0; }
-.time-grid { display: grid; grid-template-columns: 18mm 1fr; gap: 2.2mm; align-items: end; margin-bottom: 1.6mm; }
-.time-chip { font-size: 6pt; letter-spacing: .08em; text-transform: uppercase; color: #888; border-bottom: 0.45pt solid #ddd; height: 5mm; display: flex; align-items: flex-end; }
-.segment-box { border: 0.4pt solid #ddd; padding: 2.6mm 3mm; min-height: 58mm; }
-.segment-box .pr-line:last-child { margin-bottom: 0; }
-.cta-card, .question-card { min-height: 42mm; }
-.summary-box { margin-top: auto; }
-.quick-stack { display: flex; flex-direction: column; gap: 3mm; flex: 1; }
-.quick-stack .pr-outline-card { flex: 1; }
+.learn-top-grid { display: grid; grid-template-columns: 1.18fr .82fr; gap: 4mm; margin-top: 4mm; }
+.learn-column { display: flex; flex-direction: column; gap: 4mm; min-height: 0; }
+.learn-card { border: 0.6pt solid #d7dee8; border-radius: 3mm; padding: 3.2mm 3.4mm; background: #fff; }
+.learn-card.soft { background: linear-gradient(180deg, #fbfdff 0%, #f7fbff 100%); }
+.learn-card-title { display: flex; justify-content: space-between; align-items: baseline; gap: 2mm; margin-bottom: 2.4mm; }
+.learn-card-title strong { font-size: 10pt; letter-spacing: .02em; }
+.learn-card-title span { font-size: 6pt; letter-spacing: .12em; text-transform: uppercase; color: #7d8795; }
+.timeline-card { flex: 1.1; }
+.timeline-head, .timeline-row { display: grid; grid-template-columns: 17mm 30mm 1fr; gap: 2.4mm; }
+.timeline-head { padding: 0 0 1.8mm; border-bottom: 0.5pt solid #dbe3ec; margin-bottom: 1.2mm; }
+.timeline-head span { font-size: 6pt; letter-spacing: .12em; text-transform: uppercase; color: #758093; }
+.timeline-row { min-height: 18mm; padding: 2mm 0; border-bottom: 0.45pt solid #edf1f5; }
+.timeline-row:last-child { border-bottom: 0; padding-bottom: 0; }
+.time-cell { display: flex; flex-direction: column; gap: 1.2mm; }
+.time-badge { font-size: 8pt; font-weight: 700; color: #0f4c81; border-bottom: 0.45pt solid #b9d1e6; min-height: 5mm; }
+.chapter-cell, .summary-cell { display: flex; }
+.learn-mini-label { font-size: 6pt; color: #8d98a5; letter-spacing: .08em; text-transform: uppercase; }
+.learn-mini-line { display: block; border-bottom: 0.45pt solid #d8dde5; min-height: 4.4mm; }
+.entry-box {
+  width: 100%;
+  min-height: 13.5mm;
+  border: 0.45pt solid #dbe3ec;
+  border-radius: 1.8mm;
+  background: rgba(255,255,255,.9);
+}
+.line-stack { display: flex; flex-direction: column; gap: 1.8mm; }
+.line-stack.tight { gap: 1.4mm; }
+.line-stack.loose { gap: 2.3mm; }
+.line-stack .pr-line { margin-bottom: 0; }
+.keyword-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2mm; }
+.keyword-chip { border: 0.5pt solid #d7dee8; border-radius: 999px; min-height: 8.5mm; padding: 0 3mm; display: flex; align-items: center; background: #fcfdff; }
+.diagram-box { min-height: 49mm; border: 0.55pt solid #d6e0ea; border-radius: 2.4mm; background: linear-gradient(180deg, rgba(243,248,253,.96) 0%, rgba(251,253,255,.96) 100%); padding: 2.6mm; display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; }
+.diagram-cell { border: 0.45pt dashed #c7d3e0; border-radius: 1.8mm; padding: 2mm; display: flex; flex-direction: column; gap: 1.4mm; }
+.diagram-label { font-size: 6pt; color: #7e8a98; letter-spacing: .1em; text-transform: uppercase; }
+.diagram-cell .learn-mini-line { min-height: 4mm; }
+.diagram-hint { font-size: 7pt; color: #8a95a3; margin-top: 2mm; }
+.bullet-list { display: flex; flex-direction: column; gap: 2mm; }
+.bullet-row { display: grid; grid-template-columns: 3.2mm 1fr; gap: 2mm; align-items: center; }
+.bullet-dot { width: 2.2mm; height: 2.2mm; border-radius: 50%; background: #89a9c5; }
+.double-card { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-top: 4mm; }
+.footer-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 4mm; margin-top: 4mm; }
+.summary-box { min-height: 31mm; }
+.reference-box { min-height: 31mm; }
+.quick-grid { display: grid; grid-template-rows: auto auto 1fr; gap: 3mm; flex: 1; margin-top: 3mm; }
+.quick-block { border: 0.55pt solid #d7dee8; border-radius: 3mm; padding: 3mm 3.2mm; background: #fff; }
+.quick-block.soft { background: linear-gradient(180deg, #fbfdff 0%, #f8fbff 100%); }
+.quick-split { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
+.quick-timeline-row { display: grid; grid-template-columns: 15mm 1fr; gap: 2mm; align-items: center; margin-bottom: 1.8mm; }
+.quick-timeline-row:last-child { margin-bottom: 0; }
+.quick-time { font-size: 7pt; font-weight: 700; color: #0f4c81; border-bottom: 0.45pt solid #b9d1e6; min-height: 4.2mm; }
+.quick-check { display: grid; grid-template-columns: 3.3mm 1fr; gap: 2mm; align-items: center; margin-bottom: 1.8mm; }
+.quick-check:last-child { margin-bottom: 0; }
+.quick-square { width: 2.6mm; height: 2.6mm; border: 0.5pt solid #90a5bb; border-radius: .7mm; }
+.note-caption { font-size: 6.2pt; color: #8591a0; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1.5mm; }
+.example-shell { background: linear-gradient(180deg, #fff 0%, #fbfdff 100%); }
+.example-pill { display: inline-flex; align-items: center; gap: 1.6mm; border-radius: 999px; background: #edf5fb; color: #2f6f9f; font-size: 6.5pt; padding: 1.1mm 2.6mm; letter-spacing: .06em; text-transform: uppercase; }
+.example-pill::before { content: ''; width: 1.6mm; height: 1.6mm; border-radius: 50%; background: #2f6f9f; }
+.filled-line { display: block; min-height: 4.8mm; font-size: 8.6pt; line-height: 1.5; color: #1f2937; }
+.filled-line.soft { color: #475569; }
+.filled-chip-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2mm; }
+.filled-chip { border-radius: 999px; background: #eff5fa; border: 0.5pt solid #d9e4ee; padding: 2.2mm 3mm; font-size: 7.6pt; color: #29465f; }
+.example-note { font-size: 7.4pt; line-height: 1.55; color: #334155; }
+.example-bullet { display: grid; grid-template-columns: 3mm 1fr; gap: 2mm; margin-bottom: 1.7mm; }
+.example-bullet:last-child { margin-bottom: 0; }
+.example-bullet .bullet-dot { width: 2.1mm; height: 2.1mm; margin-top: 1.5mm; }
+.example-diagram { min-height: 49mm; border: 0.55pt solid #d6e0ea; border-radius: 2.4mm; background: linear-gradient(180deg, #f8fbfe 0%, #ffffff 100%); padding: 2.8mm; display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; }
+.example-diagram .diagram-cell { border-style: solid; background: rgba(255,255,255,.82); }
+.example-diagram .filled-line { font-size: 7.4pt; min-height: auto; }
 @media print {
   .ui, .learn-label { display: none !important; }
   .learn-pages { padding: 0 !important; gap: 0 !important; }
   .page { box-shadow: none !important; page-break-after: always; break-after: page; }
-  .mode-a, .mode-b { display: none !important; }
+  .mode-a, .mode-b, .mode-c { display: none !important; }
   body.sel-a .mode-a { display: block !important; }
   body.sel-b .mode-b { display: block !important; }
+  body.sel-c .mode-c { display: block !important; }
 }
 </style>
 </head>
@@ -51,8 +111,9 @@ body.sel-b .mode-b { display: block; }
   <div class="ui-toolbar">
     <span class="toolbar-label">版面</span>
     <div class="mode-cards">
-      <button class="card active" onclick="setMode('a')"><strong>A</strong> 深度整理 <span style="font-size:9px;opacity:.5">A4直・章節＋摘要</span></button>
-      <button class="card" onclick="setMode('b')"><strong>B</strong> 速記版 <span style="font-size:9px;opacity:.5">A5直・隨聽隨記</span></button>
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 時間軸整理 <span style="font-size:9px;opacity:.5">A4直・空白版</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 快速回看 <span style="font-size:9px;opacity:.5">A5直・空白版</span></button>
+      <button class="card" onclick="setMode('c')"><strong>C</strong> 範例頁 <span style="font-size:9px;opacity:.5">A4直・預填內容</span></button>
     </div>
     <span class="toolbar-label">尺寸</span>
     <div class="size-cards">
@@ -68,118 +129,379 @@ body.sel-b .mode-b { display: block; }
 </div>
 
 <div class="pages learn-pages">
-  <div class="learn-label mode-a">▸ 模式 A — A4 直向・影音 / Podcast / 線上課程深度整理</div>
+  <div class="learn-label mode-a">▸ 模式 A — A4 直向・時間軸整理與深度吸收</div>
   <div class="page page-port mode-a">
     <div class="pr-shell learn-shell">
-      <span class="pr-kicker">Online Learning Notes · video / podcast / course</span>
+      <span class="pr-kicker">Online Learning Notes · timeline / summary / reflection</span>
       <div class="pr-header-band">
         <div class="pr-title-row">
           <strong>影音 / 線上課程學習筆記</strong>
-          <span>youtube / podcast / hahow / pressplay / webinar</span>
+          <span>youtube / podcast / hahow / pressplay / webinar / lecture</span>
         </div>
         <div class="learn-meta">
-          <div><span class="pr-field-label">節目 / 課程 / 單元名稱</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">課程 / 集數 / 單元名稱</span><span class="pr-field-blank"></span></div>
           <div><span class="pr-field-label">平台 / 講者</span><span class="pr-field-blank"></span></div>
           <div><span class="pr-field-label">日期</span><span class="pr-field-blank"></span></div>
-          <div><span class="pr-field-label">長度 / 章節</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">總長</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">主題標籤</span><span class="pr-field-blank"></span></div>
         </div>
       </div>
 
-      <div class="learn-grid">
-        <div class="learn-main">
-          <div class="pr-card">
-            <div class="pr-card-title"><span>關鍵片段 / 章節重點</span><em>timeline capture</em></div>
-            <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
-            <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
-            <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
-            <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
-            <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
-            <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
-          </div>
-          <div class="segment-box">
-            <span class="pr-field-label">內容整理 / 我的理解</span>
-            <div class="pr-lines">
-              <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+      <div class="learn-top-grid">
+        <div class="learn-column">
+          <div class="learn-card soft timeline-card">
+            <div class="learn-card-title">
+              <strong>章節時間軸與重點摘要</strong>
+              <span>時間軸整理 · timeline</span>
+            </div>
+            <div class="timeline-head">
+              <span>時間 time</span>
+              <span>章節 / 段落</span>
+              <span>重點摘要 / 提示</span>
+            </div>
+            <div class="timeline-row">
+              <div class="time-cell"><span class="time-badge">00:00</span><span class="learn-mini-label">進場</span></div>
+              <div class="chapter-cell"><div class="entry-box"></div></div>
+              <div class="summary-cell"><div class="entry-box"></div></div>
+            </div>
+            <div class="timeline-row">
+              <div class="time-cell"><span class="time-badge">00:00</span><span class="learn-mini-label">觀念</span></div>
+              <div class="chapter-cell"><div class="entry-box"></div></div>
+              <div class="summary-cell"><div class="entry-box"></div></div>
+            </div>
+            <div class="timeline-row">
+              <div class="time-cell"><span class="time-badge">00:00</span><span class="learn-mini-label">案例</span></div>
+              <div class="chapter-cell"><div class="entry-box"></div></div>
+              <div class="summary-cell"><div class="entry-box"></div></div>
+            </div>
+            <div class="timeline-row">
+              <div class="time-cell"><span class="time-badge">00:00</span><span class="learn-mini-label">方法</span></div>
+              <div class="chapter-cell"><div class="entry-box"></div></div>
+              <div class="summary-cell"><div class="entry-box"></div></div>
+            </div>
+            <div class="timeline-row">
+              <div class="time-cell"><span class="time-badge">00:00</span><span class="learn-mini-label">結尾</span></div>
+              <div class="chapter-cell"><div class="entry-box"></div></div>
+              <div class="summary-cell"><div class="entry-box"></div></div>
             </div>
           </div>
         </div>
 
-        <div class="learn-side">
-          <div class="pr-card cta-card">
-            <div class="pr-card-title"><span>金句 / 值得回放</span><em>quotes</em></div>
-            <div class="pr-lines">
-              <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+        <div class="learn-column">
+          <div class="learn-card">
+            <div class="learn-card-title">
+              <strong>關鍵詞 / 名詞</strong>
+              <span>關鍵詞 keywords</span>
+            </div>
+            <div class="keyword-grid">
+              <span class="keyword-chip"></span>
+              <span class="keyword-chip"></span>
+              <span class="keyword-chip"></span>
+              <span class="keyword-chip"></span>
+              <span class="keyword-chip"></span>
+              <span class="keyword-chip"></span>
             </div>
           </div>
-          <div class="pr-card question-card">
-            <div class="pr-card-title"><span>待查 / 想追問</span><em>questions</em></div>
-            <div class="pr-lines">
-              <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+          <div class="learn-card">
+            <div class="learn-card-title">
+              <strong>圖解 / 範例拆解</strong>
+              <span>圖像輔助 sketch</span>
             </div>
-          </div>
-          <div class="pr-card question-card">
-            <div class="pr-card-title"><span>可行動作 / 實作清單</span><em>action items</em></div>
-            <div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div>
-            <div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div>
-            <div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div>
-            <div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div>
+            <div class="diagram-box">
+              <div class="diagram-cell">
+                <span class="diagram-label">概念</span>
+                <span class="learn-mini-line"></span><span class="learn-mini-line"></span>
+              </div>
+              <div class="diagram-cell">
+                <span class="diagram-label">例子</span>
+                <span class="learn-mini-line"></span><span class="learn-mini-line"></span>
+              </div>
+              <div class="diagram-cell">
+                <span class="diagram-label">流程</span>
+                <span class="learn-mini-line"></span><span class="learn-mini-line"></span>
+              </div>
+              <div class="diagram-cell">
+                <span class="diagram-label">應用</span>
+                <span class="learn-mini-line"></span><span class="learn-mini-line"></span>
+              </div>
+            </div>
+            <div class="diagram-hint">適合畫箭頭、關係圖或小例子，比手寫截圖位置更直覺。</div>
           </div>
         </div>
       </div>
 
-      <div class="pr-summary-box summary-box">
-        <span class="pr-field-label">一句總結 / 今天真正學到什麼</span>
-        <div class="pr-lines">
-          <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+      <div class="double-card">
+        <div class="learn-card">
+          <div class="learn-card-title">
+            <strong>內容整理 / 我的理解</strong>
+            <span>筆記 notes</span>
+          </div>
+          <div class="line-stack loose">
+            <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+            <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+          </div>
+        </div>
+        <div class="learn-card">
+          <div class="learn-card-title">
+            <strong>待查問題 / 後續追問</strong>
+            <span>待查問題 questions</span>
+          </div>
+          <div class="bullet-list">
+            <div class="bullet-row"><span class="bullet-dot"></span><span class="learn-mini-line"></span></div>
+            <div class="bullet-row"><span class="bullet-dot"></span><span class="learn-mini-line"></span></div>
+            <div class="bullet-row"><span class="bullet-dot"></span><span class="learn-mini-line"></span></div>
+            <div class="bullet-row"><span class="bullet-dot"></span><span class="learn-mini-line"></span></div>
+            <div class="bullet-row"><span class="bullet-dot"></span><span class="learn-mini-line"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-grid">
+        <div class="learn-card summary-box soft">
+          <div class="learn-card-title">
+            <strong>反思 / 應用 / 下一步</strong>
+            <span>反思 / 行動</span>
+          </div>
+          <div class="note-caption">這次內容對我有什麼啟發？我接下來要做什麼？</div>
+          <div class="line-stack">
+            <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+          </div>
+        </div>
+        <div class="learn-card reference-box">
+          <div class="learn-card-title">
+            <strong>延伸資源 / 回看索引</strong>
+            <span>回看索引 cue</span>
+          </div>
+          <div class="note-caption">記關鍵字、作者、平台或章節名即可，不必手寫完整網址。</div>
+          <div class="line-stack tight">
+            <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="pr-page-num">A · Learn</div>
   </div>
 
-  <div class="learn-label mode-b">▸ 模式 B — A5 直向・隨聽隨記版</div>
+  <div class="learn-label mode-b">▸ 模式 B — A5 直向・快速回看與重點速記</div>
   <div class="page page-a5-port mode-b">
     <div class="pr-shell learn-shell quick">
-      <span class="pr-kicker">Online Learning Notes · Quick Capture</span>
+      <span class="pr-kicker">Online Learning Notes · quick review</span>
       <div class="pr-header-band compact">
         <div class="pr-title-row">
-          <strong style="font-size:14pt">學習快記</strong>
-          <span>capture / takeaway / next step</span>
+          <strong style="font-size:14pt">影音學習快記</strong>
+          <span>topic / takeaway / next step</span>
         </div>
         <div class="learn-meta quick">
-          <div><span class="pr-field-label">內容主題</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">課程主題 / 集數</span><span class="pr-field-blank"></span></div>
           <div><span class="pr-field-label">平台 / 日期</span><span class="pr-field-blank"></span></div>
         </div>
       </div>
 
-      <div class="quick-stack">
-        <div class="pr-outline-card">
-          <span class="pr-outline-title">三個重點</span>
-          <div class="pr-bullet-row"><span class="pr-bullet-dot"></span><span class="pr-mini-line" style="flex:1"></span></div>
-          <div class="pr-bullet-row"><span class="pr-bullet-dot"></span><span class="pr-mini-line" style="flex:1"></span></div>
-          <div class="pr-bullet-row"><span class="pr-bullet-dot"></span><span class="pr-mini-line" style="flex:1"></span></div>
-          <div class="pr-bullet-row"><span class="pr-bullet-dot"></span><span class="pr-mini-line" style="flex:1"></span></div>
+      <div class="quick-grid">
+        <div class="quick-block soft">
+          <div class="learn-card-title">
+            <strong>關鍵時間點</strong>
+            <span>時間點 timestamps</span>
+          </div>
+          <div class="quick-timeline-row"><span class="quick-time">00:00</span><span class="learn-mini-line"></span></div>
+          <div class="quick-timeline-row"><span class="quick-time">00:00</span><span class="learn-mini-line"></span></div>
+          <div class="quick-timeline-row"><span class="quick-time">00:00</span><span class="learn-mini-line"></span></div>
         </div>
-        <div class="pr-outline-card">
-          <span class="pr-outline-title">關鍵時間 / 片段</span>
-          <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
-          <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
-          <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
+
+        <div class="quick-block">
+          <div class="learn-card-title">
+            <strong>三個重點</strong>
+            <span>重點 takeaways</span>
+          </div>
+          <div class="bullet-list">
+            <div class="bullet-row"><span class="bullet-dot"></span><span class="learn-mini-line"></span></div>
+            <div class="bullet-row"><span class="bullet-dot"></span><span class="learn-mini-line"></span></div>
+            <div class="bullet-row"><span class="bullet-dot"></span><span class="learn-mini-line"></span></div>
+          </div>
         </div>
-        <div class="pr-outline-card tight">
-          <span class="pr-outline-title">下一步</span>
-          <div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div>
-          <div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div>
+
+        <div class="quick-split">
+          <div class="quick-block">
+            <div class="learn-card-title">
+              <strong>關鍵詞</strong>
+              <span>關鍵詞 keywords</span>
+            </div>
+            <div class="line-stack tight">
+              <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+            </div>
+          </div>
+          <div class="quick-block">
+            <div class="learn-card-title">
+              <strong>我想追問</strong>
+              <span>追問 question</span>
+            </div>
+            <div class="line-stack tight">
+              <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-block soft">
+          <div class="learn-card-title">
+            <strong>下一步 / 要實作什麼</strong>
+            <span>下一步 next step</span>
+          </div>
+          <div class="quick-check"><span class="quick-square"></span><span class="learn-mini-line"></span></div>
+          <div class="quick-check"><span class="quick-square"></span><span class="learn-mini-line"></span></div>
+          <div class="quick-check"><span class="quick-square"></span><span class="learn-mini-line"></span></div>
         </div>
       </div>
     </div>
-    <div class="pr-page-num">B · Quick</div>
+  </div>
+
+  <div class="learn-label mode-c">▸ 模式 C — A4 直向・預先填寫範例頁</div>
+  <div class="page page-port mode-c">
+    <div class="pr-shell learn-shell example-shell">
+      <span class="pr-kicker">Online Learning Notes · filled example</span>
+      <div class="pr-header-band">
+        <div class="pr-title-row">
+          <strong>影音 / 線上課程學習筆記範例</strong>
+          <span>示範如何從課程內容整理成可回顧的筆記</span>
+        </div>
+        <div class="learn-meta">
+          <div><span class="pr-field-label">課程 / 集數 / 單元名稱</span><span class="filled-line">高效學習法：把看過的課變成做得到的行動</span></div>
+          <div><span class="pr-field-label">平台 / 講者</span><span class="filled-line">YouTube / 林老師</span></div>
+          <div><span class="pr-field-label">日期</span><span class="filled-line">2026-03-31</span></div>
+          <div><span class="pr-field-label">總長</span><span class="filled-line">18 分鐘</span></div>
+          <div><span class="pr-field-label">主題標籤</span><span class="filled-line">學習法, 筆記, 行動化</span></div>
+        </div>
+      </div>
+
+      <div class="learn-top-grid">
+        <div class="learn-column">
+          <div class="learn-card soft timeline-card">
+            <div class="learn-card-title">
+              <strong>章節時間軸與重點摘要</strong>
+              <span>時間軸整理 · timeline</span>
+            </div>
+            <div class="timeline-head">
+              <span>時間 time</span>
+              <span>章節 / 段落</span>
+              <span>重點摘要 / 提示</span>
+            </div>
+            <div class="timeline-row">
+              <div class="time-cell"><span class="time-badge">00:00</span><span class="learn-mini-label">開場</span></div>
+              <div class="chapter-cell"><span class="filled-line soft">為什麼看完就忘</span></div>
+              <div class="summary-cell"><span class="filled-line">如果只被動觀看，資訊不會變成可使用的知識。</span></div>
+            </div>
+            <div class="timeline-row">
+              <div class="time-cell"><span class="time-badge">03:40</span><span class="learn-mini-label">方法一</span></div>
+              <div class="chapter-cell"><span class="filled-line soft">先抓三個重點</span></div>
+              <div class="summary-cell"><span class="filled-line">每段只記一個結論，降低整理成本。</span></div>
+            </div>
+            <div class="timeline-row">
+              <div class="time-cell"><span class="time-badge">07:20</span><span class="learn-mini-label">方法二</span></div>
+              <div class="chapter-cell"><span class="filled-line soft">把例子補進去</span></div>
+              <div class="summary-cell"><span class="filled-line">例子能幫助之後回想觀念真正怎麼用。</span></div>
+            </div>
+            <div class="timeline-row">
+              <div class="time-cell"><span class="time-badge">11:10</span><span class="learn-mini-label">方法三</span></div>
+              <div class="chapter-cell"><span class="filled-line soft">寫下下一步</span></div>
+              <div class="summary-cell"><span class="filled-line">學習如果沒有行動，筆記很快會變成收藏。</span></div>
+            </div>
+            <div class="timeline-row">
+              <div class="time-cell"><span class="time-badge">16:00</span><span class="learn-mini-label">結尾</span></div>
+              <div class="chapter-cell"><span class="filled-line soft">用一頁完成回顧</span></div>
+              <div class="summary-cell"><span class="filled-line">時間軸、例子、提問與行動放一起，複習速度更快。</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="learn-column">
+          <div class="learn-card">
+            <div class="learn-card-title">
+              <strong>關鍵詞 / 名詞</strong>
+              <span>關鍵詞 keywords</span>
+            </div>
+            <div class="filled-chip-grid">
+              <span class="filled-chip">主動回想</span>
+              <span class="filled-chip">三個重點</span>
+              <span class="filled-chip">具體例子</span>
+              <span class="filled-chip">行動化</span>
+              <span class="filled-chip">回顧成本</span>
+              <span class="filled-chip">學習閉環</span>
+            </div>
+          </div>
+          <div class="learn-card">
+            <div class="learn-card-title">
+              <strong>圖解 / 範例拆解</strong>
+              <span>圖像輔助 sketch</span>
+            </div>
+            <div class="example-diagram">
+              <div class="diagram-cell">
+                <span class="diagram-label">概念</span>
+                <span class="filled-line">看完課程後，先寫下最重要的 3 個觀念。</span>
+              </div>
+              <div class="diagram-cell">
+                <span class="diagram-label">例子</span>
+                <span class="filled-line">例如：學完剪輯，不是只記工具，而是記「什麼情境用什麼轉場」。</span>
+              </div>
+              <div class="diagram-cell">
+                <span class="diagram-label">流程</span>
+                <span class="filled-line">觀看 → 摘要 → 補例子 → 提問題 → 決定下一步。</span>
+              </div>
+              <div class="diagram-cell">
+                <span class="diagram-label">應用</span>
+                <span class="filled-line">下次看課時，先留空一格寫「這段我要拿來做什麼」。</span>
+              </div>
+            </div>
+            <div class="diagram-hint">範例重點是把抽象概念拆成可以手畫、手寫的小單位。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="double-card">
+        <div class="learn-card">
+          <div class="learn-card-title">
+            <strong>內容整理 / 我的理解</strong>
+            <span>筆記 notes</span>
+          </div>
+          <div class="example-note">
+            這支影片提醒我，學習筆記不是把影片內容逐字抄下來，而是把原本散的資訊轉成「之後找得到、想得起來、做得出來」的格式。時間軸負責幫我回頭定位，關鍵詞幫我抓核心概念，例子讓抽象觀念落地，最後一定要接上下一步，才不會停在理解而已。
+          </div>
+        </div>
+        <div class="learn-card">
+          <div class="learn-card-title">
+            <strong>待查問題 / 後續追問</strong>
+            <span>待查問題 questions</span>
+          </div>
+          <div class="example-bullet"><span class="bullet-dot"></span><span class="filled-line">如果課程很長，時間軸應該每幾分鐘切一次比較剛好？</span></div>
+          <div class="example-bullet"><span class="bullet-dot"></span><span class="filled-line">什麼類型的課適合畫圖解，什麼類型只要條列就夠？</span></div>
+          <div class="example-bullet"><span class="bullet-dot"></span><span class="filled-line">要不要固定保留一格寫「之後要重看哪一段」？</span></div>
+        </div>
+      </div>
+
+      <div class="footer-grid">
+        <div class="learn-card summary-box soft">
+          <div class="learn-card-title">
+            <strong>反思 / 應用 / 下一步</strong>
+            <span>反思 / 行動</span>
+          </div>
+          <div class="example-note">
+            我之後看線上課時，先不追求完整，而是每段只留下「一個重點 + 一個例子 + 一個行動」。本週會先拿這個版型試記一支 15 分鐘的教學影片，看看回顧時是不是比以前更快找到要點。
+          </div>
+        </div>
+        <div class="learn-card reference-box">
+          <div class="learn-card-title">
+            <strong>延伸資源 / 回看索引</strong>
+            <span>回看索引 cue</span>
+          </div>
+          <div class="example-bullet"><span class="bullet-dot"></span><span class="filled-line">關鍵字：active recall、learning by doing</span></div>
+          <div class="example-bullet"><span class="bullet-dot"></span><span class="filled-line">回看位置：07:20 的例子段落、11:10 的下一步段落</span></div>
+          <div class="example-bullet"><span class="bullet-dot"></span><span class="filled-line">延伸搜尋：如何設計可回顧的課程筆記模板</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <script src="../../../js/template-size.js"></script>
 <script>
-const pageStyles = { a: 'A4 portrait', b: 'A5 portrait' };
+const pageStyles = { a: 'A4 portrait', b: 'A5 portrait', c: 'A4 portrait' };
 let styleTag = document.createElement('style');
 styleTag.id = 'pg-size';
 document.head.appendChild(styleTag);
@@ -188,10 +510,12 @@ function setMode(mode) {
   document.body.classList.add('template-page', 'sel-' + mode);
   styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
   document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
-    card.classList.toggle('active', ['a', 'b'][index] === mode);
+    card.classList.toggle('active', ['a', 'b', 'c'][index] === mode);
   });
 }
 setMode('a');
 </script>
 </body>
 </html>
+
+

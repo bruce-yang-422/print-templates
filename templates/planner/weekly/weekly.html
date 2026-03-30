@@ -234,7 +234,6 @@ body.sel-b .mode-b { display: block; }
   </tr>
 
 </table>
-<div class="pg-num">A · Weekly</div>
 </div>
 
 
@@ -307,7 +306,6 @@ body.sel-b .mode-b { display: block; }
       </tr></table>
     </div>
   </div>
-  <div class="pg-num">B · Weekly</div>
 </div>
 
 </div><!-- /pages -->
@@ -318,7 +316,27 @@ body.sel-b .mode-b { display: block; }
 const pgSize = { a:'landscape', b:'portrait', c:'landscape' };
 let st = document.createElement('style'); st.id='pg-size'; document.head.appendChild(st);
 const Calendar = window.TemplateCalendar;
-let weekStartMode = localStorage.getItem('weeklyStartMode') || 'mon';
+const WEEK_START_STORAGE_KEY = 'preferredWeekStartMode';
+const WEEK_START_MODES = new Set(['mon', 'sun']);
+
+function getStoredWeekStartMode(defaultMode) {
+  const candidates = [
+    localStorage.getItem(WEEK_START_STORAGE_KEY),
+    localStorage.getItem('weeklyStartMode'),
+    localStorage.getItem('monthlyStartMode')
+  ];
+
+  const storedMode = candidates.find((value) => WEEK_START_MODES.has(value));
+  return storedMode || defaultMode;
+}
+
+function saveWeekStartMode(mode) {
+  localStorage.setItem(WEEK_START_STORAGE_KEY, mode);
+  localStorage.setItem('weeklyStartMode', mode);
+  localStorage.setItem('monthlyStartMode', mode);
+}
+
+let weekStartMode = getStoredWeekStartMode('mon');
 let currentPrintSize = 'a4';
 
 function applyWeekPrintRange(weekStart) {
@@ -516,7 +534,7 @@ document.getElementById('weekStartChips').addEventListener('click', (event) => {
   const button = event.target.closest('[data-week-start]');
   if (!button) return;
   weekStartMode = button.dataset.weekStart;
-  localStorage.setItem('weeklyStartMode', weekStartMode);
+  saveWeekStartMode(weekStartMode);
   syncWeekStartButtons();
   const selected = Calendar.parseLocalDate(document.getElementById('week-date').value);
   if (selected) {
@@ -536,3 +554,4 @@ Calendar.load('../../../assets/2026_calendar.json').finally(renderWeek);
 </script>
 </body>
 </html>
+
