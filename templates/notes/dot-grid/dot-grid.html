@@ -15,7 +15,17 @@ body.sel-b .mode-b { display: block; }
 body.sel-c .mode-c { display: block; }
 .grid-pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
 .grid-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
-.grid-shell { height: 297mm; padding: 9mm 10mm 8mm; display: flex; flex-direction: column; gap: 4mm; }
+.grid-shell {
+  height: 297mm;
+  /* 內容必須避開裝訂線（--bind-gap），否則會與格線重疊 */
+  padding-top: 9mm;
+  padding-right: 10mm;
+  padding-bottom: 8mm;
+  padding-left: calc(var(--bind-gap) + 4mm);
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+}
 .grid-kicker { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; }
 .grid-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 0.75pt solid #111; padding-bottom: 3.4mm; }
 .grid-head strong { font-size: 16pt; letter-spacing: .04em; }

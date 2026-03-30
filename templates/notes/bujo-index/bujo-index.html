@@ -14,8 +14,24 @@ body.sel-a .mode-a { display: block; }
 body.sel-b .mode-b { display: block; }
 .bujo-pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
 .bujo-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
-.bujo-shell { height: 297mm; padding: 11mm 14mm 9mm; display: flex; flex-direction: column; gap: 4mm; }
-.bujo-shell.quick { height: 210mm; padding: 9mm 10mm 7mm 10mm; }
+.bujo-shell {
+  height: 297mm;
+  /* 內容必須避開裝訂線（--bind-gap），否則會與格線/字重疊 */
+  padding-top: 11mm;
+  padding-right: 14mm;
+  padding-bottom: 9mm;
+  padding-left: calc(var(--bind-gap) + 4mm);
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+}
+.bujo-shell.quick {
+  height: 210mm;
+  padding-top: 9mm;
+  padding-right: 10mm;
+  padding-bottom: 7mm;
+  padding-left: calc(var(--bind-gap) + 4mm);
+}
 .kick { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; }
 .head { border-bottom: 0.75pt solid #111; padding-bottom: 4mm; }
 .head-row { display: flex; justify-content: space-between; align-items: baseline; gap: 6mm; }

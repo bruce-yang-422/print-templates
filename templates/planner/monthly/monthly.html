@@ -56,6 +56,10 @@ body.sel-b .mode-b { display: block; }
 .cal-cell.sat, .cal-cell.sun { background: #fafafa; }
 .cal-cell.empty { background: #f7f7f7; }
 .cal-cell.holiday { background: #fcf7f2; }
+.cal-cell.holiday-start { background: #fee8d7; }
+.cal-cell.holiday-mid { background: #fbdbca; }
+.cal-cell.holiday-end { background: #fad0c1; }
+.cal-cell.holiday-single { background: #fcf7f2; }
 .cal-top { display: flex; align-items: baseline; justify-content: space-between; gap: 2mm; margin-bottom: .8mm; }
 .cal-num  { font-size: 8pt; font-weight: 700; color: #333; margin-bottom: 1mm; flex-shrink: 0; }
 .cal-lunar { font-size: 4.8pt; color: #aaa; letter-spacing: .02em; margin-bottom: 1mm; flex-shrink: 0; }
@@ -63,6 +67,16 @@ body.sel-b .mode-b { display: block; }
 .cal-cell.sat .cal-num, .cal-cell.sun .cal-num { color: #bbb; }
 .cal-cell.empty .cal-num { color: #ddd; }
 .cal-line { border-bottom: 0.4pt solid #efefef; flex: 1; margin-bottom: 0.5mm; }
+
+/* Print range: out-range cells hide writing area */
+.cal-cell.out-range { background: #fff !important; }
+.trk-cell.out-range { background: #fff !important; }
+.cal-cell.out-range .cal-line { border-bottom-color: transparent !important; }
+.cal-cell.out-range .cal-num,
+.cal-cell.out-range .cal-lunar,
+.cal-cell.out-range .cal-holiday { opacity: 0; }
+.trk-cell.out-range .trk-top,
+.trk-cell.out-range .trk-holiday { opacity: 0; }
 
 /* ════ Mode B：目標追蹤 A4橫 ════ */
 .trk-wrap  {
@@ -84,6 +98,10 @@ body.sel-b .mode-b { display: block; }
 .trk-cell  { border-right: 0.3pt solid #efefef; border-bottom: 0.3pt solid #efefef; padding: 1mm; display: flex; flex-direction: column; }
 .trk-cell:nth-child(7n) { border-right: none; }
 .trk-cell.holiday { background: #fcf7f2; }
+.trk-cell.holiday-start { background: #fee8d7; }
+.trk-cell.holiday-mid { background: #fbdbca; }
+.trk-cell.holiday-end { background: #fad0c1; }
+.trk-cell.holiday-single { background: #fcf7f2; }
 .trk-top { display: flex; align-items: baseline; justify-content: space-between; gap: .8mm; }
 .trk-num   { font-size: 6.5pt; color: #555; }
 .trk-lunar { font-size: 4pt; color: #b2b2b2; line-height: 1.2; }
@@ -141,6 +159,12 @@ body.sel-b .mode-b { display: block; }
       <button class="card active" onclick="setMode('a')"><strong>A</strong> 月曆格 <span style="font-size:9px;opacity:.5">A4橫・5×7日期格</span></button>
       <button class="card" onclick="setMode('b')"><strong>B</strong> 目標追蹤 <span style="font-size:9px;opacity:.5">A4橫・月曆+目標</span></button>
     </div>
+    <span class="toolbar-label">起始日</span>
+    <div class="week-start-chips" id="monthStartChips">
+      <button class="card active" data-week-start="mon">週一</button>
+      <button class="card" data-week-start="sun">週日</button>
+    </div>
+
     <span class="toolbar-label">尺寸</span>
     <div class="size-cards">
       <button type="button" class="card size-card active" data-print-size="a4">A4</button>
@@ -167,6 +191,13 @@ body.sel-b .mode-b { display: block; }
       <button type="button" class="picker-btn" onclick="shiftMonth(1)" aria-label="下個月" title="下個月">
         <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5L8 6l-3.5 3.5"/></svg>
       </button>
+    </div>
+
+    <div class="date-picker" style="margin-left:0">
+      <span class="toolbar-label" style="margin-left:8px">列印起訖</span>
+      <input class="date-input" type="date" id="print-start" onchange="renderCal()">
+      <span class="picker-sep" style="color:#555;font-size:11px">—</span>
+      <input class="date-input" type="date" id="print-end" onchange="renderCal()">
     </div>
 
     <div class="toolbar-right">
@@ -281,6 +312,7 @@ body.sel-b .mode-b { display: block; }
 <script src="../../../js/calendar-data.js"></script>
 <script>
 const Calendar = window.TemplateCalendar;
+let monthStartMode = localStorage.getItem('monthlyStartMode') || 'sun'; // 'sun' or 'mon'
 
 (function () {
   const now = new Date();
@@ -293,7 +325,27 @@ const Calendar = window.TemplateCalendar;
     selYear.appendChild(option);
   }
   document.getElementById('sel-month').value = now.getMonth() + 1;
+  
+  // 初始化周開始按鈕
+  syncMonthStartButtons();
 })();
+
+function syncMonthStartButtons() {
+  document.querySelectorAll('[data-week-start]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.weekStart === monthStartMode);
+  });
+}
+
+function firstDayOffset(year, month, startDay) {
+  // startDay: 0 = Sunday, 1 = Monday
+  const firstDay = new Date(year, month - 1, 1).getDay();
+  if (startDay === 0) {
+    return firstDay; // Sun-Sat: 0-6
+  } else {
+    // Mon-Sun: 1-0
+    return firstDay === 0 ? 6 : firstDay - 1;
+  }
+}
 
 function daysInMonth(year, month) {
   return new Date(year, month, 0).getDate();
@@ -304,9 +356,10 @@ function firstDayOffset(year, month) {
   return firstDay;
 }
 
-function buildGridA(year, month) {
+function buildGridA(year, month, rangeStart, rangeEnd) {
   const total = daysInMonth(year, month);
-  const offset = firstDayOffset(year, month);
+  const startDay = monthStartMode === 'mon' ? 1 : 0;
+  const offset = firstDayOffset(year, month, startDay);
   const rows = Math.ceil((total + offset) / 7);
   const cells = rows * 7;
   const grid = document.getElementById('cal-grid-a');
@@ -327,28 +380,34 @@ function buildGridA(year, month) {
 
     if (!isEmpty) {
       const date = new Date(year, month - 1, day);
+      const inRange = date >= rangeStart && date <= rangeEnd;
       const meta = Calendar.getMetaParts(year, month, day);
       const holidayText = Calendar.getHolidayText(meta);
-      if (holidayText) cell.classList.add('holiday');
+      const holidaySpan = (inRange && meta && meta.is_holiday === '1') ? Calendar.getHolidaySpan(year, month, day) : '';
+      if (inRange && holidayText) {
+        cell.classList.add('holiday');
+        cell.classList.add('holiday-' + (holidaySpan || 'single'));
+      }
+      if (!inRange) cell.classList.add('out-range');
 
       const top = document.createElement('div');
       top.className = 'cal-top';
 
       const num = document.createElement('span');
       num.className = 'cal-num';
-      num.textContent = day;
+      num.textContent = inRange ? day : '';
       top.appendChild(num);
 
       const lunar = document.createElement('span');
       lunar.className = 'cal-lunar';
-      lunar.textContent = Calendar.getLunarText(date, meta);
+      lunar.textContent = inRange ? Calendar.getLunarText(date, meta) : '';
       top.appendChild(lunar);
 
       cell.appendChild(top);
 
       const holiday = document.createElement('div');
       holiday.className = 'cal-holiday';
-      holiday.textContent = holidayText;
+      holiday.textContent = inRange ? holidayText : '';
       cell.appendChild(holiday);
     } else {
       const num = document.createElement('span');
@@ -366,9 +425,10 @@ function buildGridA(year, month) {
   }
 }
 
-function buildGridB(year, month) {
+function buildGridB(year, month, rangeStart, rangeEnd) {
   const total = daysInMonth(year, month);
-  const offset = firstDayOffset(year, month);
+  const startDay = monthStartMode === 'mon' ? 1 : 0;
+  const offset = firstDayOffset(year, month, startDay);
   const rows = Math.ceil((total + offset) / 7);
   const cells = rows * 7;
   const grid = document.getElementById('trk-grid-b');
@@ -389,28 +449,34 @@ function buildGridB(year, month) {
 
     if (!isEmpty) {
       const date = new Date(year, month - 1, day);
+      const inRange = date >= rangeStart && date <= rangeEnd;
       const meta = Calendar.getMetaParts(year, month, day);
       const holidayText = Calendar.getHolidayText(meta);
-      if (holidayText) cell.classList.add('holiday');
+      const holidaySpan = (inRange && meta && meta.is_holiday === '1') ? Calendar.getHolidaySpan(year, month, day) : '';
+      if (inRange && holidayText) {
+        cell.classList.add('holiday');
+        cell.classList.add('holiday-' + (holidaySpan || 'single'));
+      }
+      if (!inRange) cell.classList.add('out-range');
 
       const top = document.createElement('div');
       top.className = 'trk-top';
 
       const num = document.createElement('span');
       num.className = 'trk-num';
-      num.textContent = day;
+      num.textContent = inRange ? day : '';
       top.appendChild(num);
 
       const lunar = document.createElement('span');
       lunar.className = 'trk-lunar';
-      lunar.textContent = Calendar.getLunarText(date, meta);
+      lunar.textContent = inRange ? Calendar.getLunarText(date, meta) : '';
       top.appendChild(lunar);
 
       cell.appendChild(top);
 
       const holiday = document.createElement('div');
       holiday.className = 'trk-holiday';
-      holiday.textContent = Calendar.compactHolidayText(holidayText);
+      holiday.textContent = inRange ? Calendar.compactHolidayText(holidayText) : '';
       cell.appendChild(holiday);
     } else {
       const num = document.createElement('span');
@@ -436,8 +502,37 @@ function renderCal() {
   document.getElementById('b-year').textContent = year;
   document.getElementById('b-month').textContent = month;
 
-  buildGridA(year, month);
-  buildGridB(year, month);
+  const firstOfMonth = new Date(year, month - 1, 1);
+  const lastOfMonth = new Date(year, month, 0);
+
+  const startInput = document.getElementById('print-start');
+  const endInput = document.getElementById('print-end');
+  if (startInput && !startInput.value) startInput.value = Calendar.toInputValue(firstOfMonth);
+  if (endInput && !endInput.value) endInput.value = Calendar.toInputValue(lastOfMonth);
+
+  let rangeStart = startInput && startInput.value
+    ? Calendar.parseLocalDate(startInput.value)
+    : firstOfMonth;
+  let rangeEnd = endInput && endInput.value
+    ? Calendar.parseLocalDate(endInput.value)
+    : lastOfMonth;
+
+  if (rangeStart > rangeEnd) {
+    const tmp = rangeStart;
+    rangeStart = rangeEnd;
+    rangeEnd = tmp;
+  }
+
+  // Clamp inside this month. If the selected range falls completely outside,
+  // fallback to the whole month to avoid an empty calendar.
+  const effectiveStart = rangeStart < firstOfMonth ? firstOfMonth : rangeStart;
+  const effectiveEnd = rangeEnd > lastOfMonth ? lastOfMonth : rangeEnd;
+
+  const finalStart = effectiveStart > effectiveEnd ? firstOfMonth : effectiveStart;
+  const finalEnd = effectiveStart > effectiveEnd ? lastOfMonth : effectiveEnd;
+
+  buildGridA(year, month, finalStart, finalEnd);
+  buildGridB(year, month, finalStart, finalEnd);
 }
 
 function shiftMonth(delta) {
@@ -481,6 +576,16 @@ function setMode(mode) {
     card.classList.toggle('active', ['a', 'b'][index] === mode);
   });
 }
+
+// 添加周開始選擇事件監聽器
+document.getElementById('monthStartChips') && document.getElementById('monthStartChips').addEventListener('click', (event) => {
+  const button = event.target.closest('[data-week-start]');
+  if (!button) return;
+  monthStartMode = button.dataset.weekStart;
+  localStorage.setItem('monthlyStartMode', monthStartMode);
+  syncMonthStartButtons();
+  renderCal();
+});
 
 setMode('a');
 Calendar.load('../../../assets/2026_calendar.json').finally(renderCal);

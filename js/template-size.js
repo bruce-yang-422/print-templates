@@ -2,10 +2,11 @@
   if (!document.body || !document.body.classList.contains('template-page')) return;
 
   const SIZE_BUTTON_SELECTOR = '[data-print-size]';
-  const SIZE_ORDER = ['a4', 'b5', 'a5', 'cut'];
+  const SIZE_ORDER = ['a4', 'b5', 'b6', 'a5', 'cut'];
   const SIZE_LABELS = {
     a4: 'A4',
     b5: 'B5',
+    b6: 'B6',
     a5: 'A5',
     cut: 'A4裁A5',
   };
@@ -117,13 +118,26 @@
     sheet.style.width = mm(target.sheet.width);
     sheet.style.height = mm(target.sheet.height);
 
+    const isWeekly = page.querySelector('.wk-tbl') !== null;
+
     for (let i = 0; i < 2; i++) {
       const slot = document.createElement('div');
       slot.className = 'print-slot';
       slot.style.width = mm(target.half.width);
       slot.style.height = mm(target.half.height);
+
+      if (isWeekly && window.renderWeekOffset) {
+        // 顯示上下連續兩週，先渲染第 i 周：0 = 本週，1 = 下週
+        window.renderWeekOffset(i);
+      }
+
       slot.appendChild(buildScaledClone(page, source, target.half));
       sheet.appendChild(slot);
+    }
+
+    if (isWeekly && window.renderWeekOffset) {
+      // 恢復為本週顯示、避免影響原始頁面狀態
+      window.renderWeekOffset(0);
     }
 
     const cutLine = document.createElement('div');
@@ -139,6 +153,15 @@
         paper: source.orientation === 'landscape' ? 'B5 landscape' : 'B5 portrait',
         width: source.orientation === 'landscape' ? 257 : 182,
         height: source.orientation === 'landscape' ? 182 : 257,
+      };
+    }
+
+    if (sizeMode === 'b6') {
+      return {
+        type: 'single',
+        paper: source.orientation === 'landscape' ? 'B6 landscape' : 'B6 portrait',
+        width: source.orientation === 'landscape' ? 182 : 128,
+        height: source.orientation === 'landscape' ? 128 : 182,
       };
     }
 

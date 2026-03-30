@@ -64,6 +64,9 @@ body.sel-c .mode-c { display: block; }
 .c-lbl    { font-size: 5pt; color: #ccc; text-align: right; padding-right: 2mm; padding-top: 1.5mm; }
 .c-line   { border-bottom: 0.4pt solid #ddd; height: 9mm; }
 .c-noon   { border-bottom: 0.5pt dashed #ccc !important; }
+.c-simple { flex: 1; display: flex; flex-direction: column; gap: 2.5mm; margin-bottom: 2mm; }
+.c-simple-row { display: flex; align-items: center; gap: 2mm; border-bottom: 0.4pt solid #ddd; padding-bottom: 1.5mm; }
+.c-simple-text { font-size: 7pt; color: #555; line-height: 1.2; }
 .c-review { border-top: 0.75pt solid #111; padding-top: 2mm; margin-top: 2mm; }
 
 /* ════ Print ════ */
@@ -106,7 +109,9 @@ body.sel-c .mode-c { display: block; }
     </div>
     <div class="date-picker">
       <span class="toolbar-label" style="margin-left:8px">日期</span>
-      <input class="date-input" type="date" id="day-date" onchange="renderDay()">
+      <input class="date-input" type="text" id="day-date" placeholder="手填：YYYY/MM/DD" oninput="renderDay()">
+      <span class="toolbar-label" style="margin-left:8px">星期</span>
+      <input class="date-input" type="text" id="day-week" placeholder="手填：週一/Mon" oninput="renderDay()">
     </div>
     <div class="toolbar-right">
       <span class="hint">Chrome → 存PDF → 邊距「無」</span>
@@ -263,22 +268,11 @@ body.sel-c .mode-c { display: block; }
         <span style="border-bottom:0.6pt solid #111;display:inline-block;flex:1;height:3.5mm"></span>
       </div>
     </div>
-    <div class="c-grid">
-      <div class="c-lbl">07</div><div class="c-line"></div>
-      <div class="c-lbl">08</div><div class="c-line"></div>
-      <div class="c-lbl">09</div><div class="c-line"></div>
-      <div class="c-lbl">10</div><div class="c-line"></div>
-      <div class="c-lbl">11</div><div class="c-line"></div>
-      <div class="c-lbl">12</div><div class="c-line c-noon"></div>
-      <div class="c-lbl">13</div><div class="c-line"></div>
-      <div class="c-lbl">14</div><div class="c-line"></div>
-      <div class="c-lbl">15</div><div class="c-line"></div>
-      <div class="c-lbl">16</div><div class="c-line"></div>
-      <div class="c-lbl">17</div><div class="c-line"></div>
-      <div class="c-lbl">18</div><div class="c-line c-noon"></div>
-      <div class="c-lbl">19</div><div class="c-line"></div>
-      <div class="c-lbl">20</div><div class="c-line"></div>
-      <div class="c-lbl">21</div><div class="c-line" style="border:none"></div>
+    <div class="c-simple">
+      <div class="c-simple-row"><span class="sq" style="width:3.5mm;height:3.5mm;border:0.7pt solid #999"></span><span class="c-simple-text">今日最重要 ①</span></div>
+      <div class="c-simple-row"><span class="sq" style="width:3.5mm;height:3.5mm;border:0.7pt solid #999"></span><span class="c-simple-text">今日最重要 ②</span></div>
+      <div class="c-simple-row"><span class="sq" style="width:3.5mm;height:3.5mm;border:0.7pt solid #999"></span><span class="c-simple-text">今日最重要 ③</span></div>
+      <div class="c-simple-row"><span class="sq" style="width:3.5mm;height:3.5mm;border:0.7pt solid #999"></span><span class="c-simple-text">補充事項/提醒</span></div>
     </div>
     <div class="c-review">
       <table style="width:100%;border-collapse:collapse"><tr>
@@ -301,17 +295,16 @@ let st = document.createElement('style'); st.id='pg-size'; document.head.appendC
 const Calendar = window.TemplateCalendar;
 
 function renderDay() {
-  const selected = Calendar.parseLocalDate(document.getElementById('day-date').value);
-  const selectedMeta = Calendar.getMeta(selected);
-  const dateLabel = Calendar.formatDateLabel(selected, selectedMeta);
-  const weekLabel = Calendar.formatWeekdayLabel(selected, selectedMeta);
+  // Daily Planner 的「日期 / 星期」改成使用者手填輸入
+  const dateText = document.getElementById('day-date').value.trim();
+  const weekText = document.getElementById('day-week').value.trim();
 
-  document.getElementById('day-date-a').textContent = dateLabel;
-  document.getElementById('day-week-a').textContent = weekLabel;
-  document.getElementById('day-date-b').textContent = dateLabel;
-  document.getElementById('day-week-b').textContent = weekLabel;
-  document.getElementById('day-date-c').textContent = dateLabel;
-  document.getElementById('day-week-c').textContent = weekLabel;
+  document.getElementById('day-date-a').textContent = dateText;
+  document.getElementById('day-week-a').textContent = weekText;
+  document.getElementById('day-date-b').textContent = dateText;
+  document.getElementById('day-week-b').textContent = weekText;
+  document.getElementById('day-date-c').textContent = dateText;
+  document.getElementById('day-week-c').textContent = weekText;
 }
 
 function setMode(m) {
@@ -319,10 +312,24 @@ function setMode(m) {
   document.body.classList.add('template-page', 'sel-' + m);
   st.textContent = '@media print { @page { size: ' + pgPaper[m] + ' ' + pgSize[m] + '; margin:0; } }';
   document.querySelectorAll('.mode-cards .card').forEach((c,i) => c.classList.toggle('active', ['a','b','c'][i]===m));
+  
+  // 根據模式控制尺寸按鈕的顯示
+  const sizeCards = document.querySelectorAll('.size-cards .size-card');
+  if (m === 'c') {
+    // 模式 C（精簡版）：只顯示 B6/A5/A4裁A5
+    sizeCards.forEach(btn => {
+      btn.style.display = (btn.dataset.printSize === 'a4') ? 'none' : 'block';
+    });
+  } else {
+    // 模式 A 和 B：顯示所有尺寸
+    sizeCards.forEach(btn => {
+      btn.style.display = 'block';
+    });
+  }
 }
-document.getElementById('day-date').value = Calendar.toInputValue(new Date());
+// 日期保持空白，讓使用者手填
 setMode('a');
-Calendar.load('../../../assets/2026_calendar.json').finally(renderDay);
+renderDay();
 </script>
 </body>
 </html>

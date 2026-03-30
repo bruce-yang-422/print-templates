@@ -38,7 +38,9 @@ body.sel-b .mode-b { display: block; }
 .wk-head { padding: 8mm 14mm 5mm; border-bottom: 0.75pt solid #111; }
 .wk-info { display: flex; align-items: baseline; gap: 6mm; flex-wrap: wrap; }
 .wk-goal { margin-top: 2.5mm; display: flex; align-items: baseline; }
-
+  .week-nav { display: inline-flex; gap: 4px; align-items: center; margin-right: 8px; }
+  .week-nav button { width: 30px; height: 30px; border: 1px solid #bbb; border-radius: 4px; background: #f9f9f9; color: #333; cursor: pointer; font-size: 16px; }
+  .week-nav button:hover { border-color: #888; background: #fff; }
 /* 日期欄頭 */
 .day-hd {
   border-bottom: 0.75pt solid #111;
@@ -52,21 +54,47 @@ body.sel-b .mode-b { display: block; }
 .day-name { font-size: 7.5pt; font-weight: 700; letter-spacing: .04em; display: block; }
 .day-date { font-size: 5.5pt; color: #bbb; letter-spacing: .06em; }
 .day-hd.weekend { background: #f5f5f5; }
+.day-hd.holiday { background: #fcf7f2; }
+.day-hd.holiday-start { background: #fee8d7; }
+.day-hd.holiday-mid { background: #fbdbca; }
+.day-hd.holiday-end { background: #fad0c1; }
+.day-hd.holiday-single { background: #fcf7f2; }
 .day-hd.weekend .day-name { color: #bbb; }
+.day-hd.holiday .day-name, .day-hd.holiday-start .day-name, .day-hd.holiday-mid .day-name, .day-hd.holiday-end .day-name, .day-hd.holiday-single .day-name { color: #9a5c41; }
+.day-holiday-text { font-size: 4.4pt; color: #9a5c41; line-height: 1.2; display: block; margin-top: 1mm; }
 
 /* 主要內容列 */
 .day-body { border-right: 0.4pt solid #ddd; padding: 3mm; vertical-align: top; }
 .day-body:last-child { border-right: none; }
 .day-body.weekend { background: #fafafa; }
+.day-body.holiday { background: #fcf7f2; }
+.day-body.holiday-start { background: #fee8d7; }
+.day-body.holiday-mid { background: #fbdbca; }
+.day-body.holiday-end { background: #fad0c1; }
+.day-body.holiday-single { background: #fcf7f2; }
 .day-line { border-bottom: 0.4pt solid #eee; height: 7mm; display: block; }
 
 /* 待辦列 */
 .day-todo { border-top: 0.4pt solid #ddd; border-right: 0.4pt solid #ddd; padding: 2mm 3mm; vertical-align: top; }
 .day-todo:last-child { border-right: none; }
 .day-todo.weekend { background: #fafafa; }
+.day-todo.holiday { background: #fcf7f2; }
 .todo-row { display: flex; align-items: flex-end; margin-bottom: 1.5mm; gap: 1.5mm; }
 .todo-row:last-child { margin-bottom: 0; }
 .todo-line { flex: 1; border-bottom: 0.4pt solid #ddd; height: 4.5mm; }
+
+/* Print range: out-range cells keep layout but hide writing lines/dots */
+.day-hd.out-range { background: #fff !important; }
+.day-body.out-range { background: #fff !important; }
+.day-todo.out-range { background: #fff !important; }
+.b-day.out-range { background: #fff !important; }
+.day-hd.out-range .day-name,
+.day-hd.out-range .day-date { color: #ddd !important; }
+.day-body.out-range .day-line { border-bottom-color: transparent; }
+.day-todo.out-range .todo-line { border-bottom-color: transparent; }
+.day-todo.out-range .sq { opacity: 0; }
+.b-day.out-range .b-line { border-bottom-color: transparent; }
+.b-day.out-range em { color: #ddd !important; }
 
 /* ════ Mode B：清單 A4直 ════ */
 .b-wrap  { padding: 11mm 14mm 8mm; height: 297mm; display: flex; flex-direction: column; }
@@ -77,7 +105,10 @@ body.sel-b .mode-b { display: block; }
 .b-day   { border-left: 1.5pt solid #111; padding-left: 3mm; }
 .b-day-hd { font-size: 6.5pt; font-weight: 700; letter-spacing: .06em; margin-bottom: 1.5mm; display: flex; justify-content: space-between; align-items: baseline; }
 .b-day-hd em { font-style: normal; font-size: 5pt; color: #ccc; font-weight: 400; }
+.b-day.weekend { background: #fafafa; }
 .b-day.weekend .b-day-hd { color: #bbb; }
+.b-day.holiday { background: #fcf7f2; }
+.b-day.holiday .b-day-hd { color: #9a5c41; }
 .b-line  { border-bottom: 0.4pt solid #ddd; height: 5.5mm; display: block; margin-bottom: 0; }
 .b-review { border-top: 0.75pt solid #111; padding-top: 3mm; margin-top: 3mm; }
 .b-reflect { width: 100%; border-collapse: collapse; margin-top: 2mm; }
@@ -125,6 +156,16 @@ body.sel-b .mode-b { display: block; }
       <span class="toolbar-label" style="margin-left:8px">日期</span>
       <input class="date-input" type="date" id="week-date" onchange="renderWeek()">
     </div>
+    <div class="week-nav">
+      <button type="button" id="prev-week">‹</button>
+      <button type="button" id="next-week">›</button>
+    </div>
+    <div class="date-picker" style="margin-left:0">
+      <span class="toolbar-label" style="margin-left:8px">列印起始</span>
+      <input class="date-input" type="date" id="print-start" onchange="renderWeek()">
+      <span class="picker-sep" style="color:#555;font-size:11px">—</span>
+      <input class="date-input" type="date" id="print-end" onchange="renderWeek()">
+    </div>
     <span class="toolbar-label">起始</span>
     <div class="size-cards" id="weekStartChips">
       <button type="button" class="card active" data-week-start="mon">週一</button>
@@ -160,13 +201,13 @@ body.sel-b .mode-b { display: block; }
 
   <!-- 欄頭：週一至週日 -->
   <tr style="height:12mm">
-    <td class="day-hd" data-slot="1"><span class="day-name" id="a-day-name-1">週一</span><span class="day-date f-lbl" id="a-day-date-1"></span></td>
-    <td class="day-hd" data-slot="2"><span class="day-name" id="a-day-name-2">週二</span><span class="day-date f-lbl" id="a-day-date-2"></span></td>
-    <td class="day-hd" data-slot="3"><span class="day-name" id="a-day-name-3">週三</span><span class="day-date f-lbl" id="a-day-date-3"></span></td>
-    <td class="day-hd" data-slot="4"><span class="day-name" id="a-day-name-4">週四</span><span class="day-date f-lbl" id="a-day-date-4"></span></td>
-    <td class="day-hd" data-slot="5"><span class="day-name" id="a-day-name-5">週五</span><span class="day-date f-lbl" id="a-day-date-5"></span></td>
-    <td class="day-hd weekend" data-slot="6"><span class="day-name" id="a-day-name-6">週六</span><span class="day-date f-lbl" id="a-day-date-6"></span></td>
-    <td class="day-hd weekend" data-slot="7"><span class="day-name" id="a-day-name-7">週日</span><span class="day-date f-lbl" id="a-day-date-7"></span></td>
+    <td class="day-hd" data-slot="1"><span class="day-name" id="a-day-name-1">週一</span><span class="day-date f-lbl" id="a-day-date-1"></span><span class="day-holiday-text" id="a-day-holiday-1"></span></td>
+    <td class="day-hd" data-slot="2"><span class="day-name" id="a-day-name-2">週二</span><span class="day-date f-lbl" id="a-day-date-2"></span><span class="day-holiday-text" id="a-day-holiday-2"></span></td>
+    <td class="day-hd" data-slot="3"><span class="day-name" id="a-day-name-3">週三</span><span class="day-date f-lbl" id="a-day-date-3"></span><span class="day-holiday-text" id="a-day-holiday-3"></span></td>
+    <td class="day-hd" data-slot="4"><span class="day-name" id="a-day-name-4">週四</span><span class="day-date f-lbl" id="a-day-date-4"></span><span class="day-holiday-text" id="a-day-holiday-4"></span></td>
+    <td class="day-hd" data-slot="5"><span class="day-name" id="a-day-name-5">週五</span><span class="day-date f-lbl" id="a-day-date-5"></span><span class="day-holiday-text" id="a-day-holiday-5"></span></td>
+    <td class="day-hd weekend" data-slot="6"><span class="day-name" id="a-day-name-6">週六</span><span class="day-date f-lbl" id="a-day-date-6"></span><span class="day-holiday-text" id="a-day-holiday-6"></span></td>
+    <td class="day-hd weekend" data-slot="7"><span class="day-name" id="a-day-name-7">週日</span><span class="day-date f-lbl" id="a-day-date-7"></span><span class="day-holiday-text" id="a-day-holiday-7"></span></td>
   </tr>
 
   <!-- 主要書寫區 -->
@@ -216,30 +257,37 @@ body.sel-b .mode-b { display: block; }
     <div class="b-days">
       <div class="b-day" data-slot="1">
         <div class="b-day-hd"><span id="b-day-name-1">週一</span> <em id="b-day-date-1"></em></div>
+        <span class="day-holiday-text" id="b-day-holiday-1" style="display:block;margin-bottom:1mm;font-size:4pt"></span>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
       <div class="b-day" data-slot="2">
         <div class="b-day-hd"><span id="b-day-name-2">週二</span> <em id="b-day-date-2"></em></div>
+        <span class="day-holiday-text" id="b-day-holiday-2" style="display:block;margin-bottom:1mm;font-size:4pt"></span>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
       <div class="b-day" data-slot="3">
         <div class="b-day-hd"><span id="b-day-name-3">週三</span> <em id="b-day-date-3"></em></div>
+        <span class="day-holiday-text" id="b-day-holiday-3" style="display:block;margin-bottom:1mm;font-size:4pt"></span>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
       <div class="b-day" data-slot="4">
         <div class="b-day-hd"><span id="b-day-name-4">週四</span> <em id="b-day-date-4"></em></div>
+        <span class="day-holiday-text" id="b-day-holiday-4" style="display:block;margin-bottom:1mm;font-size:4pt"></span>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
       <div class="b-day" data-slot="5">
         <div class="b-day-hd"><span id="b-day-name-5">週五</span> <em id="b-day-date-5"></em></div>
+        <span class="day-holiday-text" id="b-day-holiday-5" style="display:block;margin-bottom:1mm;font-size:4pt"></span>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
       <div class="b-day weekend" data-slot="6">
         <div class="b-day-hd"><span id="b-day-name-6">週六</span> <em id="b-day-date-6"></em></div>
+        <span class="day-holiday-text" id="b-day-holiday-6" style="display:block;margin-bottom:1mm;font-size:4pt"></span>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
       <div class="b-day weekend" data-slot="7">
         <div class="b-day-hd"><span id="b-day-name-7">週日</span> <em id="b-day-date-7"></em></div>
+        <span class="day-holiday-text" id="b-day-holiday-7" style="display:block;margin-bottom:1mm;font-size:4pt"></span>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
     </div>
@@ -266,10 +314,49 @@ body.sel-b .mode-b { display: block; }
 <script src="../../../js/template-size.js"></script>
 <script src="../../../js/calendar-data.js"></script>
 <script>
-const pgSize = { a:'landscape', b:'portrait' };
+const pgSize = { a:'landscape', b:'portrait', c:'landscape' };
 let st = document.createElement('style'); st.id='pg-size'; document.head.appendChild(st);
 const Calendar = window.TemplateCalendar;
 let weekStartMode = localStorage.getItem('weeklyStartMode') || 'mon';
+let currentPrintSize = 'a4';
+
+function applyWeekPrintRange(weekStart) {
+  const startInput = document.getElementById('print-start');
+  const endInput = document.getElementById('print-end');
+  if (!startInput || !endInput) return;
+
+  let rangeEnd = new Date(weekStart);
+  if (currentPrintSize === 'cut') {
+    rangeEnd.setDate(weekStart.getDate() + 13); // 14 天連續範圍
+  } else {
+    rangeEnd.setDate(weekStart.getDate() + 6); // 7 天單週
+  }
+
+  startInput.value = dateToInput(weekStart);
+  endInput.value = dateToInput(rangeEnd);
+}
+
+// 監聽尺寸改變，切換当前報表尺寸+列印範圍
+document.querySelectorAll('.size-card').forEach((button) => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('.size-card').forEach((c) => c.classList.toggle('active', c === button));
+    currentPrintSize = button.dataset.printSize || 'a4';
+
+    const selected = Calendar.parseLocalDate(document.getElementById('week-date').value);
+    if (selected) {
+      const weekStart = getWeekStartByMode(selected);
+      applyWeekPrintRange(weekStart);
+      renderWeek();
+    }
+  });
+});
+
+function dateToInput(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return year + '-' + month + '-' + day;
+}
 
 const WEEK_ORDERS = {
   mon: [1, 2, 3, 4, 5, 6, 0],
@@ -296,9 +383,39 @@ function syncWeekStartButtons() {
   });
 }
 
-function renderWeek() {
+function setWeekDate(date) {
+  document.getElementById('week-date').value = dateToInput(date);
+  const weekStart = getWeekStartByMode(date);
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekStart.getDate() + (currentPrintSize === 'cut' ? 13 : 6));
+  document.getElementById('print-start').value = dateToInput(weekStart);
+  document.getElementById('print-end').value = dateToInput(weekEnd);
+  renderWeek();
+}
+
+function shiftWeek(days) {
   const input = document.getElementById('week-date');
-  const selected = Calendar.parseLocalDate(input.value);
+  const current = Calendar.parseLocalDate(input.value);
+  if (!current) return;
+  current.setDate(current.getDate() + days);
+  setWeekDate(current);
+}
+
+window.renderWeekOffset = function (offsetWeeks) {
+  renderWeek(offsetWeeks);
+};
+
+function renderWeek(offsetWeeks = 0) {
+  const input = document.getElementById('week-date');
+  let selected = Calendar.parseLocalDate(input.value);
+  if (!selected || isNaN(selected.getTime())) selected = new Date();
+
+  if (offsetWeeks !== 0) {
+    const shifted = new Date(selected);
+    shifted.setDate(shifted.getDate() + offsetWeeks * 7);
+    selected = shifted;
+  }
+
   const selectedMeta = Calendar.getMeta(selected);
   const weekStart = getWeekStartByMode(selected);
   const weekNo = selectedMeta && selectedMeta['標準週數']
@@ -307,6 +424,44 @@ function renderWeek() {
 
   document.getElementById('week-no-a').textContent = weekNo;
   document.getElementById('week-no-b').textContent = weekNo;
+
+  // Print range (default: the whole week or 2 週 for cut)
+  const startInput = document.getElementById('print-start');
+  const endInput = document.getElementById('print-end');
+  if (startInput && !startInput.value) startInput.value = Calendar.toInputValue(weekStart);
+
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekStart.getDate() + (currentPrintSize === 'cut' ? 13 : 6));
+  if (endInput && !endInput.value) endInput.value = Calendar.toInputValue(weekEnd);
+
+  let rangeStart = startInput && startInput.value
+    ? Calendar.parseLocalDate(startInput.value)
+    : weekStart;
+  let rangeEnd = endInput && endInput.value
+    ? Calendar.parseLocalDate(endInput.value)
+    : weekEnd;
+
+  if (rangeStart > rangeEnd) {
+    const tmp = rangeStart;
+    rangeStart = rangeEnd;
+    rangeEnd = tmp;
+  }
+
+  // 週日模式 + 周一模式都先以 weekStart 為基礎，cut 模式不強制截斷成 7 天
+  let effectiveStart = rangeStart < weekStart ? weekStart : rangeStart;
+  let effectiveEnd = rangeEnd;
+  if (currentPrintSize !== 'cut') {
+    effectiveEnd = rangeEnd > weekEnd ? weekEnd : rangeEnd;
+  }
+  if (effectiveStart > effectiveEnd) {
+    effectiveStart = weekStart;
+    effectiveEnd = weekEnd;
+  }
+
+  document.getElementById('week-start-a').textContent = Calendar.formatMd(effectiveStart);
+  document.getElementById('week-end-a').textContent = Calendar.formatMd(effectiveEnd);
+  document.getElementById('week-start-b').textContent = Calendar.formatMd(effectiveStart);
+  document.getElementById('week-end-b').textContent = Calendar.formatMd(effectiveEnd);
 
   const labels = WEEK_LABELS[weekStartMode];
   const order = WEEK_ORDERS[weekStartMode];
@@ -318,21 +473,35 @@ function renderWeek() {
     const slot = i + 1;
     const dayIndex = order[i];
     const isWeekend = dayIndex === 0 || dayIndex === 6;
+    const inRange = date >= effectiveStart && date <= effectiveEnd;
+    
+    // 獲取假期信息與連假類型
+    const meta = Calendar.getMetaParts(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    const isHoliday = meta && meta.is_holiday === '1';
+    const holidayText = Calendar.getHolidayText(meta);
+    const holidaySpan = isHoliday ? Calendar.getHolidaySpan(date.getFullYear(), date.getMonth() + 1, date.getDate()) : '';
+    
     document.getElementById('a-day-name-' + slot).textContent = labels[i];
     document.getElementById('b-day-name-' + slot).textContent = labels[i];
-    document.getElementById('a-day-date-' + slot).textContent = label;
-    document.getElementById('b-day-date-' + slot).textContent = label;
+    document.getElementById('a-day-date-' + slot).textContent = inRange ? label : '';
+    document.getElementById('b-day-date-' + slot).textContent = inRange ? label : '';
+    
+    // 添加假期文本到日期欄頭
+    const aHolidayEl = document.getElementById('a-day-holiday-' + slot);
+    const bHolidayEl = document.getElementById('b-day-holiday-' + slot);
+    if (aHolidayEl) aHolidayEl.textContent = (inRange && holidayText) ? holidayText : '';
+    if (bHolidayEl) bHolidayEl.textContent = (inRange && holidayText) ? holidayText : '';
+    
     document.querySelectorAll('[data-slot="' + slot + '"]').forEach((element) => {
-      element.classList.toggle('weekend', isWeekend);
+      element.classList.toggle('weekend', isWeekend && !isHoliday);
+      element.classList.toggle('holiday', isHoliday);
+      element.classList.toggle('holiday-single', holidaySpan === 'single');
+      element.classList.toggle('holiday-start', holidaySpan === 'start');
+      element.classList.toggle('holiday-mid', holidaySpan === 'mid');
+      element.classList.toggle('holiday-end', holidaySpan === 'end');
+      element.classList.toggle('out-range', !inRange);
     });
   }
-
-  const weekEnd = new Date(weekStart);
-  weekEnd.setDate(weekStart.getDate() + 6);
-  document.getElementById('week-start-a').textContent = Calendar.formatMd(weekStart);
-  document.getElementById('week-end-a').textContent = Calendar.formatMd(weekEnd);
-  document.getElementById('week-start-b').textContent = Calendar.formatMd(weekStart);
-  document.getElementById('week-end-b').textContent = Calendar.formatMd(weekEnd);
 }
 
 function setMode(m) {
@@ -348,8 +517,16 @@ document.getElementById('weekStartChips').addEventListener('click', (event) => {
   weekStartMode = button.dataset.weekStart;
   localStorage.setItem('weeklyStartMode', weekStartMode);
   syncWeekStartButtons();
-  renderWeek();
+  const selected = Calendar.parseLocalDate(document.getElementById('week-date').value);
+  if (selected) {
+    setWeekDate(selected);
+  } else {
+    renderWeek();
+  }
 });
+
+document.getElementById('prev-week').addEventListener('click', () => shiftWeek(-7));
+document.getElementById('next-week').addEventListener('click', () => shiftWeek(7));
 
 document.getElementById('week-date').value = Calendar.toInputValue(new Date());
 setMode('a');

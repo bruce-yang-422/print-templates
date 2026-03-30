@@ -577,6 +577,23 @@ body.template-page .back-link {
   white-space: nowrap;
 }
 
+body.template-page .back-link {
+  /* allow subtitle to wrap into next line */
+  flex-wrap: wrap;
+}
+
+body.template-page .back-link::after {
+  /* subtitle shown under brand, clickable because it's inside the anchor */
+  content: 'A4 · A5 · B5 可列印模板';
+  flex: 0 0 100%;
+  margin-left: 15px; /* align roughly after the back svg + brand text */
+  margin-top: -1px;
+  font-size: 10px;
+  letter-spacing: .08em;
+  font-weight: 400;
+  color: var(--site-ink-soft);
+}
+
 body.template-page .back-link svg {
   width: 10px;
   height: 10px;
@@ -825,6 +842,16 @@ body.template-page .page {
   isolation: isolate;
 }
 
+/* 列印尺寸動態調整裝訂線距離
+   - A4：15mm
+   - B5：12mm
+   - A4裁A5（cut）：10mm
+*/
+body.template-page[data-print-size="a4"] .page { --bind-gap: 15mm; }
+body.template-page[data-print-size="b5"] .page { --bind-gap: 12mm; }
+body.template-page[data-print-size="a5"] .page { --bind-gap: 12mm; }
+body.template-page[data-print-size="cut"] .page { --bind-gap: 10mm; }
+
 body.template-page .page > * {
   position: relative;
   z-index: 1;
@@ -917,13 +944,13 @@ body.template-page .page-port > .b-wrap,
 body.template-page .page-port > .rpt-wrap,
 body.template-page .page-port > .pr-shell,
 body.template-page .page-port > .inner-a4 {
-  padding-left: 19mm !important;
+  padding-left: calc(var(--bind-gap) + 4mm) !important;
 }
 
 body.template-page .page-land > .wrap,
 body.template-page .page-land > .b-wrap,
 body.template-page .page-land > .pr-shell {
-  padding-left: 17mm !important;
+  padding-left: calc(var(--bind-gap) + 2mm) !important;
 }
 
 body.template-page .page-land > .wk-tbl {
@@ -937,23 +964,23 @@ body.template-page .page-a5 > .pr-shell,
 body.template-page .page-a5-port > .b-wrap,
 body.template-page .page-a5-port > .quick-shell,
 body.template-page .page-a5-port > .pr-shell {
-  padding-left: 14mm !important;
+  padding-left: calc(var(--bind-gap) + 2mm) !important;
 }
 
 body.template-page .page-a5 .inner-a5,
 body.template-page .page-a5-port .inner-a5 {
-  padding-left: 14mm !important;
+  padding-left: calc(var(--bind-gap) + 2mm) !important;
 }
 
 body.template-page .inner-a5-bind {
-  padding-left: 22mm !important;
+  padding-left: calc(var(--bind-gap) + 10mm) !important;
   background-image: linear-gradient(
     to right,
     transparent 0,
-    transparent 12mm,
-    #d6d6d6 12mm,
-    #d6d6d6 calc(12mm + 0.6pt),
-    transparent calc(12mm + 0.6pt)
+    transparent var(--bind-gap),
+    #d6d6d6 var(--bind-gap),
+    #d6d6d6 calc(var(--bind-gap) + 0.6pt),
+    transparent calc(var(--bind-gap) + 0.6pt)
   ) !important;
 }
 
@@ -964,7 +991,7 @@ body.template-page .wk-head,
 body.template-page .cal-head,
 body.template-page .trk-ch,
 body.template-page .trk-right {
-  padding-left: 19mm !important;
+  padding-left: calc(var(--bind-gap) + 4mm) !important;
 }
 
 body.template-page .pr-shell {
@@ -1493,6 +1520,8 @@ body.template-page .trk-cell.empty {
 
   body.template-page.is-print-staged #print-stage {
     display: block !important;
+    padding: 0 !important;
+    gap: 0 !important;
   }
 
   body.template-page.is-print-staged .print-sheet {
