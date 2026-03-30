@@ -921,6 +921,148 @@ body.template-page .pr-note {
   flex: 1;
 }
 
+body.template-page .pr-header-band {
+  border-bottom: 0.75pt solid #111;
+  padding-bottom: 4mm;
+}
+
+body.template-page .pr-header-band.compact {
+  padding-bottom: 3mm;
+}
+
+body.template-page .pr-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6mm;
+}
+
+body.template-page .pr-title-row strong {
+  font-size: 16pt;
+  letter-spacing: .04em;
+}
+
+body.template-page .pr-title-row span {
+  font-size: 6pt;
+  color: #bbb;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+body.template-page .pr-field-label {
+  font-size: 5.5pt;
+  letter-spacing: .1em;
+  color: #aaa;
+  display: block;
+  margin-bottom: 1mm;
+  text-transform: uppercase;
+}
+
+body.template-page .pr-field-blank {
+  display: block;
+  border-bottom: 0.5pt solid #ccc;
+  height: 4.6mm;
+}
+
+body.template-page .pr-notes-split {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 34% 1fr;
+  border: 0.75pt solid #111;
+  border-top: none;
+  margin-top: 4mm;
+}
+
+body.template-page .pr-notes-rail,
+body.template-page .pr-notes-main {
+  padding: 3mm;
+  display: flex;
+  flex-direction: column;
+}
+
+body.template-page .pr-notes-rail {
+  border-right: 0.75pt solid #111;
+}
+
+body.template-page .pr-rail-row {
+  border-bottom: 0.4pt solid #ececec;
+  height: 15.4mm;
+}
+
+body.template-page .pr-main-row {
+  border-bottom: 0.4pt solid #ddd;
+  height: 7.7mm;
+}
+
+body.template-page .pr-summary-box {
+  border: 0.75pt solid #111;
+  border-top: none;
+  padding: 3mm;
+  min-height: 44mm;
+}
+
+body.template-page .pr-outline-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 3mm;
+  margin-top: 4mm;
+  flex: 1;
+}
+
+body.template-page .pr-outline-card {
+  border: 0.4pt solid #ddd;
+  padding: 3mm;
+  background: #fff;
+}
+
+body.template-page .pr-outline-card.tight {
+  padding: 2.6mm 3mm;
+}
+
+body.template-page .pr-outline-title {
+  font-size: 6.2pt;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #777;
+  margin-bottom: 2mm;
+  display: block;
+}
+
+body.template-page .pr-bullet-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 2mm;
+  margin-bottom: 1.8mm;
+}
+
+body.template-page .pr-bullet-row:last-child {
+  margin-bottom: 0;
+}
+
+body.template-page .pr-bullet-dot {
+  width: 2.4mm;
+  height: 2.4mm;
+  border: 0.65pt solid #777;
+  border-radius: 999px;
+  flex-shrink: 0;
+  margin-bottom: 1.1mm;
+}
+
+body.template-page .pr-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4mm;
+}
+
+body.template-page .pr-page-num {
+  position: absolute;
+  bottom: 6mm;
+  right: 10mm;
+  font-size: 6.5pt;
+  letter-spacing: .1em;
+  color: #ccc;
+}
+
 body.template-page #print-stage {
   display: none;
   padding: 104px 0 48px;

@@ -19,7 +19,7 @@
 
 ## 目前狀態
 
-目前共有 `14` 份可直接開啟的模板，首頁預覽圖也已補齊 `14` 張 SVG。
+目前共有 `15` 份可直接開啟的模板，首頁預覽圖也已補齊 `15` 張 SVG。
 
 所有模板目前共同具備：
 
@@ -33,6 +33,7 @@
 
 - [`templates/work-journal/work-journal.html`](./templates/work-journal/work-journal.html) 已整理成 `A 日誌`、`B 週總結` 兩種內容模式，且兩種模式都對應 `A4 / A5 / A4裁A5`
 - [`js/template-size.js`](./js/template-size.js) 已處理螢幕預覽、列印前 staging，以及「本來就是雙 A5 裁切版型」不再被二次縮小的情況
+- 已開始把筆記類常用內容區塊抽到 [`css/style.css`](./css/style.css) 的共用 `pr-*` 列印元件，減少新模板重複寫樣式
 
 ## 已完成模板
 
@@ -58,6 +59,7 @@
 ### 筆記類
 
 - [`templates/cornell/cornell.html`](./templates/cornell/cornell.html)
+- [`templates/notes/topic-notes/topic-notes.html`](./templates/notes/topic-notes/topic-notes.html)
 
 ### 電商類
 
@@ -101,6 +103,7 @@
 
 - [`css/style.css`](./css/style.css)
   網站 UI、模板 UI、共用 page shell、尺寸預覽與部分共用列印元件
+  目前也包含筆記類模板可重用的 `pr-header-band`、`pr-notes-split`、`pr-outline-card` 等區塊
 
 ### 模板
 
@@ -175,7 +178,8 @@ print-templates/
 │   ├── meeting/
 │   │   └── meeting.svg
 │   ├── notes/
-│   │   └── cornell.svg
+│   │   ├── cornell.svg
+│   │   └── topic-notes.svg
 │   ├── planner/
 │   │   ├── daily.svg
 │   │   ├── monthly.svg
@@ -205,6 +209,8 @@ print-templates/
     ├── meeting/
     │   └── meeting.html
     ├── notes/
+    │   └── topic-notes/
+    │       └── topic-notes.html
     ├── planner/
     │   ├── daily/
     │   │   └── daily.html
