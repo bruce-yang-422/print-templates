@@ -1,250 +1,98 @@
-# 列印模板庫 Print Templates
+# 🖨️ 列印模板庫 (Print Templates)
 
-可直接用瀏覽器開啟、列印或另存 PDF 的 HTML 模板專案。
+可直接用瀏覽器開啟、列印或另存 PDF 的高品質 HTML 模板專案。設計理念為「**螢幕預覽直覺，列印輸出極簡**」，所有列印模板皆針對實際紙本體驗進行最佳化調整。
 
-前台網站：
+**[🌐 前台網站 Live Demo](https://print-templates.tranquility-base.work)** | **[🐙 GitHub Repository](https://github.com/bruce-yang-422/print-templates)**
 
-- [https://print-templates.tranquility-base.work](https://print-templates.tranquility-base.work)
+---
 
-原始碼倉庫：
+## 📖 專案概覽 (Overview)
 
-- [https://github.com/bruce-yang-422/print-templates](https://github.com/bruce-yang-422/print-templates)
+這個專案架構劃分為兩個主要體驗層次：
 
-## 專案概覽
+- **💻 網站介面**：提供首頁與模板頁籤的操作 UI，視覺上採用受 Apple 啟發的乾淨且一致的主題風格，方便使用者挑選與預覽版型。
+- **📄 列印模板**：實際輸出的紙本版面。排版維持黑白灰階，**優先考慮省墨、實體裁切、打孔與裝訂需求**。
 
-這個專案分成兩個主要層次：
+目前共提供 **`23`** 份專屬 HTML 模板，並具備對應的即時 SVG 或高品質預覽設計。
 
-- 網站介面：首頁與模板頁的操作 UI，使用統一的 Apple 風格靈感主題
-- 列印模板：實際輸出的紙本版面，維持黑白灰階，優先考慮省墨、裁切、打孔與裝訂
+## ✨ 設計特點與共同規則 (Features)
 
-目前共有 `15` 份 HTML 模板，對應 `15` 張 SVG 預覽圖。
+所有的列印模板皆導入以下共用規範，以確保最佳列印體驗：
 
-## 共同規則
+- **邊距與裝訂留白**：
+  - `A4`：左側 `15mm` 裝訂留白
+  - `A5`：左側 `12mm` 裝訂留白
+  - 附帶淡灰色的裝訂輔助線
+- **列印友善設計**：純黑白灰階內容區，省墨且高對比
+- **多尺寸支援**：支援 `A4`、`A5`、`A4裁A5` 三種尺寸模式，其中「A4裁A5」會自動判斷排版方向以利後續裁切
+- **動態日曆資料**：Planner 系列共用統一的 `2026_calendar.json`，提供國曆、農曆、週數、節氣與台灣假日顯示
 
-目前模板頁共同具備：
+## 🗂️ 模板總覽 (Templates Collection)
 
-- `A4` 左側 `15mm` 裝訂留白
-- `A5` 左側 `12mm` 裝訂留白
-- 淡灰裝訂線
-- 列印友善的黑白灰階內容區
-- 統一的模板頁 UI
-- `A4 / A5 / A4裁A5` 三種尺寸模式
+目前已完成並可供列印的模板分類如下：
 
-補充：
+### 🎯 工作與專案 (Work)
+- 工作日誌 (`work-journal`) － 包含「A日誌」與「B週總結」兩種支援多尺寸的模式
+- 工作報告 (`report`)
+- 每日站會 (`standup`)
+- 專案簡報 (`project-brief`)
 
-- `js/template-size.js` 統一處理尺寸切換、螢幕預覽、列印前 staging 與 `@page size`
-- `A4裁A5` 會依目前版型自動判斷排版方向
-- `templates/work-journal/work-journal.html` 已整理成 `A 日誌`、`B 週總結` 兩種內容模式，且都支援三種尺寸
-- `css/style.css` 已承接模板頁 UI、page shell 與一部分共用列印元件
+### 📅 計畫與排程 (Planner)
+- 日計畫 (`daily`) － 支援日期選擇
+- 週計畫 (`weekly`) － 支援日期選擇
+- 月計畫 (`monthly`) － 掛載農曆與台灣假日顯示
+- 季計畫 (`quarterly`)
+- 年計畫 (`yearly`)
+- 旅遊計畫 (`travel`)
 
-## Planner 日曆資料
+### 🛒 電商管理 (E-Commerce)
+- 商品清單 (`product-listing`)
+- 促銷計畫 (`promo-plan`)
+- 價格策略 (`pricing`)
+- 每週營運 (`weekly-ops`)
 
-`daily / weekly / monthly` 三份 planner 模板目前共用同一份日曆資料來源：
+### 📈 行銷企劃 (Marketing)
+- 社群貼文排程 (`social-plan`)
+- 內容日曆 (`content-calendar`)
 
-- `assets/2026_calendar.json`
+### 🤝 會議與目標 (Meeting & Goals)
+- 會議記錄 (`meeting`)
+- 目標分解 (`goals`) － 適用於通用語境的目標拆解
 
-這份資料目前可提供：
+### 📓 筆記體系 (Notes)
+- 康乃爾筆記 (`cornell`)
+- 主題筆記 (`topic-notes`)
+- 子彈筆記索引 (`bujo-index`)
+- 點陣筆記 (`dot-grid`)
+- 閱讀筆記 (`reading-notes`)
 
-- 國曆日期
-- 標準週數
-- 中文星期
-- 農曆日期
-- 節氣
-- 台灣假日名稱與類型
+---
 
-共用邏輯由 `js/calendar-data.js` 負責，讓三份 planner 在日期、週次、農曆與假日顯示上維持一致。
+## 🖨️ 建議列印流程 (How to Print)
 
-## 已完成模板
+為了獲得最精準的版面輸出，建議採用以下步驟：
 
-### 工作類
+1. 使用 **Chrome** 或 **Edge** 瀏覽器開啟目標模板頁（或從首頁進入）。
+2. 在網頁側邊欄選擇您需要的 **「內容模式」**。
+3. 選擇輸出的實體紙張尺寸（`A4` / `A5` / `A4裁A5`）。
+4. 點擊畫面上的 **「列印 / 存 PDF」** 按鈕。
+5. ⚠️ **關鍵步驟**：在瀏覽器的列印對話框中，將 **「邊界 (Margins)」** 設定為 **「無 (None)」**，以套用模板內建的精確留白。
 
-- `templates/work-journal/work-journal.html`
-- `templates/work/report/report.html`
+## 🛠️ 技術結構與核心邏輯 (Engineering)
 
-### 計畫類
+專案不依賴大型前端框架，維持原生與輕量：
 
-- `templates/planner/daily/daily.html`
-- `templates/planner/weekly/weekly.html`
-- `templates/planner/monthly/monthly.html`
+- **首頁與 UI (`index.html`, `css/style.css`)**：
+  處理首頁篩選、預覽卡片 rendering、網站全局 UI、page shell 及螢幕列印預覽體驗。
+- **列印控制 (`js/template-size.js`)**：
+  統一處理模板尺寸切換、列印前 staging 與 `@page size` 的動態注入，確保瀏覽器在觸發列印時抓取正確的頁面宣告。
+- **日曆資料層 (`js/calendar-data.js`, `assets/2026_calendar.json`)**：
+  抽出跨模板共用的日曆邏輯，確保 daily/weekly/monthly 等 planner 在日期格式、週次、農曆及台灣國定假日顯示上的絕對一致。
+- **預覽圖 (`previews/`)**：
+  首頁展示用的 `1:1` 畫布 SVG 向量檔，清晰且不失真。
 
-### 會議類
+## 🚀 下一步 (Roadmap)
 
-- `templates/meeting/meeting.html`
-
-### 目標類
-
-- `templates/goals/goals.html`
-
-### 筆記類
-
-- `templates/cornell/cornell.html`
-- `templates/notes/topic-notes/topic-notes.html`
-
-### 電商類
-
-- `templates/ecommerce/product-listing/product-listing.html`
-- `templates/ecommerce/promo-plan/promo-plan.html`
-- `templates/ecommerce/pricing/pricing.html`
-- `templates/ecommerce/weekly-ops/weekly-ops.html`
-
-### 行銷類
-
-- `templates/marketing/social-plan/social-plan.html`
-- `templates/marketing/content-calendar/content-calendar.html`
-
-## 目前重點進展
-
-- 首頁已改為讀取 `previews/**/*.svg` 作為實際預覽圖
-- `index.html` 的站台樣式已抽到 `css/style.css`
-- 模板頁重複的 UI 樣式已集中到 `css/style.css`
-- planner 三份模板已共用 `assets/2026_calendar.json`
-- `月計畫` 已支援農曆與台灣假日顯示
-- `日計畫`、`週計畫` 已支援日期選擇
-- `目標分解` 模板文案已調整成更通用的拆解語境
-- 新增筆記模板 `templates/notes/topic-notes/topic-notes.html`
-
-## 技術結構
-
-### 首頁與樣式
-
-- `index.html`
-  首頁模板資料、篩選條件與模板卡片 rendering
-
-- `css/style.css`
-  網站 UI、模板 UI、page shell、尺寸預覽與部分共用列印元件
-
-### 模板與腳本
-
-- `templates/**/*.html`
-  各模板的實際版面內容
-
-- `js/template-size.js`
-  模板尺寸切換、螢幕預覽、列印前暫存版面與 `@page size` 控制
-
-- `js/calendar-data.js`
-  planner 共用日曆資料載入、日期格式化、週次、農曆與假日查詢
-
-### 預覽與資源
-
-- `previews/`
-  首頁模板卡片使用的 SVG 預覽圖，統一為 `1:1` 畫布
-
-- `assets/2026_calendar.json`
-  planner 共用日曆資料
-
-- `assets/fonts`
-  字型資源目錄
-
-- `assets/images`
-  圖像資源目錄
-
-- `image/README`
-  舊圖片資料夾的說明檔
-
-## 使用方式
-
-### 直接瀏覽首頁
-
-- 開啟 `index.html`
-
-### 直接開啟模板
-
-例如：
-
-- `templates/planner/daily/daily.html`
-- `templates/planner/weekly/weekly.html`
-- `templates/planner/monthly/monthly.html`
-- `templates/work-journal/work-journal.html`
-
-### 建議列印流程
-
-1. 用 Chrome 或 Edge 開啟模板頁
-2. 選擇內容模式
-3. 選擇尺寸 `A4 / A5 / A4裁A5`
-4. 點擊「列印 / 存 PDF」
-5. 在列印對話框將邊距設為「無」
-
-## 專案樹狀圖
-
-```text
-print-templates/
-├── README.md
-├── index.html
-├── assets/
-│   ├── 2026_calendar.json
-│   ├── fonts/
-│   └── images/
-├── css/
-│   └── style.css
-├── image/
-│   └── README
-├── js/
-│   ├── calendar-data.js
-│   └── template-size.js
-├── previews/
-│   ├── ecommerce/
-│   │   ├── pricing.svg
-│   │   ├── product-listing.svg
-│   │   ├── promo-plan.svg
-│   │   └── weekly-ops.svg
-│   ├── goals/
-│   │   └── goals.svg
-│   ├── marketing/
-│   │   ├── content-calendar.svg
-│   │   └── social-plan.svg
-│   ├── meeting/
-│   │   └── meeting.svg
-│   ├── notes/
-│   │   ├── cornell.svg
-│   │   └── topic-notes.svg
-│   ├── planner/
-│   │   ├── daily.svg
-│   │   ├── monthly.svg
-│   │   └── weekly.svg
-│   └── work/
-│       ├── report.svg
-│       └── work-journal.svg
-└── templates/
-    ├── cornell/
-    │   └── cornell.html
-    ├── ecommerce/
-    │   ├── pricing/
-    │   │   └── pricing.html
-    │   ├── product-listing/
-    │   │   └── product-listing.html
-    │   ├── promo-plan/
-    │   │   └── promo-plan.html
-    │   └── weekly-ops/
-    │       └── weekly-ops.html
-    ├── goals/
-    │   └── goals.html
-    ├── marketing/
-    │   ├── content-calendar/
-    │   │   └── content-calendar.html
-    │   └── social-plan/
-    │       └── social-plan.html
-    ├── meeting/
-    │   └── meeting.html
-    ├── notes/
-    │   └── topic-notes/
-    │       └── topic-notes.html
-    ├── planner/
-    │   ├── daily/
-    │   │   └── daily.html
-    │   ├── monthly/
-    │   │   └── monthly.html
-    │   └── weekly/
-    │       └── weekly.html
-    ├── work/
-    │   └── report/
-    │       └── report.html
-    └── work-journal/
-        └── work-journal.html
-```
-
-## 下一步
-
-- 逐步把舊模板內容區塊繼續抽成更穩定的共用列印元件
-- 針對所有模板做一輪列印檢查，特別確認裝訂線、版心、頁尾與跨頁問題
-- 持續擴充 `templates/notes/` 的實際模板
-- 補齊各模板在 `A4 / A5 / A4裁A5` 三種尺寸下的實測與微調
+- 🧩 逐步把各個舊模板獨立的內容區塊，抽成更穩定、可複用的「共用列印元件」(`css/style.css`)
+- 📏 針對所有 23 份模板在 `A4 / A5 / A4裁A5` 三種尺寸下進行列印壓力測試，特別確認裝訂線、版心、頁尾與跨頁問題
+- 📝 持續擴充 `templates/notes/` 等高頻繁使用的實體筆記模板

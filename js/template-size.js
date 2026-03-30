@@ -2,11 +2,10 @@
   if (!document.body || !document.body.classList.contains('template-page')) return;
 
   const SIZE_BUTTON_SELECTOR = '[data-print-size]';
-  const SIZE_ORDER = ['a4', 'b5', 'b6', 'a5', 'cut'];
+  const SIZE_ORDER = ['a4', 'b5', 'a5', 'cut'];
   const SIZE_LABELS = {
     a4: 'A4',
     b5: 'B5',
-    b6: 'B6',
     a5: 'A5',
     cut: 'A4裁A5',
   };
@@ -112,13 +111,13 @@
     stage.appendChild(sheet);
   }
 
-  function renderCut(stage, page, source, target) {
+  function renderCut(stage, page, source, target, baseOffset = 0, renderFn = null) {
     const sheet = document.createElement('div');
     sheet.className = 'print-sheet ' + target.direction;
     sheet.style.width = mm(target.sheet.width);
     sheet.style.height = mm(target.sheet.height);
 
-    const isWeekly = page.querySelector('.wk-tbl') !== null;
+    const dynamicRenderFn = renderFn || (window.renderMonthOffset || window.renderWeekOffset);
 
     for (let i = 0; i < 2; i++) {
       const slot = document.createElement('div');
@@ -126,18 +125,16 @@
       slot.style.width = mm(target.half.width);
       slot.style.height = mm(target.half.height);
 
-      if (isWeekly && window.renderWeekOffset) {
-        // 顯示上下連續兩週，先渲染第 i 周：0 = 本週，1 = 下週
-        window.renderWeekOffset(i);
+      if (dynamicRenderFn) {
+        dynamicRenderFn(baseOffset + i);
       }
 
       slot.appendChild(buildScaledClone(page, source, target.half));
       sheet.appendChild(slot);
     }
 
-    if (isWeekly && window.renderWeekOffset) {
-      // 恢復為本週顯示、避免影響原始頁面狀態
-      window.renderWeekOffset(0);
+    if (dynamicRenderFn) {
+      dynamicRenderFn(0);
     }
 
     const cutLine = document.createElement('div');
@@ -153,15 +150,6 @@
         paper: source.orientation === 'landscape' ? 'B5 landscape' : 'B5 portrait',
         width: source.orientation === 'landscape' ? 257 : 182,
         height: source.orientation === 'landscape' ? 182 : 257,
-      };
-    }
-
-    if (sizeMode === 'b6') {
-      return {
-        type: 'single',
-        paper: source.orientation === 'landscape' ? 'B6 landscape' : 'B6 portrait',
-        width: source.orientation === 'landscape' ? 182 : 128,
-        height: source.orientation === 'landscape' ? 128 : 182,
       };
     }
 
@@ -220,10 +208,41 @@
     const source = getSourceSpec(page);
     const target = getTargetSpec(page, source);
 
+    let steps = 1;
+    let renderFn = null;
+    
+    const startInp = document.getElementById('print-start');
+    const endInp = document.getElementById('print-end');
+    if (startInp && endInp && startInp.value && endInp.value && window.TemplateCalendar) {
+      const sDate = window.TemplateCalendar.parseLocalDate(startInp.value);
+      const eDate = window.TemplateCalendar.parseLocalDate(endInp.value);
+      
+      if (sDate && eDate && sDate <= eDate) {
+        if (window.renderMonthOffset) {
+          renderFn = window.renderMonthOffset;
+          steps = (eDate.getFullYear() - sDate.getFullYear()) * 12 + (eDate.getMonth() - sDate.getMonth()) + 1;
+        } else if (window.renderWeekOffset) {
+          renderFn = window.renderWeekOffset;
+          const diffMs = eDate.getTime() - sDate.getTime();
+          steps = Math.floor(diffMs / (7 * 24 * 60 * 60 * 1000)) + 1;
+        }
+      }
+    }
+
+    if (steps < 1) steps = 1;
+    if (steps > 60) steps = 60; // Max 5 years of months or ~1 year of weeks
+
     if (target.type === 'cut') {
-      renderCut(stage, page, source, target);
+      const sheetsCount = Math.ceil(steps / 2);
+      for (let s = 0; s < sheetsCount; s++) {
+        renderCut(stage, page, source, target, s * 2, renderFn);
+      }
     } else {
-      renderSingle(stage, page, source, target);
+      for (let s = 0; s < steps; s++) {
+        if (renderFn) renderFn(s);
+        renderSingle(stage, page, source, target);
+      }
+      if (renderFn) renderFn(0);
     }
 
     ensurePrintStyleTag().textContent = '@media print { @page { size: ' + target.paper + '; margin: 0; } }';

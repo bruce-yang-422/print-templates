@@ -1,0 +1,45 @@
+列出資料夾 PATH
+磁碟區序號為 78AD-CCB5
+D:\TOOLS\PRINT-TEMPLATES
++---assets
+|   +---fonts
+|   \---images
++---css
++---js
++---previews
+|   +---ecommerce
+|   +---goals
+|   +---marketing
+|   +---meeting
+|   +---notes
+|   +---planner
+|   \---work
+\---templates
+    +---cornell
+    +---ecommerce
+    |   +---pricing
+    |   +---product-listing
+    |   +---promo-plan
+    |   \---weekly-ops
+    +---goals
+    +---marketing
+    |   +---content-calendar
+    |   \---social-plan
+    +---meeting
+    +---notes
+    |   +---bujo-index
+    |   +---dot-grid
+    |   +---reading-notes
+    |   \---topic-notes
+    +---planner
+    |   +---daily
+    |   +---monthly
+    |   +---quarterly
+    |   +---travel
+    |   +---weekly
+    |   \---yearly
+    +---work
+    |   +---project-brief
+    |   +---report
+    |   \---standup
+    \---work-journal

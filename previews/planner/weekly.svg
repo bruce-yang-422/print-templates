@@ -1,19 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 594 594">
-  <rect width="594" height="594" fill="#ece6de"/>
-  <g transform="translate(0 87)">
-    <rect width="594" height="420" fill="#ece6de"/>
-      <rect x="24" y="30" width="546" height="360" rx="18" fill="#fff" stroke="#d9d1c6"/>
-      <rect x="54" y="56" width="6" height="308" fill="#ded7cd"/>
-      <rect x="78" y="56" width="438" height="12" rx="6" fill="#b1846f"/>
-      <g fill="#faf8f4" stroke="#d8d2c8" stroke-width="2">
-        <rect x="78" y="98" width="58" height="186"/><rect x="136" y="98" width="58" height="186"/>
-        <rect x="194" y="98" width="58" height="186"/><rect x="252" y="98" width="58" height="186"/>
-        <rect x="310" y="98" width="58" height="186"/><rect x="368" y="98" width="58" height="186"/>
-        <rect x="426" y="98" width="58" height="186"/>
-      </g>
-      <g stroke="#ddd6cc" stroke-width="2">
-        <line x1="78" y1="316" x2="484" y2="316"/>
-        <line x1="78" y1="342" x2="484" y2="342"/>
-      </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 214">
+  <rect width="100%" height="100%" fill="#ffffff" />
+  <rect x="24" y="16" width="252" height="182" fill="#ffffff" stroke="#e1e1e1" stroke-width="1.5" rx="6" />
+  <g opacity="0.6">
+    <rect x="40" y="35" width="80" height="8" fill="#d2d2d2" stroke="none" stroke-width="1.5" rx="0" /><rect x="40" y="50" width="48" height="48" fill="none" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="97" y="50" width="48" height="48" fill="none" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="154" y="50" width="48" height="48" fill="none" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="211" y="50" width="48" height="48" fill="none" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="40" y="108" width="48" height="48" fill="none" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="97" y="108" width="48" height="48" fill="none" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="154" y="108" width="48" height="48" fill="none" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="211" y="108" width="48" height="48" fill="#f5f5f5" stroke="#eaeaea" stroke-width="1.5" rx="0" />
   </g>
+  <rect x="24" y="158" width="252" height="40" fill="rgba(255,255,255,0.85)" />
+  <path d="M 24 158 L 276 158" stroke="rgba(0,0,0,0.05)" stroke-width="1" />
+  <text x="150" y="178" dominant-baseline="middle" text-anchor="middle" font-size="13" fill="#111" font-family="'PingFang TC', sans-serif" font-weight="600" letter-spacing="0.05em">週計畫</text>
 </svg>

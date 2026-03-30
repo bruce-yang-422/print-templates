@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>方格 / 點陣空白頁模板</title>
+<title>方格 / 點陣 / 橫線空白頁模板</title>
 <link rel="stylesheet" href="../../../css/style.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; color: #1a1a1a; }
 a { color: inherit; text-decoration: none; }
-.mode-a, .mode-b, .mode-c { display: none; }
+.mode-a, .mode-b, .mode-c, .mode-d { display: none; }
 body.sel-a .mode-a { display: block; }
 body.sel-b .mode-b { display: block; }
 body.sel-c .mode-c { display: block; }
+body.sel-d .mode-d { display: block; }
 .grid-pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
 .grid-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
 .grid-shell {
@@ -47,13 +48,18 @@ body.sel-c .mode-c { display: block; }
 }
 .rice-fill {
   background-image:
-    linear-gradient(to right, #e5e5e5 1px, transparent 1px),
-    linear-gradient(to bottom, #e5e5e5 1px, transparent 1px),
-    linear-gradient(to right, transparent calc(50% - 0.35px), rgba(170,170,170,.8) calc(50% - 0.35px) calc(50% + 0.35px), transparent calc(50% + 0.35px)),
-    linear-gradient(to bottom, transparent calc(50% - 0.35px), rgba(170,170,170,.8) calc(50% - 0.35px) calc(50% + 0.35px), transparent calc(50% + 0.35px)),
-    linear-gradient(45deg, transparent 49.4%, rgba(170,170,170,.76) 49.4% 50.6%, transparent 50.6%),
-    linear-gradient(-45deg, transparent 49.4%, rgba(170,170,170,.76) 49.4% 50.6%, transparent 50.6%);
+    linear-gradient(to right, #ccc 1px, transparent 1px),
+    linear-gradient(to bottom, #ccc 1px, transparent 1px),
+    linear-gradient(to right, transparent calc(50% - 0.35px), rgba(230,230,230,.8) calc(50% - 0.35px) calc(50% + 0.35px), transparent calc(50% + 0.35px)),
+    linear-gradient(to bottom, transparent calc(50% - 0.35px), rgba(230,230,230,.8) calc(50% - 0.35px) calc(50% + 0.35px), transparent calc(50% + 0.35px)),
+    linear-gradient(45deg, transparent 49.4%, rgba(230,230,230,.8) 49.4% 50.6%, transparent 50.6%),
+    linear-gradient(-45deg, transparent 49.4%, rgba(230,230,230,.8) 49.4% 50.6%, transparent 50.6%);
   background-size: 16mm 16mm, 16mm 16mm, 16mm 16mm, 16mm 16mm, 16mm 16mm, 16mm 16mm;
+}
+.line-fill {
+  background-image: linear-gradient(to bottom, #e0e0e0 1px, transparent 1px);
+  background-size: 100% 8mm;
+  background-position: 0 8mm; /* align the first line to be 8mm from top */
 }
 .grid-foot { display: grid; grid-template-columns: 1fr .8fr; gap: 3mm; }
 .foot-card { border: 0.4pt solid #ddd; padding: 2.4mm 3mm; }
@@ -63,10 +69,11 @@ body.sel-c .mode-c { display: block; }
   .ui, .grid-label { display: none !important; }
   .grid-pages { padding: 0 !important; gap: 0 !important; }
   .page { box-shadow: none !important; page-break-after: always; break-after: page; }
-  .mode-a, .mode-b, .mode-c { display: none !important; }
+  .mode-a, .mode-b, .mode-c, .mode-d { display: none !important; }
   body.sel-a .mode-a { display: block !important; }
   body.sel-b .mode-b { display: block !important; }
   body.sel-c .mode-c { display: block !important; }
+  body.sel-d .mode-d { display: block !important; }
 }
 </style>
 </head>
@@ -78,14 +85,15 @@ body.sel-c .mode-c { display: block; }
       列印模板庫
     </a>
     <span class="nav-sep">/</span>
-    <div class="ui-title">方格 / 點陣空白頁 <small>Grid / Dot Grid</small></div>
+    <div class="ui-title">方格 / 點陣 / 橫線空白頁 <small>Grid / Lines</small></div>
   </div>
   <div class="ui-toolbar">
     <span class="toolbar-label">版面</span>
     <div class="mode-cards">
-      <button class="card active" onclick="setMode('a')"><strong>A</strong> 方格紙 <span style="font-size:9px;opacity:.5">A4直・8mm grid</span></button>
-      <button class="card" onclick="setMode('b')"><strong>B</strong> 點陣紙 <span style="font-size:9px;opacity:.5">A4直・8mm dot grid</span></button>
-      <button class="card" onclick="setMode('c')"><strong>C</strong> 米字格 <span style="font-size:9px;opacity:.5">A4直・硬筆練字</span></button>
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 方格紙 <span style="font-size:9px;opacity:.5">8mm grid</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 點陣紙 <span style="font-size:9px;opacity:.5">8mm dot</span></button>
+      <button class="card" onclick="setMode('c')"><strong>C</strong> 米字格 <span style="font-size:9px;opacity:.5">硬筆字帖</span></button>
+      <button class="card" onclick="setMode('d')"><strong>D</strong> 橫線紙 <span style="font-size:9px;opacity:.5">8mm line</span></button>
     </div>
     <span class="toolbar-label">尺寸</span>
     <div class="size-cards">
@@ -166,11 +174,33 @@ body.sel-c .mode-c { display: block; }
     </div>
     <div class="pg-num">C · Rice</div>
   </div>
+
+  <div class="grid-label mode-d">▸ 模式 D — A4 直向・橫線紙</div>
+  <div class="page page-port mode-d">
+    <div class="grid-shell">
+      <span class="grid-kicker">Blank Page · Lined Paper</span>
+      <div class="grid-head">
+        <strong>橫線空白頁</strong>
+        <span>lined paper</span>
+      </div>
+      <div class="grid-note">
+        <div><span class="field-label">主題</span><span class="field-blank"></span></div>
+        <div><span class="field-label">日期</span><span class="field-blank"></span></div>
+        <div><span class="field-label">用途</span><span class="field-blank"></span></div>
+      </div>
+      <div class="paper-zone line-fill"></div>
+      <div class="grid-foot">
+        <div class="foot-card"><span class="field-label">備注</span><span class="line"></span></div>
+        <div class="foot-card"><span class="field-label">頁碼</span><span class="line"></span></div>
+      </div>
+    </div>
+    <div class="pg-num">D · Lines</div>
+  </div>
 </div>
 
 <script src="../../../js/template-size.js"></script>
 <script>
-const pageStyles = { a: 'A4 portrait', b: 'A4 portrait', c: 'A4 portrait' };
+const pageStyles = { a: 'A4 portrait', b: 'A4 portrait', c: 'A4 portrait', d: 'A4 portrait' };
 let styleTag = document.createElement('style');
 styleTag.id = 'pg-size';
 document.head.appendChild(styleTag);
@@ -180,7 +210,7 @@ function setMode(mode) {
   document.body.classList.add('template-page', 'sel-' + mode);
   styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
   document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
-    card.classList.toggle('active', ['a', 'b', 'c'][index] === mode);
+    card.classList.toggle('active', ['a', 'b', 'c', 'd'][index] === mode);
   });
 }
 

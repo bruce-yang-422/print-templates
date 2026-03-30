@@ -36,7 +36,7 @@ body.sel-c .mode-c { display: block; }
 .ck-sq   { display: inline-block; width: 2.8mm; height: 2.8mm; border: 0.6pt solid #999; vertical-align: middle; margin-right: 1mm; }
 
 /* ════ Mode A: 時間軸 A4直 ════ */
-.page.mode-a { display: flex; flex-direction: column; }
+body.sel-a .page.mode-a { display: flex; flex-direction: column; }
 .a-header { padding: 11mm 14mm 4mm; border-bottom: 0.75pt solid #111; flex-shrink: 0; }
 .a-body   { display: flex; flex: 1; min-height: 0; }
 .a-left   { width: 55%; border-right: 0.4pt solid #ddd; padding: 4mm 4mm 4mm 14mm; min-height: 0; }
@@ -316,7 +316,7 @@ function setMode(m) {
   // 根據模式控制尺寸按鈕的顯示
   const sizeCards = document.querySelectorAll('.size-cards .size-card');
   if (m === 'c') {
-    // 模式 C（精簡版）：只顯示 B6/A5/A4裁A5
+    // 模式 C（精簡版）：只顯示 B5/A5/A4裁A5
     sizeCards.forEach(btn => {
       btn.style.display = (btn.dataset.printSize === 'a4') ? 'none' : 'block';
     });

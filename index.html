@@ -3,469 +3,270 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>列印模板庫</title>
+<title>列印模板庫 | Minimal Print Templates</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="site-page">
-
-<header class="site-nav">
-  <div class="site-logo">列印<span>模板</span>庫</div>
-  <div class="site-tagline">A4 · A5 · B5 可列印模板</div>
-  <div class="nav-right">Print Templates</div>
+<header class="ui">
+  <div class="ui-nav">
+    <div class="ui-title">列印模板庫 <small>Print Templates</small></div>
+  </div>
+  <div class="ui-toolbar" style="align-items: flex-start; flex-direction: column; gap: 12px; padding-top: 16px;">
+    <!-- Group Filter -->
+    <div style="display:flex; gap: 14px; align-items: center; width: 100%; flex-wrap: wrap;">
+      <span class="toolbar-label">分類</span>
+      <div class="mode-cards" id="optCategory">
+        <button class="card active" data-cat="all"><strong>全部</strong></button>
+        <button class="card" data-cat="planner">計畫</button>
+        <button class="card" data-cat="work">工作</button>
+        <button class="card" data-cat="meeting">會議</button>
+        <button class="card" data-cat="goals">目標</button>
+        <button class="card" data-cat="life">生活</button>
+        <button class="card" data-cat="notes">筆記</button>
+        <button class="card" data-cat="ecommerce">電商</button>
+        <button class="card" data-cat="marketing">行銷</button>
+      </div>
+    </div>
+    <!-- Feature Tags Filter -->
+    <div style="display:flex; gap: 14px; align-items: flex-start; width: 100%;">
+      <span class="toolbar-label" style="margin-top: 8px;">特色</span>
+      <div class="mode-cards" id="optTags">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </div>
 </header>
 
-<div class="filter-bar">
-  <div class="filter-group">
-    <span class="filter-label">用途</span>
-    <div class="chips" id="catChips">
-      <button class="chip active" data-cat="all">全部</button>
-      <button class="chip" data-cat="work">工作</button>
-      <button class="chip" data-cat="planner">計畫</button>
-      <button class="chip" data-cat="meeting">會議</button>
-      <button class="chip" data-cat="goals">目標</button>
-      <button class="chip" data-cat="notes">筆記</button>
-      <button class="chip" data-cat="ecommerce">電商</button>
-      <button class="chip" data-cat="marketing">行銷</button>
-    </div>
+<main class="site-content" style="padding: 180px 32px 80px; max-width: 1400px; margin: 0 auto;">
+  <div class="result-bar" style="margin-bottom: 24px; padding-left: 4px;">
+    <span class="page-label" id="resultCount"></span>
   </div>
-
-  <div class="filter-divider"></div>
-
-  <div class="filter-group">
-    <span class="filter-label">尺寸</span>
-    <div class="chips" id="sizeChips">
-      <button class="chip active" data-size="all">全部</button>
-      <button class="chip" data-size="a4">A4</button>
-      <button class="chip" data-size="a5">A5</button>
-    </div>
-  </div>
-
-  <div class="filter-divider"></div>
-
-  <div class="filter-group">
-    <span class="filter-label">檢視</span>
-    <div class="chips" id="viewChips">
-      <button class="chip active" data-view="thumb">圖庫檢視</button>
-      <button class="chip" data-view="card">列表檢視</button>
-    </div>
-  </div>
-
-  <div class="result-count" id="resultCount"></div>
-</div>
-
-<main class="grid-wrap">
-  <div class="section-title" id="sectionTitle">所有模板</div>
   <div class="template-grid" id="templateGrid"></div>
 </main>
 
 <script>
 const TEMPLATES = [
+  // --- PLANNER ---
   {
-    id: 'work-journal',
-    name: '工作日誌',
-    category: 'work',
-    sizes: ['a4', 'a5'],
-    tags: ['日誌', '週總結'],
-    desc: '每日工作記錄、問題追蹤與週回顧，可切換 A4 / A5 / A4裁A5。',
-    href: 'templates/work-journal/work-journal.html',
-    preview: 'previews/work/work-journal.svg',
-    orient: 'port',
+    id: 'daily-plan', name: '日計畫', category: 'planner', tags: ['排程管理', '時間軸', '檢查表'],
+    desc: '時間區塊、待辦與回顧欄位，適合每日規劃與手寫追蹤。', href: 'templates/planner/daily/daily.html', preview: 'previews/planner/daily.svg'
   },
   {
-    id: 'work-report',
-    name: '工作報告',
-    category: 'work',
-    sizes: ['a4', 'a5'],
-    tags: ['報告', '摘要'],
-    desc: '專案進度、結果摘要與下步行動，支援 A4 / A5 / A4裁A5 列印。',
-    href: 'templates/work/report/report.html',
-    preview: 'previews/work/report.svg',
-    orient: 'port',
+    id: 'weekly-plan', name: '週計畫', category: 'planner', tags: ['排程管理', '時間軸', '進度檢討'],
+    desc: '七欄日程與清單雙模式，清晰掌握本週脈絡。', href: 'templates/planner/weekly/weekly.html', preview: 'previews/planner/weekly.svg'
   },
   {
-    id: 'project-brief',
-    name: '專案簡報',
-    category: 'work',
-    sizes: ['a4', 'a5'],
-    tags: ['專案', '簡報'],
-    desc: '專案背景、目標、範圍與交付項目的一頁式整理，適合 kick-off 與需求對齊。',
-    href: 'templates/work/project-brief/project-brief.html',
-    preview: 'previews/work/project-brief.svg',
-    orient: 'port',
+    id: 'monthly-plan', name: '月計畫', category: 'planner', tags: ['排程管理', '目標追蹤', '進度檢討'],
+    desc: '動態年月月曆、自動週數計算與目標追蹤區塊。', href: 'templates/planner/monthly/monthly.html', preview: 'previews/planner/monthly.svg'
   },
   {
-    id: 'standup',
-    name: '站會紀錄',
-    category: 'work',
-    sizes: ['a4', 'a5'],
-    tags: ['站會', '同步'],
-    desc: '昨日進度、今日計畫、阻塞與 follow-up，適合每日 standup 快速記錄。',
-    href: 'templates/work/standup/standup.html',
-    preview: 'previews/work/standup.svg',
-    orient: 'port',
+    id: 'quarterly-plan', name: '季計畫', category: 'planner', tags: ['排程管理', '目標追蹤', 'OKR'],
+    desc: '全年一覽與單季深度規劃雙模式，適合季度目標與行動拆解。', href: 'templates/planner/quarterly/quarterly.html', preview: 'previews/planner/quarterly.svg'
   },
   {
-    id: 'daily-plan',
-    name: '日計畫',
-    category: 'planner',
-    sizes: ['a4', 'a5'],
-    tags: ['日計畫', '待辦'],
-    desc: '時間區塊、待辦與回顧欄位，適合每日規劃與手寫追蹤。',
-    href: 'templates/planner/daily/daily.html',
-    preview: 'previews/planner/daily.svg',
-    orient: 'port',
+    id: 'yearly-plan', name: '年計畫', category: 'planner', tags: ['排程管理', '目標追蹤', 'OKR'],
+    desc: '12 個月一覽與年度主題版，適合全年節奏與重點規劃。', href: 'templates/planner/yearly/yearly.html', preview: 'previews/planner/yearly.svg'
+  },
+
+  // --- LIFE ---
+  {
+    id: 'travel-itinerary', name: '旅行行程表', category: 'life', tags: ['排程管理', '時間軸', '檢查表'],
+    desc: '完整逐日行程與 A5 快速攜帶版，適合旅遊規劃與行李整理。', href: 'templates/planner/travel/travel.html', preview: 'previews/planner/travel.svg'
   },
   {
-    id: 'weekly-plan',
-    name: '週計畫',
-    category: 'planner',
-    sizes: ['a4', 'a5'],
-    tags: ['週計畫', '七日'],
-    desc: '七欄日程與清單雙模式，現在可直接輸出 A4 / A5 / A4裁A5。',
-    href: 'templates/planner/weekly/weekly.html',
-    preview: 'previews/planner/weekly.svg',
-    orient: 'land',
+    id: 'reading-notes', name: '讀書筆記', category: 'life', tags: ['閱讀研究', '結構筆記', '空白與橫線'],
+    desc: '書籍資訊、金句摘錄、重點整理與行動欄位。', href: 'templates/notes/reading-notes/reading-notes.html', preview: 'previews/notes/reading-notes.svg'
+  },
+
+  // --- WORK ---
+  {
+    id: 'work-journal', name: '工作日誌', category: 'work', tags: ['進度檢討', '工作回報', '結構筆記'],
+    desc: '每日工作記錄、問題追蹤與週回顧，可掌握個人脈動。', href: 'templates/work-journal/work-journal.html', preview: 'previews/work/work-journal.svg'
   },
   {
-    id: 'monthly-plan',
-    name: '月計畫',
-    category: 'planner',
-    sizes: ['a4', 'a5'],
-    tags: ['月計畫', '月曆'],
-    desc: '動態年月月曆、自動週數計算與目標追蹤區塊。',
-    href: 'templates/planner/monthly/monthly.html',
-    preview: 'previews/planner/monthly.svg',
-    orient: 'land',
+    id: 'work-report', name: '工作報告', category: 'work', tags: ['工作回報', '團隊同步', '會議與決策'],
+    desc: '專案進度、結果摘要與下步行動的制式化回報。', href: 'templates/work/report/report.html', preview: 'previews/work/report.svg'
   },
   {
-    id: 'quarterly-plan',
-    name: '季計畫',
-    category: 'planner',
-    sizes: ['a4', 'a5'],
-    tags: ['季計畫', 'Q1-Q4'],
-    desc: '全年一覽與單季深度規劃雙模式，適合季度目標、里程碑與行動拆解。',
-    href: 'templates/planner/quarterly/quarterly.html',
-    preview: 'previews/planner/quarterly.svg',
-    orient: 'land',
+    id: 'project-brief', name: '專案簡報', category: 'work', tags: ['企劃草圖', '團隊同步', '目標追蹤'],
+    desc: '專案背景、目標、範圍與交付項目的一頁式整理。', href: 'templates/work/project-brief/project-brief.html', preview: 'previews/work/project-brief.svg'
   },
   {
-    id: 'travel-itinerary',
-    name: '旅行行程表',
-    category: 'planner',
-    sizes: ['a4', 'a5'],
-    tags: ['旅行', '行程'],
-    desc: '完整逐日行程與 A5 快速攜帶版，適合旅遊規劃、住宿與行李整理。',
-    href: 'templates/planner/travel/travel.html',
-    preview: 'previews/planner/travel.svg',
-    orient: 'port',
+    id: 'storyboard', name: '手繪分鏡圖', category: 'work', tags: ['影音分鏡', '企劃草圖', '空白與橫線'],
+    desc: '支援 YouTube 橫排與短影音直式 9:16 的分鏡草稿記錄。', href: 'templates/work/storyboard/storyboard.html', preview: 'previews/work/storyboard.svg'
+  },
+
+  // --- MEETING ---
+  {
+    id: 'standup', name: '站會紀錄', category: 'meeting', tags: ['團隊同步', '工作回報', '檢查表'],
+    desc: '昨日進度、今日計畫、阻塞與 follow-up，適合每日快速記錄。', href: 'templates/work/standup/standup.html', preview: 'previews/work/standup.svg'
   },
   {
-    id: 'yearly-plan',
-    name: '年計畫',
-    category: 'planner',
-    sizes: ['a4', 'a5'],
-    tags: ['年計畫', '12個月'],
-    desc: '12 個月一覽與年度主題版，適合全年節奏、季度安排與月度重點規劃。',
-    href: 'templates/planner/yearly/yearly.html',
-    preview: 'previews/planner/yearly.svg',
-    orient: 'land',
+    id: 'meeting', name: '會議記錄', category: 'meeting', tags: ['會議與決策', '團隊同步', '檢查表'],
+    desc: '通用會議記錄，包含議題、決議、行動項目與 follow-up。', href: 'templates/meeting/meeting.html', preview: 'previews/meeting/meeting.svg'
   },
   {
-    id: 'meeting',
-    name: '會議記錄',
-    category: 'meeting',
-    sizes: ['a4', 'a5'],
-    tags: ['會議', '決議'],
-    desc: '議題、決議、行動項目與 follow-up，一頁完成會議整理。',
-    href: 'templates/meeting/meeting.html',
-    preview: 'previews/meeting/meeting.svg',
-    orient: 'port',
+    id: 'daily-ops', name: '日常營運會議', category: 'meeting', tags: ['會議與決策', '團隊同步', '營運與數據'],
+    desc: 'Weekly Sync 週會與 Team Meeting 例行運營同步架構。', href: 'templates/meeting/daily-ops/daily-ops.html', preview: 'previews/meeting/daily-ops.svg'
   },
   {
-    id: 'goals',
-    name: '目標分解',
-    category: 'goals',
-    sizes: ['a4', 'a5'],
-    tags: ['目標', 'OKR'],
-    desc: '主題拆解、里程碑與 OKR 草稿，適合個人規劃、工作拆解或團隊協作。',
-    href: 'templates/goals/goals.html',
-    preview: 'previews/goals/goals.svg',
-    orient: 'port',
+    id: 'project-meeting', name: '專案與決策會議', category: 'meeting', tags: ['會議與決策', '進度檢討', '團隊同步'],
+    desc: '涵蓋 Kickoff 專案啟動、Review 檢討與 Decision 決策框架。', href: 'templates/meeting/project/project.html', preview: 'previews/meeting/project.svg'
   },
   {
-    id: 'cornell',
-    name: 'Cornell 筆記',
-    category: 'notes',
-    sizes: ['a4', 'a5'],
-    tags: ['筆記', 'Cornell'],
-    desc: '關鍵字欄、主筆記欄與摘要區，支援課堂與閱讀整理。',
-    href: 'templates/cornell/cornell.html',
-    preview: 'previews/notes/cornell.svg',
-    orient: 'port',
+    id: 'creative-meeting', name: '創意與產品會議', category: 'meeting', tags: ['腦力激盪', '會議與決策', '企劃草圖'],
+    desc: '配置心智圖區塊，專為 Brainstorm 與 Workshop 量身打造。', href: 'templates/meeting/creative/creative.html', preview: 'previews/meeting/creative.svg'
+  },
+
+  // --- GOALS ---
+  {
+    id: 'goals', name: '目標分解', category: 'goals', tags: ['目標追蹤', 'OKR', '企劃草圖'],
+    desc: '主題拆解、里程碑與 OKR 草稿，適合個人規劃或團隊協作。', href: 'templates/goals/goals.html', preview: 'previews/goals/goals.svg'
+  },
+
+  // --- NOTES ---
+  {
+    id: 'cornell', name: 'Cornell 筆記', category: 'notes', tags: ['結構筆記', '閱讀研究', '網格與點陣'],
+    desc: '關鍵字欄、主筆記欄與摘要區，支援課堂與閱讀整理。', href: 'templates/cornell/cornell.html', preview: 'previews/notes/cornell.svg'
   },
   {
-    id: 'topic-notes',
-    name: '主題筆記',
-    category: 'notes',
-    sizes: ['a4', 'a5'],
-    tags: ['筆記', '整理', '摘要'],
-    desc: '主題整理、關鍵字、下一步與摘要區塊，適合閱讀、研究、工作拆解與訪談紀錄。',
-    href: 'templates/notes/topic-notes/topic-notes.html',
-    preview: 'previews/notes/topic-notes.svg',
-    orient: 'port',
+    id: 'topic-notes', name: '主題筆記', category: 'notes', tags: ['結構筆記', '閱讀研究', '空白與橫線'],
+    desc: '主題整理、關鍵字、下一步與摘要區塊。', href: 'templates/notes/topic-notes/topic-notes.html', preview: 'previews/notes/topic-notes.svg'
   },
   {
-    id: 'bujo-index',
-    name: '子彈筆記索引頁',
-    category: 'notes',
-    sizes: ['a4', 'a5'],
-    tags: ['BuJo', '索引', '集合'],
-    desc: '頁碼、主題與集合索引整理，適合 bullet journal 的總索引與快速查找。',
-    href: 'templates/notes/bujo-index/bujo-index.html',
-    preview: 'previews/notes/bujo-index.svg',
-    orient: 'port',
+    id: 'bujo-index', name: '子彈筆記索引', category: 'notes', tags: ['結構筆記', '網格與點陣', '檢查表'],
+    desc: '頁碼、主題與集合索引整理，適合 Bullet Journal 總索引。', href: 'templates/notes/bujo-index/bujo-index.html', preview: 'previews/notes/bujo-index.svg'
   },
   {
-    id: 'reading-notes',
-    name: '讀書筆記',
-    category: 'notes',
-    sizes: ['a4', 'a5'],
-    tags: ['閱讀', '摘錄', '摘要'],
-    desc: '書籍資訊、金句摘錄、重點整理與行動欄位，適合閱讀後整理輸出。',
-    href: 'templates/notes/reading-notes/reading-notes.html',
-    preview: 'previews/notes/reading-notes.svg',
-    orient: 'port',
+    id: 'dot-grid', name: '方格 / 點陣 / 橫線頁', category: 'notes', tags: ['網格與點陣', '企劃草圖', '空白與橫線'],
+    desc: '方格紙、點陣紙、米字格與橫線紙，適合草稿手帳。', href: 'templates/notes/dot-grid/dot-grid.html', preview: 'previews/notes/dot-grid.svg'
+  },
+
+  // --- ECOMMERCE ---
+  {
+    id: 'product-listing', name: '商品上架檢查表', category: 'ecommerce', tags: ['電商上架', '檢查表', '營運與數據'],
+    desc: '商品資料、圖片、定價與平台發佈前的完整檢查清單。', href: 'templates/ecommerce/product-listing/product-listing.html', preview: 'previews/ecommerce/product-listing.svg'
   },
   {
-    id: 'dot-grid',
-    name: '方格 / 點陣空白頁',
-    category: 'notes',
-    sizes: ['a4', 'a5'],
-    tags: ['空白頁', '方格', '點陣', '米字格'],
-    desc: '提供方格紙、點陣紙與硬筆練字米字格，適合草圖、手帳、筆記與書寫練習。',
-    href: 'templates/notes/dot-grid/dot-grid.html',
-    preview: 'previews/notes/dot-grid.svg',
-    orient: 'port',
+    id: 'promo-plan', name: '優惠活動企劃表', category: 'ecommerce', tags: ['行銷與社群', '企劃草圖', '排程管理'],
+    desc: '活動期間、折扣機制、平台與預算配置的週期規劃表。', href: 'templates/ecommerce/promo-plan/promo-plan.html', preview: 'previews/ecommerce/promo-plan.svg'
   },
   {
-    id: 'product-listing',
-    name: '商品上架檢查表',
-    category: 'ecommerce',
-    sizes: ['a4', 'a5'],
-    tags: ['上架', 'SKU', '電商'],
-    desc: '商品資料、圖片、定價與平台發佈前的完整檢查清單。',
-    href: 'templates/ecommerce/product-listing/product-listing.html',
-    preview: 'previews/ecommerce/product-listing.svg',
-    orient: 'port',
+    id: 'pricing', name: '商品定價試算表', category: 'ecommerce', tags: ['商品定價', '營運與數據', '企劃草圖'],
+    desc: '成本拆解、平台比價與底線價，適合商品上架前試算。', href: 'templates/ecommerce/pricing/pricing.html', preview: 'previews/ecommerce/pricing.svg'
   },
   {
-    id: 'promo-plan',
-    name: '優惠活動企劃表',
-    category: 'ecommerce',
-    sizes: ['a4', 'a5'],
-    tags: ['活動', '促銷', '電商'],
-    desc: '活動期間、折扣機制、平台與預算配置的週期規劃表。',
-    href: 'templates/ecommerce/promo-plan/promo-plan.html',
-    preview: 'previews/ecommerce/promo-plan.svg',
-    orient: 'port',
+    id: 'weekly-ops', name: '電商週營運摘要', category: 'ecommerce', tags: ['營運與數據', '進度檢討', '工作回報'],
+    desc: '每週 KPI、活動節奏、補貨重點與下週動作。', href: 'templates/ecommerce/weekly-ops/weekly-ops.html', preview: 'previews/ecommerce/weekly-ops.svg'
+  },
+
+  // --- MARKETING ---
+  {
+    id: 'social-plan', name: '社群發文計畫表', category: 'marketing', tags: ['行銷與社群', '排程管理', '網格與點陣'],
+    desc: '兩週排程與內容看板雙模式，管理發文節奏與產製進度。', href: 'templates/marketing/social-plan/social-plan.html', preview: 'previews/marketing/social-plan.svg'
   },
   {
-    id: 'pricing',
-    name: '商品定價試算表',
-    category: 'ecommerce',
-    sizes: ['a4', 'a5'],
-    tags: ['定價', '毛利', '電商'],
-    desc: '成本拆解、平台比價與底線價，適合商品上架前試算。',
-    href: 'templates/ecommerce/pricing/pricing.html',
-    preview: 'previews/ecommerce/pricing.svg',
-    orient: 'port',
-  },
-  {
-    id: 'weekly-ops',
-    name: '電商週營運摘要',
-    category: 'ecommerce',
-    sizes: ['a4', 'a5'],
-    tags: ['週報', '營運', '電商'],
-    desc: '每週 KPI、活動節奏、補貨重點與下週動作，適合團隊例會回顧。',
-    href: 'templates/ecommerce/weekly-ops/weekly-ops.html',
-    preview: 'previews/ecommerce/weekly-ops.svg',
-    orient: 'land',
-  },
-  {
-    id: 'social-plan',
-    name: '社群發文計畫表',
-    category: 'marketing',
-    sizes: ['a4', 'a5'],
-    tags: ['社群', 'IG', '行銷'],
-    desc: '兩週排程與內容看板雙模式，管理發文節奏與產製進度。',
-    href: 'templates/marketing/social-plan/social-plan.html',
-    preview: 'previews/marketing/social-plan.svg',
-    orient: 'land',
-  },
-  {
-    id: 'content-calendar',
-    name: '內容行事曆',
-    category: 'marketing',
-    sizes: ['a4', 'a5'],
-    tags: ['行事曆', '內容行銷'],
-    desc: '月視圖與發佈流程追蹤，適合內容團隊月度協作。',
-    href: 'templates/marketing/content-calendar/content-calendar.html',
-    preview: 'previews/marketing/content-calendar.svg',
-    orient: 'land',
-  },
+    id: 'content-calendar', name: '內容行事曆', category: 'marketing', tags: ['行銷與社群', '排程管理', '團隊同步'],
+    desc: '月視圖與發佈流程追蹤，適合內容團隊月度協作。', href: 'templates/marketing/content-calendar/content-calendar.html', preview: 'previews/marketing/content-calendar.svg'
+  }
 ];
 
-let activeCat = 'all';
-let activeSize = 'all';
-let activeView = localStorage.getItem('indexViewMode') || 'thumb';
+const ALL_TAGS = [
+  '排程管理', '時間軸', '目標追蹤', 'OKR', '進度檢討', '團隊同步',
+  '會議與決策', '工作回報', '企劃草圖', '腦力激盪', '影音分鏡',
+  '結構筆記', '閱讀研究', '檢查表', '電商上架', '商品定價',
+  '營運與數據', '行銷與社群', '網格與點陣', '空白與橫線'
+];
 
-const CAT_NAMES = {
-  all: '所有模板',
-  work: '工作模板',
-  planner: '計畫模板',
-  meeting: '會議模板',
-  goals: '目標模板',
-  notes: '筆記模板',
-  ecommerce: '電商模板',
-  marketing: '行銷模板',
-};
+let activeCats = [];
+let activeTags = [];
 
-const CAT_ORDER = ['planner', 'work', 'meeting', 'goals', 'notes', 'ecommerce', 'marketing'];
-
-const CAT_META = {
-  planner: { name: '計畫模板', desc: '日程、週期、年季月規劃與旅行安排' },
-  work: { name: '工作模板', desc: '日誌、報告、站會與專案啟動整理' },
-  meeting: { name: '會議模板', desc: '議題、決議、行動項目與 follow-up' },
-  goals: { name: '目標模板', desc: '拆解主題、里程碑與 OKR 草稿' },
-  notes: { name: '筆記模板', desc: '閱讀、BuJo、Cornell 與空白書寫頁' },
-  ecommerce: { name: '電商模板', desc: '上架、定價、活動與營運追蹤' },
-  marketing: { name: '行銷模板', desc: '社群排程、內容月曆與發布節奏' },
-};
+function initTags() {
+  const container = document.getElementById('optTags');
+  ALL_TAGS.forEach(tag => {
+    const btn = document.createElement('button');
+    btn.className = 'card tag-btn';
+    btn.dataset.tag = tag;
+    btn.textContent = tag;
+    container.appendChild(btn);
+  });
+}
 
 function createTemplateCard(template) {
-  const card = document.createElement('article');
-  card.className = 'tpl-card' + (activeView === 'card' ? ' tpl-card-list' : '');
+  const card = document.createElement('a');
+  card.className = 'tpl-card';
+  card.href = template.href;
 
-  const sizeTags = template.sizes
-    .map((size) => '<span class="tag tag-size">' + size.toUpperCase() + '</span>')
-    .join('');
-
-  const topicTags = template.tags
-    .map((tag) => '<span class="tag">' + tag + '</span>')
-    .join('');
+  const topicTags = template.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
 
   card.innerHTML = `
-    ${activeView === 'thumb' ? `
-    <div class="tpl-thumb${template.orient === 'land' ? ' land' : ''}">
-      <img class="tpl-preview-img" src="${template.preview}" alt="${template.name} 預覽圖" loading="lazy">
-    </div>` : ''}
-    <div class="tpl-info${activeView === 'card' ? ' tpl-info-list' : ''}">
+    <div class="tpl-thumb">
+      <img class="tpl-preview-img" src="${template.preview}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 300 200\\'%3E%3Crect width=\\'100%25\\' height=\\'100%25\\' fill=\\'%23eee\\'/%3E%3Ctext x=\\'50%25\\' y=\\'50%25\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-size=\\'12\\' fill=\\'%23999\\'%3EPreview Loading%3C/text%3E%3C/svg%3E'">
+    </div>
+    <div class="tpl-info">
       <div class="tpl-name">${template.name}</div>
-      <div class="tpl-tags">${sizeTags}${topicTags}</div>
+      <div class="tpl-tags">${topicTags}</div>
       <div class="tpl-desc">${template.desc}</div>
-      <div class="tpl-action">
-        <a href="${template.href}" class="btn-open">開啟模板</a>
-      </div>
     </div>`;
-
-  card.addEventListener('click', (event) => {
-    if (!event.target.closest('.btn-open')) {
-      window.location.href = template.href;
-    }
-  });
 
   return card;
 }
 
-function renderGrid(grid, items) {
-  grid.className = 'template-grid ' + (activeView === 'card' ? 'view-card' : 'view-thumb');
-  items.forEach((template) => {
-    grid.appendChild(createTemplateCard(template));
-  });
-}
-
 function render() {
-  const filtered = TEMPLATES.filter((template) => {
-    const catOk = activeCat === 'all' || template.category === activeCat;
-    const sizeOk = activeSize === 'all' || template.sizes.includes(activeSize);
-    return catOk && sizeOk;
-  });
-
   const grid = document.getElementById('templateGrid');
-  grid.className = 'template-groups';
   grid.innerHTML = '';
 
-  document.getElementById('sectionTitle').textContent = CAT_NAMES[activeCat] || '所有模板';
-  document.getElementById('resultCount').textContent = filtered.length + ' 個模板';
+  const filtered = TEMPLATES.filter(tpl => {
+    let catMatch = activeCats.length === 0 || activeCats.includes('all') || activeCats.includes(tpl.category);
+    let tagMatch = activeTags.length === 0 || activeTags.some(t => tpl.tags.includes(t));
+    return catMatch && tagMatch;
+  });
+
+  document.getElementById('resultCount').textContent = `共 ${filtered.length} 款模板選項`;
 
   if (!filtered.length) {
-    grid.innerHTML = '<div class="empty-state">此條件下沒有模板，請調整篩選</div>';
+    grid.innerHTML = '<div class="empty-state">此篩選條件下沒有對應模板</div>';
     return;
   }
 
-  if (activeCat === 'all') {
-    CAT_ORDER.forEach((category) => {
-      const items = filtered.filter((template) => template.category === category);
-      if (!items.length) return;
-
-      const group = document.createElement('section');
-      group.className = 'tpl-group';
-
-      const meta = CAT_META[category] || { name: CAT_NAMES[category] || category, desc: '' };
-      group.innerHTML = `
-        <div class="tpl-group-head">
-          <div>
-            <div class="tpl-group-title">${meta.name}</div>
-            <div class="tpl-group-sub">${meta.desc}</div>
-          </div>
-          <div class="tpl-group-count">${items.length} 個</div>
-        </div>`;
-
-      const groupGrid = document.createElement('div');
-      renderGrid(groupGrid, items);
-      group.appendChild(groupGrid);
-      grid.appendChild(group);
-    });
-    return;
-  }
-
-  const singleGroup = document.createElement('section');
-  singleGroup.className = 'tpl-group tpl-group-single';
-  const groupGrid = document.createElement('div');
-  renderGrid(groupGrid, filtered);
-  singleGroup.appendChild(groupGrid);
-  grid.appendChild(singleGroup);
+  filtered.forEach(template => grid.appendChild(createTemplateCard(template)));
 }
 
-document.getElementById('catChips').addEventListener('click', (event) => {
-  const button = event.target.closest('[data-cat]');
-  if (!button) return;
-  activeCat = button.dataset.cat;
-  document.querySelectorAll('[data-cat]').forEach((chip) => chip.classList.toggle('active', chip === button));
+document.getElementById('optCategory').addEventListener('click', (e) => {
+  const btn = e.target.closest('.card');
+  if (!btn) return;
+  const val = btn.dataset.cat;
+  
+  if (val === 'all') {
+    activeCats = ['all'];
+  } else {
+    activeCats = activeCats.filter(c => c !== 'all');
+    if (activeCats.includes(val)) activeCats = activeCats.filter(c => c !== val);
+    else activeCats.push(val);
+  }
+  if (activeCats.length === 0) activeCats = ['all'];
+  
+  document.querySelectorAll('#optCategory .card').forEach(chip => {
+    chip.classList.toggle('active', activeCats.includes(chip.dataset.cat));
+  });
   render();
 });
 
-document.getElementById('sizeChips').addEventListener('click', (event) => {
-  const button = event.target.closest('[data-size]');
-  if (!button) return;
-  activeSize = button.dataset.size;
-  document.querySelectorAll('[data-size]').forEach((chip) => chip.classList.toggle('active', chip === button));
+document.getElementById('optTags').addEventListener('click', (e) => {
+  const btn = e.target.closest('.card');
+  if (!btn) return;
+  const val = btn.dataset.tag;
+  
+  if (activeTags.includes(val)) activeTags = activeTags.filter(t => t !== val);
+  else activeTags.push(val);
+  
+  document.querySelectorAll('#optTags .card').forEach(chip => {
+    chip.classList.toggle('active', activeTags.includes(chip.dataset.tag));
+  });
   render();
 });
 
-document.getElementById('viewChips').addEventListener('click', (event) => {
-  const button = event.target.closest('[data-view]');
-  if (!button) return;
-  activeView = button.dataset.view;
-  localStorage.setItem('indexViewMode', activeView);
-  document.querySelectorAll('[data-view]').forEach((chip) => chip.classList.toggle('active', chip === button));
-  render();
-});
-
-document.querySelectorAll('[data-view]').forEach((chip) => {
-  chip.classList.toggle('active', chip.dataset.view === activeView);
-});
-
+initTags();
 render();
 </script>
 </body>

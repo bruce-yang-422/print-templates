@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>手繪分鏡圖模板</title>
+<link rel="stylesheet" href="../../../css/style.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.mode-a, .mode-b, .mode-c, .mode-d { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+body.sel-c .mode-c { display: block; }
+body.sel-d .mode-d { display: block; }
+
+.pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.page { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.2); overflow: hidden; position: relative; }
+.page::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: #fff; z-index: 4; pointer-events: none; }
+.page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
+.page-land { width: 297mm; height: 210mm; }
+.page-port { width: 210mm; height: 297mm; }
+
+.pg-num { position: absolute; bottom: 8mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+.pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; display: block; }
+.blank { border-bottom: 0.6pt solid #111; display: inline-block; height: 4mm; }
+.field-label { font-size: 6pt; letter-spacing: .1em; color: #aaa; white-space: nowrap; margin-right: 1.5mm; }
+
+/* Template specific wrapper */
+.sb-wrap {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  padding: 8mm 12mm 10mm calc(var(--bind-gap) + 4mm);
+}
+.sb-head {
+  border-bottom: 0.75pt solid #111;
+  padding-bottom: 4mm;
+  margin-bottom: 6mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+.sb-title strong { font-size: 18pt; letter-spacing: .04em; }
+.sb-title span { font-size: 6pt; letter-spacing: .12em; text-transform: uppercase; color: #bbb; margin-left: 2mm; }
+.sb-meta { display: flex; gap: 6mm; }
+.sb-meta > div { display: flex; align-items: baseline; }
+
+/* Grid Layouts */
+.sb-grid {
+  flex: 1;
+  display: grid;
+  gap: 8mm 6mm;
+  min-height: 0;
+}
+.mode-a .sb-grid { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
+.mode-b .sb-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); }
+.mode-c .sb-grid { grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(1, 1fr); gap: 8mm 5mm; }
+.mode-d .sb-grid { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 8mm 6mm; }
+
+.sb-frame {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.sb-box {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1pt solid #333;
+  margin-bottom: 2mm;
+  background: #fdfdfd;
+  flex-shrink: 0;
+  position: relative;
+}
+.mode-c .sb-box, .mode-d .sb-box {
+  aspect-ratio: 9 / 16;
+}
+.sb-box-num {
+  position: absolute;
+  top: 1mm; left: 1.5mm;
+  font-size: 8pt; font-weight: 700; color: #ccc;
+}
+.sb-notes {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.sb-line {
+  flex: 1;
+  border-bottom: 0.4pt solid #ddd;
+  min-height: 5mm;
+}
+
+  @media print {
+  .ui, .page-label { display: none !important; }
+  .pages { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b, .mode-c, .mode-d { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+  body.sel-c .mode-c { display: block !important; }
+  body.sel-d .mode-d { display: block !important; }
+}
+</style>
+</head>
+<body class="template-page sel-a">
+
+<!-- UI -->
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">手繪分鏡圖 <small>Storyboard</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 16:9 橫向 <span style="font-size:9px;opacity:.5">3×2 六格</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 16:9 直向 <span style="font-size:9px;opacity:.5">2×3 六格</span></button>
+      <button class="card" onclick="setMode('c')"><strong>C</strong> 9:16 短影片橫 <span style="font-size:9px;opacity:.5">5×1 五格</span></button>
+      <button class="card" onclick="setMode('d')"><strong>D</strong> 9:16 短影片直 <span style="font-size:9px;opacity:.5">3×2 六格</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="pages">
+
+<!-- MODE A: A4 Land 3x2 -->
+<div class="page-label mode-a">▸ 模式 A — A4 橫向・3×2 網格分鏡</div>
+<div class="page page-land mode-a">
+  <div class="sb-wrap">
+    <div class="sb-head">
+      <div class="sb-title"><strong>手繪分鏡圖</strong><span>Storyboard</span></div>
+      <div class="sb-meta">
+        <div><span class="field-label">專案</span><span class="blank" style="width:50mm"></span></div>
+        <div><span class="field-label">日期</span><span class="blank" style="width:30mm"></span></div>
+        <div><span class="field-label">頁碼</span><span class="blank" style="width:20mm"></span></div>
+      </div>
+    </div>
+    
+    <div class="sb-grid">
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">1</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">2</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">3</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">4</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">5</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">6</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+    </div>
+  </div>
+  <div class="pg-num">A · Storyboard</div>
+</div>
+
+<!-- MODE B: A4 Port 2x3 -->
+<div class="page-label mode-b">▸ 模式 B — A4 直向・2×3 網格分鏡</div>
+<div class="page page-port mode-b">
+  <div class="sb-wrap">
+    <div class="sb-head">
+      <div class="sb-title"><strong>手繪分鏡圖</strong><span>Storyboard</span></div>
+      <div class="sb-meta">
+        <div><span class="field-label">專案</span><span class="blank" style="width:45mm"></span></div>
+        <div><span class="field-label">日期</span><span class="blank" style="width:25mm"></span></div>
+        <div><span class="field-label">頁碼</span><span class="blank" style="width:15mm"></span></div>
+      </div>
+    </div>
+    
+    <div class="sb-grid">
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">1</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">2</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">3</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">4</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">5</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">6</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+    </div>
+  </div>
+  <div class="pg-num">B · 16:9 Port Storyboard</div>
+</div>
+
+<!-- MODE C: 9:16 Land 5x2 -->
+<div class="page-label mode-c">▸ 模式 C — A4 橫向・9:16 短影音 5×1 五格</div>
+<div class="page page-land mode-c">
+  <div class="sb-wrap">
+    <div class="sb-head">
+      <div class="sb-title"><strong>手繪分鏡圖</strong><span>Storyboard · 9:16 Vertical Video</span></div>
+      <div class="sb-meta">
+        <div><span class="field-label">專案</span><span class="blank" style="width:50mm"></span></div>
+        <div><span class="field-label">日期</span><span class="blank" style="width:30mm"></span></div>
+        <div><span class="field-label">頁碼</span><span class="blank" style="width:20mm"></span></div>
+      </div>
+    </div>
+    
+    <div class="sb-grid">
+      <!-- 5 frames for shorts -->
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">1</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">2</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">3</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">4</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">5</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+    </div>
+  </div>
+  <div class="pg-num">C · 9:16 Land Storyboard</div>
+</div>
+
+<!-- MODE D: 9:16 Port 3x2 -->
+<div class="page-label mode-d">▸ 模式 D — A4 直向・9:16 短影音 3×2 六格</div>
+<div class="page page-port mode-d">
+  <div class="sb-wrap">
+    <div class="sb-head">
+      <div class="sb-title"><strong>手繪分鏡圖</strong><span>Storyboard · 9:16 Vertical Video</span></div>
+      <div class="sb-meta">
+        <div><span class="field-label">專案</span><span class="blank" style="width:45mm"></span></div>
+        <div><span class="field-label">日期</span><span class="blank" style="width:25mm"></span></div>
+        <div><span class="field-label">頁碼</span><span class="blank" style="width:15mm"></span></div>
+      </div>
+    </div>
+    
+    <div class="sb-grid">
+      <!-- 6 frames -->
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">1</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">2</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">3</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">4</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">5</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+      <div class="sb-frame"><div class="sb-box"><span class="sb-box-num">6</span></div><div class="sb-notes"><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span><span class="sb-line"></span></div></div>
+    </div>
+  </div>
+  <div class="pg-num">D · 9:16 Port Storyboard</div>
+</div>
+
+</div>
+
+<script src="../../../js/template-size.js"></script>
+<script>
+const pageStyles = { a: 'A4 landscape', b: 'A4 portrait', c: 'A4 landscape', d: 'A4 portrait' };
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
+    card.classList.toggle('active', ['a', 'b', 'c', 'd'][index] === mode);
+  });
+}
+
+setMode('a');
+</script>
+</body>
+</html>
