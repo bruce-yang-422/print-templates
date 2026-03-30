@@ -203,11 +203,15 @@
     document.body.dataset.printSize = mode;
     syncButtons();
     renderScreenPreview();
+    document.dispatchEvent(new CustomEvent('template-print-size-change', {
+      detail: { size: sizeMode }
+    }));
   }
 
   document.addEventListener('click', function (event) {
     const button = event.target.closest(SIZE_BUTTON_SELECTOR);
     if (button) {
+      if (button.disabled) return;
       setSize(button.dataset.printSize);
       return;
     }

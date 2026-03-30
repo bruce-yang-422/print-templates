@@ -6,141 +6,145 @@
 
 - [print-templates](https://bruce-yang-422.github.io/print-templates/)
 
-目前專案分成兩層：
+原始碼倉庫：
 
-- 網站介面：使用 Apple 風格靈感的灰白藍主題，集中由 `css/style.css` 管理
-- 模板列印頁：維持黑白灰階、左側 `10mm` 裝訂區，並支援 `A4 / A5 / A4裁A5`
+- [GitHub Repository](https://github.com/bruce-yang-422/print-templates)
 
----
+## 專案定位
 
-## 目前完成狀態
+這個專案分成兩層：
 
-目前已完成 `14` 份模板：
+- 網站介面：首頁與模板頁的螢幕 UI，採統一的 Apple 風格靈感主題，由 [`css/style.css`](./css/style.css) 控制
+- 列印模板：實際輸出的紙本版面，維持黑白灰階、減少大面積實底，偏向省墨與可長期列印使用
+
+## 目前狀態
+
+目前共有 `14` 份可直接開啟的模板，首頁預覽圖也已補齊 `14` 張 SVG。
+
+所有模板目前共同具備：
+
+- 左側 `10mm` 裝訂留白
+- 裝訂線標示
+- 列印友善的黑白灰階內容區
+- 統一的模板頁 UI
+- `A4 / A5 / A4裁A5` 三種尺寸選項
+
+補充：
+
+- [`templates/work-journal/work-journal.html`](./templates/work-journal/work-journal.html) 已整理成 `A 日誌`、`B 週總結` 兩種內容模式，且兩種模式都對應 `A4 / A5 / A4裁A5`
+- [`js/template-size.js`](./js/template-size.js) 已處理螢幕預覽、列印前 staging，以及「本來就是雙 A5 裁切版型」不再被二次縮小的情況
+
+## 已完成模板
 
 ### 工作類
 
-- `templates/work-journal/work-journal.html`
-- `templates/work/report/report.html`
+- [`templates/work-journal/work-journal.html`](./templates/work-journal/work-journal.html)
+- [`templates/work/report/report.html`](./templates/work/report/report.html)
 
 ### 計畫類
 
-- `templates/planner/daily/daily.html`
-- `templates/planner/weekly/weekly.html`
-- `templates/planner/monthly/monthly.html`
+- [`templates/planner/daily/daily.html`](./templates/planner/daily/daily.html)
+- [`templates/planner/weekly/weekly.html`](./templates/planner/weekly/weekly.html)
+- [`templates/planner/monthly/monthly.html`](./templates/planner/monthly/monthly.html)
 
 ### 會議類
 
-- `templates/meeting/meeting.html`
+- [`templates/meeting/meeting.html`](./templates/meeting/meeting.html)
 
 ### 目標類
 
-- `templates/goals/goals.html`
+- [`templates/goals/goals.html`](./templates/goals/goals.html)
 
 ### 筆記類
 
-- `templates/cornell/cornell.html`
+- [`templates/cornell/cornell.html`](./templates/cornell/cornell.html)
 
 ### 電商類
 
-- `templates/ecommerce/product-listing/product-listing.html`
-- `templates/ecommerce/promo-plan/promo-plan.html`
-- `templates/ecommerce/pricing/pricing.html`
-- `templates/ecommerce/weekly-ops/weekly-ops.html`
+- [`templates/ecommerce/product-listing/product-listing.html`](./templates/ecommerce/product-listing/product-listing.html)
+- [`templates/ecommerce/promo-plan/promo-plan.html`](./templates/ecommerce/promo-plan/promo-plan.html)
+- [`templates/ecommerce/pricing/pricing.html`](./templates/ecommerce/pricing/pricing.html)
+- [`templates/ecommerce/weekly-ops/weekly-ops.html`](./templates/ecommerce/weekly-ops/weekly-ops.html)
 
 ### 行銷類
 
-- `templates/marketing/social-plan/social-plan.html`
-- `templates/marketing/content-calendar/content-calendar.html`
+- [`templates/marketing/social-plan/social-plan.html`](./templates/marketing/social-plan/social-plan.html)
+- [`templates/marketing/content-calendar/content-calendar.html`](./templates/marketing/content-calendar/content-calendar.html)
 
----
+## 設計與列印規則
 
-## 最近更新
+### 網站 UI
 
-- 首頁 `index.html` 的 inline CSS 已抽出，改由 `css/style.css` 控制
-- 首頁卡片改成讀取實體預覽圖 `previews/**/*.svg`
-- `previews/` 已補齊 14 張 SVG 預覽圖，不再只是空資料夾
-- 新增電商模板 `templates/ecommerce/weekly-ops/weekly-ops.html`
-- 在共用樣式新增模板 UI 與列印元件層，供後續模板重用
+- 首頁與模板頁的操作 UI 使用同一套共用樣式
+- 主視覺方向是 Apple 風格靈感的灰白、深灰與藍色重點色
+- 首頁卡片直接使用 `previews/**/*.svg` 作為實體預覽圖
 
----
-
-## 設計規則
-
-### 網站介面
-
-- 首頁與模板頁螢幕 UI 使用同一套 Apple 風格靈感主題
-- 主色方向：
-  - 背景灰白 `#f5f5f7`
-  - 主文字深灰 `#1d1d1f`
-  - 次文字灰 `#6e6e73`
-  - Apple 藍重點 `#0071e3`
-  - 淺藍高光 `#2997ff`
-
-### 列印模板
+### 紙本模板
 
 - 模板內容維持黑白灰階
-- 避免大面積黑底，較省墨
-- 每頁左側保留 `10mm` 裝訂區
-- 裝訂區右側有淡灰裝訂線
-- 所有模板皆提供 `A4 / A5 / A4裁A5`
+- 避免大面積黑底色塊
+- 左側固定保留 `10mm` 裝訂區
+- 適合列印或另存 PDF 後再打孔、裝訂、裁切
 
----
+### 尺寸模式
+
+- `A4`：單頁 A4 輸出
+- `A5`：單頁 A5 輸出
+- `A4裁A5`：A4 紙上排兩個 A5，方便裁切
 
 ## 技術結構
 
 ### 首頁
 
-- `index.html`
-  - 模板資料與篩選邏輯
-  - 讀取 `previews/**/*.svg` 作為卡片預覽
+- [`index.html`](./index.html)
+  首頁模板資料、篩選條件與模板卡片 rendering
 
-- `css/style.css`
-  - 網站介面樣式
-  - 模板 UI 樣式
-  - 共用列印 page shell
-  - 新的共用列印元件，例如 `pr-shell`、`pr-hero`、`pr-table`
+- [`css/style.css`](./css/style.css)
+  網站 UI、模板 UI、共用 page shell、尺寸預覽與部分共用列印元件
 
-### 模板頁
+### 模板
 
-- `templates/**/*.html`
-  - 每個模板仍可獨立維護內容版面
-  - 螢幕 UI 已統一依賴共用樣式
+- [`templates/**/*.html`](./templates)
+  各模板的實際版面內容
 
-- `js/template-size.js`
-  - 列印前依目前頁面輸出 `A4 / A5 / A4裁A5`
+- [`js/template-size.js`](./js/template-size.js)
+  模板尺寸切換、螢幕預覽、列印前暫存版面與 `@page size` 控制
 
-### 預覽圖
+### 預覽圖與資源
 
-- `previews/**/*.svg`
-  - 首頁模板卡片使用的實體預覽檔
-  - 目前共 `14` 張
+- [`previews/`](./previews)
+  首頁模板卡片使用的 SVG 預覽圖
 
----
+- [`assets/fonts`](./assets/fonts)
+  字型資源目錄
+
+- [`assets/images`](./assets/images)
+  圖像資源目錄
+
+- [`image/README`](./image/README)
+  舊圖片資料夾的說明檔
 
 ## 使用方式
 
-### 首頁瀏覽
+### 直接瀏覽首頁
 
-直接開啟：
+- 開啟 [`index.html`](./index.html)
 
-- `index.html`
-
-### 直接開啟模板
+### 直接開啟單一模板
 
 例如：
 
-- `templates/planner/daily/daily.html`
-- `templates/ecommerce/weekly-ops/weekly-ops.html`
+- [`templates/planner/daily/daily.html`](./templates/planner/daily/daily.html)
+- [`templates/work-journal/work-journal.html`](./templates/work-journal/work-journal.html)
+- [`templates/ecommerce/weekly-ops/weekly-ops.html`](./templates/ecommerce/weekly-ops/weekly-ops.html)
 
-### 列印建議
+### 建議列印流程
 
 1. 用 Chrome 或 Edge 開啟模板頁
-2. 選擇版面模式
+2. 選擇內容模式
 3. 選擇尺寸 `A4 / A5 / A4裁A5`
 4. 點擊「列印 / 存 PDF」
-5. 邊距設為「無」
-
----
+5. 在列印對話框將邊距設為「無」
 
 ## 專案樹狀圖
 
@@ -148,13 +152,15 @@
 print-templates/
 ├── README.md
 ├── index.html
-├── css/
-│   └── style.css
-├── js/
-│   └── template-size.js
 ├── assets/
 │   ├── fonts/
 │   └── images/
+├── css/
+│   └── style.css
+├── image/
+│   └── README
+├── js/
+│   └── template-size.js
 ├── previews/
 │   ├── ecommerce/
 │   │   ├── pricing.svg
@@ -213,11 +219,9 @@ print-templates/
         └── work-journal.html
 ```
 
----
+## 接下來可繼續做的事
 
-## 下一步方向
-
-- 把更多舊模板內容逐步遷移到共用列印元件
-- 擴充 `templates/notes/` 實際模板
-- 補更多商務與營運類模板
-- 逐步把重複的內容區塊樣式再抽薄一層
+- 把更多模板內容抽成更穩定的共用列印元件
+- 逐步減少模板內重複的內容區塊樣式
+- 擴充 `templates/notes/` 的實際模板
+- 為每份模板補更一致的列印測試與尺寸驗證

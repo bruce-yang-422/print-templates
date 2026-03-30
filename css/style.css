@@ -569,6 +569,23 @@ body.template-page .size-card {
   text-align: center;
 }
 
+body.template-page .card:disabled,
+body.template-page .card.is-disabled {
+  cursor: not-allowed;
+  opacity: .42;
+  border-color: rgba(210, 210, 215, 0.72);
+  color: var(--site-ink-soft);
+  background: rgba(255, 255, 255, 0.64);
+  box-shadow: none;
+}
+
+body.template-page .card:disabled:hover,
+body.template-page .card.is-disabled:hover {
+  border-color: rgba(210, 210, 215, 0.72);
+  color: var(--site-ink-soft);
+  background: rgba(255, 255, 255, 0.64);
+}
+
 body.template-page .btn-print {
   background: linear-gradient(135deg, var(--site-accent), var(--site-accent-alt));
   color: #fff;

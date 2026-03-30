@@ -62,11 +62,13 @@ body {
 .page-port { width: 210mm; height: 297mm; }
 
 /* ── 模式顯示控制 ── */
-.mode-a, .mode-b, .mode-c, .mode-d { display: none; }
-body.sel-a .mode-a { display: block; }
-body.sel-b .mode-b { display: block; }
-body.sel-c .mode-c { display: block; }
-body.sel-d .mode-d { display: block; }
+.mode-a, .mode-b, .mode-c, .mode-d, .mode-e, .mode-f { display: none; }
+body.sel-a[data-print-size="cut"] .mode-a { display: block; }
+body.sel-a[data-print-size="a4"] .mode-c { display: block; }
+body.sel-a[data-print-size="a5"] .mode-e { display: block; }
+body.sel-b[data-print-size="cut"] .mode-b { display: block; }
+body.sel-b[data-print-size="a4"] .mode-d { display: block; }
+body.sel-b[data-print-size="a5"] .mode-f { display: block; }
 
 
 /* ════════════════════════
@@ -246,16 +248,18 @@ body.sel-d .mode-d { display: block; }
   .page     { box-shadow: none !important; page-break-after: always; break-after: page; }
 
   /* hide non-selected modes */
-  .mode-a, .mode-b, .mode-c, .mode-d { display: none !important; }
-  body.sel-a .mode-a { display: block !important; }
-  body.sel-b .mode-b { display: block !important; }
-  body.sel-c .mode-c { display: block !important; }
-  body.sel-d .mode-d { display: block !important; }
+  .mode-a, .mode-b, .mode-c, .mode-d, .mode-e, .mode-f { display: none !important; }
+  body.sel-a[data-print-size="cut"] .mode-a { display: block !important; }
+  body.sel-a[data-print-size="a4"] .mode-c { display: block !important; }
+  body.sel-a[data-print-size="a5"] .mode-e { display: block !important; }
+  body.sel-b[data-print-size="cut"] .mode-b { display: block !important; }
+  body.sel-b[data-print-size="a4"] .mode-d { display: block !important; }
+  body.sel-b[data-print-size="a5"] .mode-f { display: block !important; }
 }
 </style>
 <link rel="stylesheet" href="../../css/style.css">
 </head>
-<body class="template-page sel-a">
+<body class="template-page sel-a" data-print-size="a4">
 
 <!-- ════════════ 螢幕 UI ════════════ -->
 <div class="ui">
@@ -276,17 +280,11 @@ body.sel-d .mode-d { display: block; }
   <div class="ui-toolbar">
     <span class="toolbar-label">版面</span>
     <div class="mode-cards">
-      <button class="card active" onclick="setMode('a')">
-        <strong>A</strong> 日誌 × 2 <span style="font-size:9px;opacity:.5">A4橫・裁A5</span>
+      <button class="card active" data-mode="a" onclick="setMode('a')">
+        <strong>A</strong> 日誌 <span style="font-size:9px;opacity:.5">A4 / A5 / A4裁A5</span>
       </button>
-      <button class="card" onclick="setMode('b')">
-        <strong>B</strong> 週總結 × 2 <span style="font-size:9px;opacity:.5">A4橫・裁A5</span>
-      </button>
-      <button class="card" onclick="setMode('c')">
-        <strong>C</strong> 日誌 A4 <span style="font-size:9px;opacity:.5">直向・通用</span>
-      </button>
-      <button class="card" onclick="setMode('d')">
-        <strong>D</strong> 週總結 A4 <span style="font-size:9px;opacity:.5">直向・通用</span>
+      <button class="card" data-mode="b" onclick="setMode('b')">
+        <strong>B</strong> 週總結 <span style="font-size:9px;opacity:.5">A4 / A5 / A4裁A5</span>
       </button>
     </div>
     <span class="toolbar-label">尺寸</span>
@@ -657,29 +655,143 @@ body.sel-d .mode-d { display: block; }
     <div class="pg-num">D · 週總結</div>
   </div><!-- /mode-d -->
 
+
+  <!-- ══════════════════════════════
+       MODE E：A5 直・日誌
+  ══════════════════════════════ -->
+  <div class="page-label mode-e">▸ 模式 A — A5 直向・日誌</div>
+  <div class="page page-a5-port mode-e">
+    <div class="inner-a5" style="padding-left:20mm;">
+      <span class="pg-type">Daily Log · 工作日誌</span>
+
+      <table class="date-row"><tr>
+        <td><span class="f-lbl">日期</span><span class="blank blank-l"></span></td>
+        <td style="padding-left:3mm"><span class="f-lbl">週</span><span class="blank blank-s"></span></td>
+        <td style="text-align:right">
+          <span class="f-lbl" style="margin-right:2mm">狀態</span>
+          <span class="stat-item"><span class="sq-stat"></span>順</span>&ensp;
+          <span class="stat-item"><span class="sq-stat"></span>普通</span>&ensp;
+          <span class="stat-item"><span class="sq-stat"></span>卡住</span>
+        </td>
+      </tr></table>
+
+      <span class="s-hd">今日工作</span>
+      <table class="line-tbl"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="line-tbl"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="line-tbl"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+
+      <span class="s-hd">問題 → 怎麼解</span>
+      <table class="line-tbl"><tr><td class="lc"></td><td class="arrow-cell">→</td><td class="lc"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc"></td><td class="arrow-cell">→</td><td class="lc"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc"></td><td class="arrow-cell">→</td><td class="lc"></td></tr></table>
+
+      <span class="s-hd">今天最有價值的一件事</span>
+      <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+
+      <span class="s-hd">備注 / 其他</span>
+      <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+
+      <span class="s-hd">明天最不能忘的一件事</span>
+      <table class="line-tbl"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+    </div>
+    <div class="pg-num">A · 日誌 A5</div>
+  </div><!-- /mode-e -->
+
+
+  <!-- ══════════════════════════════
+       MODE F：A5 直・週總結
+  ══════════════════════════════ -->
+  <div class="page-label mode-f">▸ 模式 B — A5 直向・週總結</div>
+  <div class="page page-a5-port mode-f">
+    <div class="inner-a5" style="padding-left:20mm;">
+      <div class="week-head-border">
+        <span class="week-main">週總結</span>
+        <div class="week-sub">
+          <span>第 <span class="blank blank-s"></span> 週</span>
+          <span>期間 <span class="blank blank-m"></span> — <span class="blank blank-m"></span></span>
+        </div>
+      </div>
+
+      <div class="w-sec">
+        <span class="w-hd">本週最有價值的 3 件事</span>
+        <table class="line-tbl"><tr><td class="n-cell">1</td><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="n-cell">2</td><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="n-cell">3</td><td class="lc"></td></tr></table>
+      </div>
+      <div class="w-sec">
+        <span class="w-hd">本週解決的關鍵問題</span>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+      </div>
+      <div class="w-sec">
+        <span class="w-hd">可以優化 ／ 下週注意</span>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+      </div>
+      <div class="w-sec">
+        <span class="w-hd">備注</span>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+      </div>
+      <div class="w-sec" style="margin-bottom:0">
+        <span class="w-hd">本週回顧</span>
+        <table class="reflect-tbl"><tr>
+          <td>
+            <span class="r-hd">狀態分佈（天數）</span>
+            <span style="font-size:6.5pt;color:#666">
+              順<span class="blank blank-xs" style="margin:0 1mm"></span>
+              普<span class="blank blank-xs" style="margin:0 1mm"></span>
+              卡<span class="blank blank-xs" style="margin:0 1mm"></span>
+            </span>
+          </td>
+          <td>
+            <span class="r-hd">整體感受</span>
+            <table class="line-tbl" style="margin-bottom:2mm"><tr><td class="lc"></td></tr></table>
+            <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          </td>
+        </tr></table>
+      </div>
+    </div>
+    <div class="pg-num">B · 週總結 A5</div>
+  </div><!-- /mode-f -->
+
 </div><!-- /pages -->
 
 <script src="../../js/template-size.js"></script>
 <script>
-const pageStyles = {
-  a: 'landscape', b: 'landscape', c: 'portrait', d: 'portrait'
-};
-
 let styleTag = document.createElement('style');
 styleTag.id = 'pg-size';
 document.head.appendChild(styleTag);
 
-function setMode(m) {
-  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
-  document.body.classList.add('template-page', 'sel-' + m);
-  // 更新 @page 方向
-  const ori = pageStyles[m];
-  styleTag.textContent = '@media print { @page { size: A4 ' + ori + '; margin: 0; } }';
-  // 更新卡片選取狀態
-  document.querySelectorAll('.mode-cards .card').forEach((c, i) => {
-    c.classList.toggle('active', ['a','b','c','d'][i] === m);
-  });
+function syncPrintOrientation() {
+  const size = window.TemplatePrintSize ? window.TemplatePrintSize.getSize() : 'a4';
+  const paper = size === 'a5' ? 'A5 portrait' : 'A4 ' + (size === 'cut' ? 'landscape' : 'portrait');
+  styleTag.textContent = '@media print { @page { size: ' + paper + '; margin: 0; } }';
 }
+
+function setMode(m) {
+  document.body.classList.remove('sel-a', 'sel-b');
+  document.body.classList.add('template-page', 'sel-' + m);
+
+  document.querySelectorAll('.mode-cards [data-mode]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.mode === m);
+  });
+
+  syncPrintOrientation();
+}
+
+document.addEventListener('template-print-size-change', function () {
+  syncPrintOrientation();
+});
 
 // 預設 A 模式
 setMode('a');
