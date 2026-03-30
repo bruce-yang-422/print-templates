@@ -235,4 +235,23 @@
   };
 
   setSize('a4');
+
+  // Update back-link text to full site name, and make each .page clickable → back to homepage
+  (function initSiteNav() {
+    const backLink = document.querySelector('.back-link');
+    if (!backLink) return;
+    backLink.childNodes.forEach(function (node) {
+      if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+        node.textContent = '\u00a0列印模板庫';
+      }
+    });
+    const indexHref = backLink.href;
+    document.querySelectorAll('.pages .page').forEach(function (page) {
+      page.style.cursor = 'pointer';
+      page.title = '點擊返回首頁';
+      page.addEventListener('click', function () {
+        window.location.href = indexHref;
+      });
+    });
+  })();
 })();

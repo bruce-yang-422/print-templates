@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>季計畫模板</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; background: #c8c8c8; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.page { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.2); overflow: hidden; position: relative; }
+.page::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: #fff; z-index: 4; pointer-events: none; }
+.page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
+.page-port { width: 210mm; height: 297mm; }
+.page-land { width: 297mm; height: 210mm; }
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+.pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; display: block; }
+.f-lbl { font-size: 5.5pt; letter-spacing: .1em; color: #aaa; display: block; margin-bottom: 1mm; text-transform: uppercase; }
+.blank { display: block; border-bottom: 0.5pt solid #ccc; height: 4.5mm; }
+.line { display: block; border-bottom: 0.4pt solid #ddd; height: 5.5mm; }
+.mini-line { display: block; border-bottom: 0.4pt solid #ddd; height: 4.5mm; }
+.sq { display: inline-block; width: 3mm; height: 3mm; border: 0.65pt solid #777; margin-right: 1.6mm; vertical-align: middle; }
+.pg-num { position: absolute; bottom: 6mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+.sec { margin-top: 4mm; }
+.sec-hd { display: flex; justify-content: space-between; align-items: baseline; font-size: 6.5pt; letter-spacing: .14em; text-transform: uppercase; color: #777; font-weight: 600; border-left: 2pt solid #111; padding-left: 3mm; margin-bottom: 2.5mm; }
+.sec-hd em { font-style: normal; font-size: 5pt; color: #bbb; font-weight: 400; letter-spacing: .06em; }
+.chk-row { display: flex; align-items: flex-end; gap: 2mm; margin-bottom: 2mm; }
+.chk-row:last-child { margin-bottom: 0; }
+/* Mode A: landscape */
+.land-wrap { padding: 10mm 14mm 8mm; height: 210mm; display: flex; flex-direction: column; }
+.land-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 0.75pt solid #111; padding-bottom: 3mm; margin-bottom: 4mm; }
+.land-head strong { font-size: 16pt; letter-spacing: .04em; }
+.land-head-right { display: flex; gap: 6mm; align-items: baseline; }
+.year-field { font-size: 8pt; color: #555; border-bottom: 0.5pt solid #bbb; min-width: 18mm; display: inline-block; padding-bottom: 0.5mm; }
+.land-head span:last-child { font-size: 6pt; color: #bbb; text-transform: uppercase; letter-spacing: .12em; }
+.q-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 4mm; flex: 1; }
+.q-card { border: 0.4pt solid #ddd; padding: 3mm; display: flex; flex-direction: column; }
+.q-badge { font-size: 18pt; font-weight: 700; letter-spacing: -.02em; color: #222; line-height: 1; }
+.q-months { font-size: 5.5pt; color: #aaa; letter-spacing: .08em; margin-bottom: 2mm; }
+.q-sub { font-size: 5.5pt; color: #aaa; text-transform: uppercase; letter-spacing: .08em; margin-top: 2mm; margin-bottom: 1mm; }
+.land-foot { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-top: 3mm; }
+.land-foot-card { border: 0.4pt solid #ddd; padding: 2.5mm 3mm; }
+/* Mode B: portrait single quarter */
+.b-wrap { padding: 11mm 14mm 9mm; height: 297mm; display: flex; flex-direction: column; }
+.b-head { border-bottom: 0.75pt solid #111; padding-bottom: 4mm; }
+.b-title { display: flex; justify-content: space-between; align-items: baseline; }
+.b-title strong { font-size: 17pt; letter-spacing: .04em; }
+.b-title span { font-size: 6pt; color: #bbb; letter-spacing: .12em; text-transform: uppercase; }
+.q-sel { display: flex; gap: 3mm; align-items: center; margin-top: 2.5mm; }
+.q-sel-lbl { font-size: 6.5pt; color: #777; letter-spacing: .1em; text-transform: uppercase; }
+.q-chip { display: inline-flex; align-items: center; justify-content: center; width: 10mm; height: 5mm; border: 0.5pt solid #bbb; font-size: 7pt; color: #777; letter-spacing: .06em; }
+.meta-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm; margin-top: 2.5mm; }
+.meta-card { border: 0.4pt solid #ddd; padding: 2.2mm 3mm; }
+.tbl { width: 100%; border-collapse: collapse; border: 0.4pt solid #ddd; border-top: none; table-layout: fixed; }
+.tbl th, .tbl td { border-right: 0.4pt solid #ddd; border-bottom: 0.4pt solid #ddd; padding: 2mm 2.5mm; vertical-align: top; }
+.tbl th:last-child, .tbl td:last-child { border-right: none; }
+.tbl th { background: #fafafa; font-size: 5.5pt; color: #aaa; text-transform: uppercase; letter-spacing: .08em; text-align: left; font-weight: 400; }
+.tbl-line { height: 6mm; border-bottom: 0.4pt solid #ddd; }
+.action-3col { display: grid; grid-template-columns: repeat(3,1fr); gap: 3mm; }
+.action-col { border: 0.4pt solid #ddd; border-top: none; padding: 2.5mm 3mm; }
+.action-col h4 { font-size: 5.5pt; color: #aaa; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 2mm; }
+.foot-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-top: auto; }
+.foot-card { border: 0.4pt solid #ddd; padding: 2.5mm 3mm; }
+@media print {
+  body { background: none; }
+  .ui, .page-label { display: none !important; }
+  .pages { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+}
+</style>
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body class="template-page sel-a">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      列印模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">季計畫 <small>Quarterly Plan</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 全年一覽 <span style="font-size:9px;opacity:.5">A4橫・Q1–Q4並排</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 單季深度 <span style="font-size:9px;opacity:.5">A4直・單季詳細規劃</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+<div class="pages">
+  <div class="page-label mode-a">▸ 模式 A — A4 橫向・Q1–Q4 全年一覽</div>
+  <div class="page page-land mode-a">
+    <div class="land-wrap">
+      <span class="pg-type">Quarterly Plan · 季計畫</span>
+      <div class="land-head">
+        <strong>季計畫</strong>
+        <div class="land-head-right">
+          <span class="f-lbl" style="margin:0">年度：</span><span class="year-field">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span style="font-size:6pt;color:#bbb;text-transform:uppercase;letter-spacing:.12em">quarterly plan</span>
+        </div>
+      </div>
+      <div class="q-grid">
+        <div class="q-card">
+          <div class="q-badge">Q1</div>
+          <div class="q-months">1月 — 3月</div>
+          <div class="q-sub">主目標</div>
+          <span class="blank"></span>
+          <div class="q-sub">里程碑</div>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+          <div class="q-sub">重點行動</div>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+        </div>
+        <div class="q-card">
+          <div class="q-badge">Q2</div>
+          <div class="q-months">4月 — 6月</div>
+          <div class="q-sub">主目標</div>
+          <span class="blank"></span>
+          <div class="q-sub">里程碑</div>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+          <div class="q-sub">重點行動</div>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+        </div>
+        <div class="q-card">
+          <div class="q-badge">Q3</div>
+          <div class="q-months">7月 — 9月</div>
+          <div class="q-sub">主目標</div>
+          <span class="blank"></span>
+          <div class="q-sub">里程碑</div>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+          <div class="q-sub">重點行動</div>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+        </div>
+        <div class="q-card">
+          <div class="q-badge">Q4</div>
+          <div class="q-months">10月 — 12月</div>
+          <div class="q-sub">主目標</div>
+          <span class="blank"></span>
+          <div class="q-sub">里程碑</div>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+          <div class="q-sub">重點行動</div>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+          <span class="mini-line"></span>
+        </div>
+      </div>
+      <div class="land-foot">
+        <div class="land-foot-card">
+          <span class="f-lbl">年度主題 / 總目標</span>
+          <span class="blank"></span>
+        </div>
+        <div class="land-foot-card">
+          <span class="f-lbl">備注 / 下年展望</span>
+          <span class="blank"></span>
+        </div>
+      </div>
+    </div>
+    <div class="pg-num">A · Quarterly Overview</div>
+  </div>
+
+  <div class="page-label mode-b">▸ 模式 B — A4 直向・單季深度規劃</div>
+  <div class="page page-port mode-b">
+    <div class="b-wrap">
+      <span class="pg-type">Quarterly Plan · 單季深度</span>
+      <div class="b-head">
+        <div class="b-title">
+          <strong>單季計畫</strong>
+          <span>quarterly deep-dive</span>
+        </div>
+        <div class="q-sel">
+          <span class="q-sel-lbl">季度：</span>
+          <span class="q-chip">Q1</span>
+          <span class="q-chip">Q2</span>
+          <span class="q-chip">Q3</span>
+          <span class="q-chip">Q4</span>
+        </div>
+        <div class="meta-2">
+          <div class="meta-card"><span class="f-lbl">年度</span><span class="blank"></span></div>
+          <div class="meta-card"><span class="f-lbl">月份區間</span><span class="blank"></span></div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><span>本季主目標</span><em>objectives</em></div>
+        <div style="border:0.4pt solid #ddd;border-top:none;padding:2.5mm 3mm">
+          <div class="chk-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+          <div class="chk-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+          <div class="chk-row"><span class="sq"></span><span class="mini-line" style="flex:1"></span></div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><span>里程碑</span><em>milestones</em></div>
+        <table class="tbl">
+          <tr>
+            <th style="width:12%">月份</th>
+            <th style="width:55%">里程碑 / 交付物</th>
+            <th style="width:18%">負責人</th>
+            <th style="width:15%">完成狀態</th>
+          </tr>
+          <tr><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td></tr>
+          <tr><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td></tr>
+          <tr><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td></tr>
+          <tr><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td></tr>
+          <tr><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td><td><div class="tbl-line"></div></td></tr>
+        </table>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><span>各月重點行動</span><em>monthly actions</em></div>
+        <div class="action-3col">
+          <div class="action-col"><h4>第一個月</h4><span class="line"></span><span class="line"></span><span class="mini-line"></span></div>
+          <div class="action-col"><h4>第二個月</h4><span class="line"></span><span class="line"></span><span class="mini-line"></span></div>
+          <div class="action-col"><h4>第三個月</h4><span class="line"></span><span class="line"></span><span class="mini-line"></span></div>
+        </div>
+      </div>
+      <div class="foot-2col">
+        <div class="foot-card">
+          <span class="f-lbl">障礙與因應</span>
+          <span class="line"></span><span class="mini-line"></span>
+        </div>
+        <div class="foot-card">
+          <span class="f-lbl">下季展望</span>
+          <span class="line"></span><span class="mini-line"></span>
+        </div>
+      </div>
+    </div>
+    <div class="pg-num">B · Single Quarter</div>
+  </div>
+</div>
+<script src="../../../js/template-size.js"></script>
+<script>
+const pageStyles = { a: 'A4 landscape', b: 'A4 portrait' };
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
+    card.classList.toggle('active', ['a','b'][index] === mode);
+  });
+}
+setMode('a');
+document.querySelectorAll('.pages .page').forEach(p => {
+  p.style.cursor = 'pointer';
+  p.title = '點擊返回首頁';
+  p.addEventListener('click', () => { window.location.href = '../../../index.html'; });
+});
+</script>
+</body>
+</html>
