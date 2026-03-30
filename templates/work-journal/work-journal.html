@@ -64,10 +64,12 @@ body {
 /* ── 模式顯示控制 ── */
 .mode-a, .mode-b, .mode-c, .mode-d, .mode-e, .mode-f { display: none; }
 body.sel-a[data-print-size="cut"] .mode-a { display: block; }
-body.sel-a[data-print-size="a4"] .mode-c { display: block; }
+body.sel-a[data-print-size="a4"] .mode-c,
+body.sel-a[data-print-size="b5"] .mode-c { display: block; }
 body.sel-a[data-print-size="a5"] .mode-e { display: block; }
 body.sel-b[data-print-size="cut"] .mode-b { display: block; }
-body.sel-b[data-print-size="a4"] .mode-d { display: block; }
+body.sel-b[data-print-size="a4"] .mode-d,
+body.sel-b[data-print-size="b5"] .mode-d { display: block; }
 body.sel-b[data-print-size="a5"] .mode-f { display: block; }
 
 
@@ -250,10 +252,12 @@ body.sel-b[data-print-size="a5"] .mode-f { display: block; }
   /* hide non-selected modes */
   .mode-a, .mode-b, .mode-c, .mode-d, .mode-e, .mode-f { display: none !important; }
   body.sel-a[data-print-size="cut"] .mode-a { display: block !important; }
-  body.sel-a[data-print-size="a4"] .mode-c { display: block !important; }
+  body.sel-a[data-print-size="a4"] .mode-c,
+  body.sel-a[data-print-size="b5"] .mode-c { display: block !important; }
   body.sel-a[data-print-size="a5"] .mode-e { display: block !important; }
   body.sel-b[data-print-size="cut"] .mode-b { display: block !important; }
-  body.sel-b[data-print-size="a4"] .mode-d { display: block !important; }
+  body.sel-b[data-print-size="a4"] .mode-d,
+  body.sel-b[data-print-size="b5"] .mode-d { display: block !important; }
   body.sel-b[data-print-size="a5"] .mode-f { display: block !important; }
 }
 </style>
@@ -774,7 +778,10 @@ document.head.appendChild(styleTag);
 
 function syncPrintOrientation() {
   const size = window.TemplatePrintSize ? window.TemplatePrintSize.getSize() : 'a4';
-  const paper = size === 'a5' ? 'A5 portrait' : 'A4 ' + (size === 'cut' ? 'landscape' : 'portrait');
+  const paper =
+    size === 'a5' ? 'A5 portrait' :
+    size === 'b5' ? 'B5 portrait' :
+    'A4 ' + (size === 'cut' ? 'landscape' : 'portrait');
   styleTag.textContent = '@media print { @page { size: ' + paper + '; margin: 0; } }';
 }
 

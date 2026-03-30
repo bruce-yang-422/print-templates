@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>年計畫模板</title>
+<link rel="stylesheet" href="../../../css/style.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+.yr-pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.yr-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.year-shell { height: 210mm; padding: 10mm 12mm 9mm; display: flex; flex-direction: column; gap: 4mm; }
+.year-shell.port { height: 297mm; padding: 11mm 14mm 10mm; }
+.yr-kicker { font-size: 6pt; letter-spacing: .2em; color: #bbb; text-transform: uppercase; }
+.yr-head { border-bottom: 0.75pt solid #111; padding-bottom: 4mm; display: flex; justify-content: space-between; align-items: flex-end; gap: 8mm; }
+.yr-head strong { font-size: 17pt; letter-spacing: .04em; }
+.yr-head span { font-size: 6pt; letter-spacing: .12em; text-transform: uppercase; color: #bbb; }
+.yr-year { font-size: 22pt; font-weight: 700; color: #222; min-width: 24mm; text-align: right; }
+.month-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3.2mm; }
+.month-card { border: 0.4pt solid #ddd; background: #fff; padding: 2.8mm 3mm; display: flex; flex-direction: column; gap: 1.4mm; }
+.month-top { display: flex; justify-content: space-between; align-items: baseline; }
+.month-no { font-size: 13pt; font-weight: 700; letter-spacing: -.02em; color: #222; }
+.month-name { font-size: 5.5pt; letter-spacing: .1em; color: #aaa; text-transform: uppercase; }
+.month-theme { border: 0.4pt solid #ddd; background: #fafafa; height: 7mm; }
+.month-line { border-bottom: 0.4pt solid #ddd; height: 5.2mm; }
+.year-foot { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 3.2mm; }
+.foot-card { border: 0.4pt solid #ddd; padding: 2.5mm 3mm; }
+.lbl { display: block; font-size: 5.5pt; letter-spacing: .1em; color: #aaa; text-transform: uppercase; margin-bottom: 1.4mm; }
+.blank { display: block; border-bottom: 0.5pt solid #ccc; height: 5mm; }
+.line { display: block; border-bottom: 0.4pt solid #ddd; height: 5.4mm; }
+.port-grid { flex: 1; display: grid; grid-template-columns: 1.15fr .85fr; gap: 4mm; min-height: 0; }
+.port-left, .port-right { display: flex; flex-direction: column; gap: 4mm; min-height: 0; }
+.annual-band { border: 0.4pt solid #ddd; padding: 2.8mm 3.2mm; }
+.quarter-list { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; }
+.quarter-card { border: 0.4pt solid #ddd; padding: 2.6mm 3mm; }
+.quarter-card strong { display: block; font-size: 11pt; margin-bottom: 1.2mm; }
+.quarter-card span { display: block; font-size: 5.5pt; color: #aaa; letter-spacing: .08em; margin-bottom: 1.6mm; }
+.month-list { border: 0.4pt solid #ddd; display: grid; grid-template-columns: repeat(2, 1fr); min-height: 0; }
+.month-row { border-right: 0.4pt solid #ddd; border-bottom: 0.4pt solid #ddd; padding: 2.2mm 2.6mm; min-height: 17mm; }
+.month-row:nth-child(2n) { border-right: none; }
+.month-row:nth-last-child(-n+2) { border-bottom: none; }
+.month-row strong { display: block; font-size: 7.5pt; margin-bottom: 1.2mm; }
+.month-row .line { height: 4.6mm; }
+.review-card { border: 0.4pt solid #ddd; padding: 2.8mm 3.2mm; margin-top: auto; }
+.pg-num { position: absolute; bottom: 8mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+@media print {
+  .ui, .yr-label { display: none !important; }
+  .yr-pages { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+}
+</style>
+</head>
+<body class="template-page sel-a">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      列印模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">年計畫 <small>Yearly Planner</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 12 個月一覽 <span style="font-size:9px;opacity:.5">A4橫・全年月度概覽</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 年度主題版 <span style="font-size:9px;opacity:.5">A4直・季度與月份拆解</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="pages yr-pages">
+  <div class="yr-label mode-a">▸ 模式 A — A4 橫向・12 個月一覽</div>
+  <div class="page page-land mode-a">
+    <div class="year-shell">
+      <span class="yr-kicker">Yearly Planner · Annual Overview</span>
+      <div class="yr-head">
+        <div>
+          <strong>年計畫</strong>
+          <span>12 month overview</span>
+        </div>
+        <div class="yr-year">____</div>
+      </div>
+      <div class="month-grid" id="year-grid-a"></div>
+      <div class="year-foot">
+        <div class="foot-card"><span class="lbl">年度主題 / 核心方向</span><span class="blank"></span></div>
+        <div class="foot-card"><span class="lbl">年度里程碑</span><span class="line"></span><span class="line"></span></div>
+        <div class="foot-card"><span class="lbl">提醒 / 關鍵節點</span><span class="line"></span><span class="line"></span></div>
+      </div>
+    </div>
+    <div class="pg-num">A · Yearly</div>
+  </div>
+
+  <div class="yr-label mode-b">▸ 模式 B — A4 直向・年度主題與季度規劃</div>
+  <div class="page page-port mode-b">
+    <div class="year-shell port">
+      <span class="yr-kicker">Yearly Planner · Theme & Quarter</span>
+      <div class="yr-head">
+        <div>
+          <strong>年度主題版</strong>
+          <span>theme / quarter / month</span>
+        </div>
+        <div class="yr-year">____</div>
+      </div>
+      <div class="port-grid">
+        <div class="port-left">
+          <div class="annual-band"><span class="lbl">年度主題 / 一句方向</span><span class="blank"></span></div>
+          <div class="quarter-list">
+            <div class="quarter-card"><strong>Q1</strong><span>1月 - 3月</span><span class="line"></span><span class="line"></span><span class="line"></span></div>
+            <div class="quarter-card"><strong>Q2</strong><span>4月 - 6月</span><span class="line"></span><span class="line"></span><span class="line"></span></div>
+            <div class="quarter-card"><strong>Q3</strong><span>7月 - 9月</span><span class="line"></span><span class="line"></span><span class="line"></span></div>
+            <div class="quarter-card"><strong>Q4</strong><span>10月 - 12月</span><span class="line"></span><span class="line"></span><span class="line"></span></div>
+          </div>
+          <div class="review-card"><span class="lbl">年度回顧 / 年末總結</span><span class="line"></span><span class="line"></span><span class="line"></span></div>
+        </div>
+        <div class="port-right">
+          <div class="month-list" id="year-grid-b"></div>
+        </div>
+      </div>
+    </div>
+    <div class="pg-num">B · Theme</div>
+  </div>
+</div>
+
+<script src="../../../js/template-size.js"></script>
+<script>
+const pageStyles = { a: 'A4 landscape', b: 'A4 portrait' };
+const MONTHS = [
+  ['1月', 'January'], ['2月', 'February'], ['3月', 'March'], ['4月', 'April'],
+  ['5月', 'May'], ['6月', 'June'], ['7月', 'July'], ['8月', 'August'],
+  ['9月', 'September'], ['10月', 'October'], ['11月', 'November'], ['12月', 'December']
+];
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
+    card.classList.toggle('active', ['a', 'b'][index] === mode);
+  });
+}
+
+function renderYear() {
+  const gridA = document.getElementById('year-grid-a');
+  const gridB = document.getElementById('year-grid-b');
+  gridA.innerHTML = '';
+  gridB.innerHTML = '';
+
+  MONTHS.forEach(([labelZh, labelEn]) => {
+    const cardA = document.createElement('div');
+    cardA.className = 'month-card';
+    cardA.innerHTML = `
+      <div class="month-top">
+        <span class="month-no">${labelZh}</span>
+        <span class="month-name">${labelEn}</span>
+      </div>
+      <div class="month-theme"></div>
+      <span class="month-line"></span>
+      <span class="month-line"></span>
+      <span class="month-line"></span>
+      <span class="month-line"></span>`;
+    gridA.appendChild(cardA);
+
+    const rowB = document.createElement('div');
+    rowB.className = 'month-row';
+    rowB.innerHTML = `
+      <strong>${labelZh}</strong>
+      <span class="line"></span>
+      <span class="line"></span>`;
+    gridB.appendChild(rowB);
+  });
+}
+
+renderYear();
+setMode('a');
+</script>
+</body>
+</html>

@@ -77,6 +77,7 @@ body.sel-b .mode-b { display: block; }
 .b-day   { border-left: 1.5pt solid #111; padding-left: 3mm; }
 .b-day-hd { font-size: 6.5pt; font-weight: 700; letter-spacing: .06em; margin-bottom: 1.5mm; display: flex; justify-content: space-between; align-items: baseline; }
 .b-day-hd em { font-style: normal; font-size: 5pt; color: #ccc; font-weight: 400; }
+.b-day.weekend .b-day-hd { color: #bbb; }
 .b-line  { border-bottom: 0.4pt solid #ddd; height: 5.5mm; display: block; margin-bottom: 0; }
 .b-review { border-top: 0.75pt solid #111; padding-top: 3mm; margin-top: 3mm; }
 .b-reflect { width: 100%; border-collapse: collapse; margin-top: 2mm; }
@@ -124,6 +125,11 @@ body.sel-b .mode-b { display: block; }
       <span class="toolbar-label" style="margin-left:8px">日期</span>
       <input class="date-input" type="date" id="week-date" onchange="renderWeek()">
     </div>
+    <span class="toolbar-label">起始</span>
+    <div class="size-cards" id="weekStartChips">
+      <button type="button" class="card active" data-week-start="mon">週一</button>
+      <button type="button" class="card" data-week-start="sun">週日</button>
+    </div>
     <div class="toolbar-right">
       <span class="hint">Chrome → 存PDF → 邊距「無」</span>
       <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
@@ -154,35 +160,35 @@ body.sel-b .mode-b { display: block; }
 
   <!-- 欄頭：週一至週日 -->
   <tr style="height:12mm">
-    <td class="day-hd"><span class="day-name">週一</span><span class="day-date f-lbl" id="a-day-date-1"></span></td>
-    <td class="day-hd"><span class="day-name">週二</span><span class="day-date f-lbl" id="a-day-date-2"></span></td>
-    <td class="day-hd"><span class="day-name">週三</span><span class="day-date f-lbl" id="a-day-date-3"></span></td>
-    <td class="day-hd"><span class="day-name">週四</span><span class="day-date f-lbl" id="a-day-date-4"></span></td>
-    <td class="day-hd"><span class="day-name">週五</span><span class="day-date f-lbl" id="a-day-date-5"></span></td>
-    <td class="day-hd weekend"><span class="day-name">週六</span><span class="day-date f-lbl" id="a-day-date-6"></span></td>
-    <td class="day-hd weekend"><span class="day-name">週日</span><span class="day-date f-lbl" id="a-day-date-7"></span></td>
+    <td class="day-hd" data-slot="1"><span class="day-name" id="a-day-name-1">週一</span><span class="day-date f-lbl" id="a-day-date-1"></span></td>
+    <td class="day-hd" data-slot="2"><span class="day-name" id="a-day-name-2">週二</span><span class="day-date f-lbl" id="a-day-date-2"></span></td>
+    <td class="day-hd" data-slot="3"><span class="day-name" id="a-day-name-3">週三</span><span class="day-date f-lbl" id="a-day-date-3"></span></td>
+    <td class="day-hd" data-slot="4"><span class="day-name" id="a-day-name-4">週四</span><span class="day-date f-lbl" id="a-day-date-4"></span></td>
+    <td class="day-hd" data-slot="5"><span class="day-name" id="a-day-name-5">週五</span><span class="day-date f-lbl" id="a-day-date-5"></span></td>
+    <td class="day-hd weekend" data-slot="6"><span class="day-name" id="a-day-name-6">週六</span><span class="day-date f-lbl" id="a-day-date-6"></span></td>
+    <td class="day-hd weekend" data-slot="7"><span class="day-name" id="a-day-name-7">週日</span><span class="day-date f-lbl" id="a-day-date-7"></span></td>
   </tr>
 
   <!-- 主要書寫區 -->
   <tr>
-    <td class="day-body"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
-    <td class="day-body"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
-    <td class="day-body"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
-    <td class="day-body"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
-    <td class="day-body"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
-    <td class="day-body weekend"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
-    <td class="day-body weekend"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body" data-slot="1"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body" data-slot="2"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body" data-slot="3"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body" data-slot="4"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body" data-slot="5"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body weekend" data-slot="6"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body weekend" data-slot="7"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
   </tr>
 
   <!-- 待辦列 -->
   <tr style="height:38mm">
-    <td class="day-todo"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
-    <td class="day-todo"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
-    <td class="day-todo"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
-    <td class="day-todo"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
-    <td class="day-todo"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
-    <td class="day-todo weekend"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
-    <td class="day-todo weekend"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo" data-slot="1"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo" data-slot="2"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo" data-slot="3"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo" data-slot="4"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo" data-slot="5"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo weekend" data-slot="6"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo weekend" data-slot="7"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
   </tr>
 
 </table>
@@ -208,32 +214,32 @@ body.sel-b .mode-b { display: block; }
     </div>
 
     <div class="b-days">
-      <div class="b-day">
-        <div class="b-day-hd">週一 <em id="b-day-date-1"></em></div>
+      <div class="b-day" data-slot="1">
+        <div class="b-day-hd"><span id="b-day-name-1">週一</span> <em id="b-day-date-1"></em></div>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
-      <div class="b-day">
-        <div class="b-day-hd">週二 <em id="b-day-date-2"></em></div>
+      <div class="b-day" data-slot="2">
+        <div class="b-day-hd"><span id="b-day-name-2">週二</span> <em id="b-day-date-2"></em></div>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
-      <div class="b-day">
-        <div class="b-day-hd">週三 <em id="b-day-date-3"></em></div>
+      <div class="b-day" data-slot="3">
+        <div class="b-day-hd"><span id="b-day-name-3">週三</span> <em id="b-day-date-3"></em></div>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
-      <div class="b-day">
-        <div class="b-day-hd">週四 <em id="b-day-date-4"></em></div>
+      <div class="b-day" data-slot="4">
+        <div class="b-day-hd"><span id="b-day-name-4">週四</span> <em id="b-day-date-4"></em></div>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
-      <div class="b-day">
-        <div class="b-day-hd">週五 <em id="b-day-date-5"></em></div>
+      <div class="b-day" data-slot="5">
+        <div class="b-day-hd"><span id="b-day-name-5">週五</span> <em id="b-day-date-5"></em></div>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
-      <div class="b-day">
-        <div class="b-day-hd" style="color:#bbb">週六 <em id="b-day-date-6"></em></div>
+      <div class="b-day weekend" data-slot="6">
+        <div class="b-day-hd"><span id="b-day-name-6">週六</span> <em id="b-day-date-6"></em></div>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
-      <div class="b-day">
-        <div class="b-day-hd" style="color:#bbb">週日 <em id="b-day-date-7"></em></div>
+      <div class="b-day weekend" data-slot="7">
+        <div class="b-day-hd"><span id="b-day-name-7">週日</span> <em id="b-day-date-7"></em></div>
         <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
       </div>
     </div>
@@ -263,12 +269,38 @@ body.sel-b .mode-b { display: block; }
 const pgSize = { a:'landscape', b:'portrait' };
 let st = document.createElement('style'); st.id='pg-size'; document.head.appendChild(st);
 const Calendar = window.TemplateCalendar;
+let weekStartMode = localStorage.getItem('weeklyStartMode') || 'mon';
+
+const WEEK_ORDERS = {
+  mon: [1, 2, 3, 4, 5, 6, 0],
+  sun: [0, 1, 2, 3, 4, 5, 6]
+};
+
+const WEEK_LABELS = {
+  mon: ['週一', '週二', '週三', '週四', '週五', '週六', '週日'],
+  sun: ['週日', '週一', '週二', '週三', '週四', '週五', '週六']
+};
+
+function getWeekStartByMode(date) {
+  if (weekStartMode === 'sun') {
+    const current = new Date(date);
+    current.setDate(current.getDate() - current.getDay());
+    return current;
+  }
+  return Calendar.getWeekStart(date);
+}
+
+function syncWeekStartButtons() {
+  document.querySelectorAll('[data-week-start]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.weekStart === weekStartMode);
+  });
+}
 
 function renderWeek() {
   const input = document.getElementById('week-date');
   const selected = Calendar.parseLocalDate(input.value);
   const selectedMeta = Calendar.getMeta(selected);
-  const weekStart = Calendar.getWeekStart(selected);
+  const weekStart = getWeekStartByMode(selected);
   const weekNo = selectedMeta && selectedMeta['標準週數']
     ? selectedMeta['標準週數']
     : Calendar.getIsoWeekNumber(selected);
@@ -276,12 +308,23 @@ function renderWeek() {
   document.getElementById('week-no-a').textContent = weekNo;
   document.getElementById('week-no-b').textContent = weekNo;
 
+  const labels = WEEK_LABELS[weekStartMode];
+  const order = WEEK_ORDERS[weekStartMode];
+
   for (let i = 0; i < 7; i++) {
     const date = new Date(weekStart);
     date.setDate(weekStart.getDate() + i);
     const label = Calendar.formatMd(date);
-    document.getElementById('a-day-date-' + (i + 1)).textContent = label;
-    document.getElementById('b-day-date-' + (i + 1)).textContent = label;
+    const slot = i + 1;
+    const dayIndex = order[i];
+    const isWeekend = dayIndex === 0 || dayIndex === 6;
+    document.getElementById('a-day-name-' + slot).textContent = labels[i];
+    document.getElementById('b-day-name-' + slot).textContent = labels[i];
+    document.getElementById('a-day-date-' + slot).textContent = label;
+    document.getElementById('b-day-date-' + slot).textContent = label;
+    document.querySelectorAll('[data-slot="' + slot + '"]').forEach((element) => {
+      element.classList.toggle('weekend', isWeekend);
+    });
   }
 
   const weekEnd = new Date(weekStart);
@@ -299,8 +342,18 @@ function setMode(m) {
   document.querySelectorAll('.mode-cards .card').forEach((c,i) => c.classList.toggle('active', ['a','b'][i]===m));
 }
 
+document.getElementById('weekStartChips').addEventListener('click', (event) => {
+  const button = event.target.closest('[data-week-start]');
+  if (!button) return;
+  weekStartMode = button.dataset.weekStart;
+  localStorage.setItem('weeklyStartMode', weekStartMode);
+  syncWeekStartButtons();
+  renderWeek();
+});
+
 document.getElementById('week-date').value = Calendar.toInputValue(new Date());
 setMode('a');
+syncWeekStartButtons();
 Calendar.load('../../../assets/2026_calendar.json').finally(renderWeek);
 </script>
 </body>

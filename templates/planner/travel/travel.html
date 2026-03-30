@@ -23,7 +23,7 @@ body.sel-b .mode-b { display: block; }
 .line { display: block; border-bottom: 0.4pt solid #ddd; height: 5.5mm; }
 .mini-line { display: block; border-bottom: 0.4pt solid #ddd; height: 4.5mm; }
 .sq { display: inline-block; width: 3mm; height: 3mm; border: 0.65pt solid #777; margin-right: 1.6mm; vertical-align: middle; }
-.pg-num { position: absolute; bottom: 6mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+.pg-num { position: absolute; bottom: 8mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
 .sec { margin-top: 4mm; }
 .sec-hd { display: flex; justify-content: space-between; align-items: baseline; font-size: 6.5pt; letter-spacing: .14em; text-transform: uppercase; color: #777; font-weight: 600; border-left: 2pt solid #111; padding-left: 3mm; margin-bottom: 2.5mm; }
 .sec-hd em { font-style: normal; font-size: 5pt; color: #bbb; font-weight: 400; letter-spacing: .06em; }
@@ -58,6 +58,7 @@ body.sel-b .mode-b { display: block; }
 .b-tbl td:not(:last-child) { border-right: 0.4pt solid #ddd; }
 .b-tbl td:first-child { width: 14mm; font-size: 6.5pt; font-weight: 600; color: #777; text-align: center; }
 .b-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; }
+.travel-mode-note { font-size: 10px; color: #666; letter-spacing: .06em; white-space: nowrap; }
 @media print {
   body { background: none; }
   .ui, .page-label { display: none !important; }
@@ -86,6 +87,13 @@ body.sel-b .mode-b { display: block; }
       <button class="card active" onclick="setMode('a')"><strong>A</strong> 完整行程 <span style="font-size:9px;opacity:.5">A4直・逐日行程+清單</span></button>
       <button class="card" onclick="setMode('b')"><strong>B</strong> 快速版 <span style="font-size:9px;opacity:.5">A5直・精簡攜帶版</span></button>
     </div>
+    <span class="toolbar-label">旅程</span>
+    <div class="size-cards" id="tripTypeChips">
+      <button type="button" class="card active" data-trip-type="domestic">國內</button>
+      <button type="button" class="card" data-trip-type="international">國際</button>
+    </div>
+    <span class="toolbar-label">天數</span>
+    <div class="size-cards" id="tripDayChips"></div>
     <span class="toolbar-label">尺寸</span>
     <div class="size-cards">
       <button type="button" class="card size-card active" data-print-size="a4">A4</button>
@@ -105,8 +113,8 @@ body.sel-b .mode-b { display: block; }
       <span class="pg-type">Travel Itinerary · 旅行行程表</span>
       <div class="head">
         <div class="head-title">
-          <strong>旅行行程表</strong>
-          <span>travel itinerary</span>
+          <strong id="trip-title-a">國內旅行行程表</strong>
+          <span id="trip-sub-a">domestic itinerary</span>
         </div>
         <div class="meta-grid-3">
           <div class="meta-card"><span class="f-lbl">目的地</span><span class="blank"></span></div>
@@ -128,36 +136,7 @@ body.sel-b .mode-b { display: block; }
             <th style="width:28%">下午 / 晚上</th>
             <th style="width:30%">住宿 / 備注</th>
           </tr>
-          <tr>
-            <td style="text-align:center;font-weight:700;font-size:8pt;color:#555">Day 1</td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-          </tr>
-          <tr>
-            <td style="text-align:center;font-weight:700;font-size:8pt;color:#555">Day 2</td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-          </tr>
-          <tr>
-            <td style="text-align:center;font-weight:700;font-size:8pt;color:#555">Day 3</td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-          </tr>
-          <tr>
-            <td style="text-align:center;font-weight:700;font-size:8pt;color:#555">Day 4</td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-          </tr>
-          <tr>
-            <td style="text-align:center;font-weight:700;font-size:8pt;color:#555">Day 5</td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-            <td><span class="line"></span><span class="mini-line"></span></td>
-          </tr>
+          <tbody id="a-itinerary-body"></tbody>
         </table>
       </div>
       <div class="sec">
@@ -180,10 +159,10 @@ body.sel-b .mode-b { display: block; }
         <div class="sec-hd"><span>行李清單</span><em>packing list</em></div>
         <div class="checklist-3col">
           <div class="checklist-col">
-            <h4>證件類</h4>
-            <div class="chk-row"><span class="sq"></span><span style="font-size:7pt">護照</span></div>
-            <div class="chk-row"><span class="sq"></span><span style="font-size:7pt">簽證</span></div>
-            <div class="chk-row"><span class="sq"></span><span style="font-size:7pt">保險單</span></div>
+            <h4 id="packing-title-a">證件類</h4>
+            <div class="chk-row"><span class="sq"></span><span style="font-size:7pt" id="packing-item-a-1">身分證</span></div>
+            <div class="chk-row"><span class="sq"></span><span style="font-size:7pt" id="packing-item-a-2">駕照</span></div>
+            <div class="chk-row"><span class="sq"></span><span style="font-size:7pt" id="packing-item-a-3">訂房資訊</span></div>
           </div>
           <div class="checklist-col">
             <h4>衣物類</h4>
@@ -209,8 +188,8 @@ body.sel-b .mode-b { display: block; }
       <span class="pg-type">Travel · 精簡版</span>
       <div class="b-head">
         <div style="display:flex;justify-content:space-between;align-items:baseline">
-          <strong style="font-size:14pt;letter-spacing:.04em">旅行行程</strong>
-          <span style="font-size:6pt;color:#bbb;letter-spacing:.1em;text-transform:uppercase">itinerary</span>
+          <strong style="font-size:14pt;letter-spacing:.04em" id="trip-title-b">國內行程</strong>
+          <span style="font-size:6pt;color:#bbb;letter-spacing:.1em;text-transform:uppercase" id="trip-sub-b">domestic</span>
         </div>
         <div class="b-meta">
           <div class="meta-card"><span class="f-lbl">目的地</span><span class="blank"></span></div>
@@ -218,12 +197,9 @@ body.sel-b .mode-b { display: block; }
         </div>
       </div>
       <div class="b-card">
-        <h3>逐日行程</h3>
+        <h3>逐日行程 <span class="travel-mode-note" id="trip-days-note-b">1 天</span></h3>
         <table class="b-tbl">
-          <tr><td>Day 1</td><td></td><td style="width:28mm"></td></tr>
-          <tr><td>Day 2</td><td></td><td></td></tr>
-          <tr><td>Day 3</td><td></td><td></td></tr>
-          <tr><td>Day 4</td><td></td><td></td></tr>
+          <tbody id="b-itinerary-body"></tbody>
         </table>
       </div>
       <div class="b-card">
@@ -258,6 +234,94 @@ const pageStyles = { a: 'A4 portrait', b: 'A5 portrait' };
 let styleTag = document.createElement('style');
 styleTag.id = 'pg-size';
 document.head.appendChild(styleTag);
+let tripType = 'domestic';
+let tripDays = 1;
+
+const DAY_OPTIONS = {
+  domestic: [1, 2, 3],
+  international: [3, 4, 5, 6, 7]
+};
+
+function getTripMeta() {
+  if (tripType === 'international') {
+    return {
+      titleA: '國際旅行行程表',
+      subA: 'international itinerary',
+      titleB: '國際行程',
+      subB: 'international',
+      packingTitle: '國際證件',
+      packingItems: ['護照', '簽證', '保險單']
+    };
+  }
+  return {
+    titleA: '國內旅行行程表',
+    subA: 'domestic itinerary',
+    titleB: '國內行程',
+    subB: 'domestic',
+    packingTitle: '國內證件',
+    packingItems: ['身分證', '駕照', '訂房資訊']
+  };
+}
+
+function renderDayOptions() {
+  const wrap = document.getElementById('tripDayChips');
+  wrap.innerHTML = '';
+  DAY_OPTIONS[tripType].forEach((day) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'card' + (day === tripDays ? ' active' : '');
+    button.dataset.tripDays = String(day);
+    button.textContent = day + ' 天';
+    wrap.appendChild(button);
+  });
+}
+
+function renderItineraryRows() {
+  const aBody = document.getElementById('a-itinerary-body');
+  const bBody = document.getElementById('b-itinerary-body');
+  aBody.innerHTML = '';
+  bBody.innerHTML = '';
+
+  for (let day = 1; day <= tripDays; day++) {
+    const aRow = document.createElement('tr');
+    aRow.innerHTML =
+      '<td style="text-align:center;font-weight:700;font-size:8pt;color:#555">Day ' + day + '</td>' +
+      '<td><span class="line"></span><span class="mini-line"></span></td>' +
+      '<td><span class="line"></span><span class="mini-line"></span></td>' +
+      '<td><span class="line"></span><span class="mini-line"></span></td>';
+    aBody.appendChild(aRow);
+
+    const bRow = document.createElement('tr');
+    bRow.innerHTML =
+      '<td>Day ' + day + '</td>' +
+      '<td></td>' +
+      '<td style="width:28mm"></td>';
+    bBody.appendChild(bRow);
+  }
+}
+
+function renderTripMeta() {
+  const meta = getTripMeta();
+  document.getElementById('trip-title-a').textContent = meta.titleA;
+  document.getElementById('trip-sub-a').textContent = meta.subA;
+  document.getElementById('trip-title-b').textContent = meta.titleB;
+  document.getElementById('trip-sub-b').textContent = meta.subB;
+  document.getElementById('trip-days-note-b').textContent = tripDays + ' 天';
+  document.getElementById('packing-title-a').textContent = meta.packingTitle;
+  document.getElementById('packing-item-a-1').textContent = meta.packingItems[0];
+  document.getElementById('packing-item-a-2').textContent = meta.packingItems[1];
+  document.getElementById('packing-item-a-3').textContent = meta.packingItems[2];
+}
+
+function renderTravel() {
+  renderDayOptions();
+  renderItineraryRows();
+  renderTripMeta();
+  document.querySelectorAll('[data-trip-type]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.tripType === tripType);
+  });
+}
+
 function setMode(mode) {
   document.body.classList.remove('sel-a', 'sel-b');
   document.body.classList.add('template-page', 'sel-' + mode);
@@ -266,12 +330,28 @@ function setMode(mode) {
     card.classList.toggle('active', ['a','b'][index] === mode);
   });
 }
-setMode('a');
-document.querySelectorAll('.pages .page').forEach(p => {
-  p.style.cursor = 'pointer';
-  p.title = '點擊返回首頁';
-  p.addEventListener('click', () => { window.location.href = '../../../index.html'; });
+
+document.getElementById('tripTypeChips').addEventListener('click', (event) => {
+  const button = event.target.closest('[data-trip-type]');
+  if (!button) return;
+  tripType = button.dataset.tripType;
+  if (!DAY_OPTIONS[tripType].includes(tripDays)) {
+    tripDays = DAY_OPTIONS[tripType][0];
+  }
+  renderTravel();
 });
+
+document.getElementById('tripDayChips').addEventListener('click', (event) => {
+  const button = event.target.closest('[data-trip-days]');
+  if (!button) return;
+  tripDays = parseInt(button.dataset.tripDays, 10);
+  renderTravel();
+});
+
+setMode('a');
+renderTravel();
 </script>
 </body>
 </html>
+
+

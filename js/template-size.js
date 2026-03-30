@@ -2,10 +2,18 @@
   if (!document.body || !document.body.classList.contains('template-page')) return;
 
   const SIZE_BUTTON_SELECTOR = '[data-print-size]';
-  const SIZE_ORDER = ['a4', 'a5', 'cut'];
+  const SIZE_ORDER = ['a4', 'b5', 'a5', 'cut'];
+  const SIZE_LABELS = {
+    a4: 'A4',
+    b5: 'B5',
+    a5: 'A5',
+    cut: 'A4裁A5',
+  };
   const SCREEN_PREVIEW_CLASS = 'is-size-preview';
   let sizeMode = 'a4';
   let printStyleTag = null;
+  let refreshTimer = null;
+  let pagesObserver = null;
 
   function ensurePrintStage() {
     let stage = document.getElementById('print-stage');
@@ -24,6 +32,36 @@
       document.head.appendChild(printStyleTag);
     }
     return printStyleTag;
+  }
+
+  function normalizeSizeButtons() {
+    const groups = new Set();
+    document.querySelectorAll(SIZE_BUTTON_SELECTOR).forEach(function (button) {
+      const group = button.closest('.size-cards');
+      if (group) groups.add(group);
+    });
+
+    groups.forEach(function (group) {
+      const existing = new Map();
+      group.querySelectorAll(SIZE_BUTTON_SELECTOR).forEach(function (button) {
+        existing.set(button.dataset.printSize, button);
+      });
+
+      SIZE_ORDER.forEach(function (size) {
+        if (existing.has(size)) return;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'card size-card';
+        button.dataset.printSize = size;
+        button.textContent = SIZE_LABELS[size];
+        existing.set(size, button);
+      });
+
+      group.innerHTML = '';
+      SIZE_ORDER.forEach(function (size) {
+        group.appendChild(existing.get(size));
+      });
+    });
   }
 
   function getVisiblePage() {
@@ -95,6 +133,15 @@
   }
 
   function getTargetSpec(page, source) {
+    if (sizeMode === 'b5') {
+      return {
+        type: 'single',
+        paper: source.orientation === 'landscape' ? 'B5 landscape' : 'B5 portrait',
+        width: source.orientation === 'landscape' ? 257 : 182,
+        height: source.orientation === 'landscape' ? 182 : 257,
+      };
+    }
+
     if (sizeMode === 'a5') {
       return {
         type: 'single',
@@ -176,6 +223,30 @@
     document.body.classList.add(SCREEN_PREVIEW_CLASS);
   }
 
+  function schedulePreviewRefresh() {
+    if (sizeMode === 'a4' || document.body.classList.contains('is-print-staged')) return;
+    window.clearTimeout(refreshTimer);
+    refreshTimer = window.setTimeout(function () {
+      renderScreenPreview();
+    }, 24);
+  }
+
+  function initPagesObserver() {
+    const pages = document.querySelector('.pages');
+    if (!pages || typeof MutationObserver === 'undefined') return;
+
+    pagesObserver = new MutationObserver(function () {
+      schedulePreviewRefresh();
+    });
+
+    pagesObserver.observe(pages, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+      attributes: true,
+    });
+  }
+
   function stagePrintLayout() {
     if (!renderStageLayout()) return;
 
@@ -229,29 +300,13 @@
   window.TemplatePrintSize = {
     getSize: function () { return sizeMode; },
     setSize: setSize,
+    refreshPreview: renderScreenPreview,
     renderScreenPreview: renderScreenPreview,
     stagePrintLayout: stagePrintLayout,
     clearPrintLayout: clearPrintLayout,
   };
 
+  normalizeSizeButtons();
+  initPagesObserver();
   setSize('a4');
-
-  // Update back-link text to full site name, and make each .page clickable → back to homepage
-  (function initSiteNav() {
-    const backLink = document.querySelector('.back-link');
-    if (!backLink) return;
-    backLink.childNodes.forEach(function (node) {
-      if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
-        node.textContent = '\u00a0列印模板庫';
-      }
-    });
-    const indexHref = backLink.href;
-    document.querySelectorAll('.pages .page').forEach(function (page) {
-      page.style.cursor = 'pointer';
-      page.title = '點擊返回首頁';
-      page.addEventListener('click', function () {
-        window.location.href = indexHref;
-      });
-    });
-  })();
 })();

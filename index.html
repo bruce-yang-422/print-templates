@@ -40,6 +40,16 @@
     </div>
   </div>
 
+  <div class="filter-divider"></div>
+
+  <div class="filter-group">
+    <span class="filter-label">檢視</span>
+    <div class="chips" id="viewChips">
+      <button class="chip active" data-view="thumb">圖庫檢視</button>
+      <button class="chip" data-view="card">列表檢視</button>
+    </div>
+  </div>
+
   <div class="result-count" id="resultCount"></div>
 </div>
 
@@ -73,6 +83,28 @@ const TEMPLATES = [
     orient: 'port',
   },
   {
+    id: 'project-brief',
+    name: '專案簡報',
+    category: 'work',
+    sizes: ['a4', 'a5'],
+    tags: ['專案', '簡報'],
+    desc: '專案背景、目標、範圍與交付項目的一頁式整理，適合 kick-off 與需求對齊。',
+    href: 'templates/work/project-brief/project-brief.html',
+    preview: 'previews/work/project-brief.svg',
+    orient: 'port',
+  },
+  {
+    id: 'standup',
+    name: '站會紀錄',
+    category: 'work',
+    sizes: ['a4', 'a5'],
+    tags: ['站會', '同步'],
+    desc: '昨日進度、今日計畫、阻塞與 follow-up，適合每日 standup 快速記錄。',
+    href: 'templates/work/standup/standup.html',
+    preview: 'previews/work/standup.svg',
+    orient: 'port',
+  },
+  {
     id: 'daily-plan',
     name: '日計畫',
     category: 'planner',
@@ -103,6 +135,39 @@ const TEMPLATES = [
     desc: '動態年月月曆、自動週數計算與目標追蹤區塊。',
     href: 'templates/planner/monthly/monthly.html',
     preview: 'previews/planner/monthly.svg',
+    orient: 'land',
+  },
+  {
+    id: 'quarterly-plan',
+    name: '季計畫',
+    category: 'planner',
+    sizes: ['a4', 'a5'],
+    tags: ['季計畫', 'Q1-Q4'],
+    desc: '全年一覽與單季深度規劃雙模式，適合季度目標、里程碑與行動拆解。',
+    href: 'templates/planner/quarterly/quarterly.html',
+    preview: 'previews/planner/quarterly.svg',
+    orient: 'land',
+  },
+  {
+    id: 'travel-itinerary',
+    name: '旅行行程表',
+    category: 'planner',
+    sizes: ['a4', 'a5'],
+    tags: ['旅行', '行程'],
+    desc: '完整逐日行程與 A5 快速攜帶版，適合旅遊規劃、住宿與行李整理。',
+    href: 'templates/planner/travel/travel.html',
+    preview: 'previews/planner/travel.svg',
+    orient: 'port',
+  },
+  {
+    id: 'yearly-plan',
+    name: '年計畫',
+    category: 'planner',
+    sizes: ['a4', 'a5'],
+    tags: ['年計畫', '12個月'],
+    desc: '12 個月一覽與年度主題版，適合全年節奏、季度安排與月度重點規劃。',
+    href: 'templates/planner/yearly/yearly.html',
+    preview: 'previews/planner/yearly.svg',
     orient: 'land',
   },
   {
@@ -147,6 +212,39 @@ const TEMPLATES = [
     desc: '主題整理、關鍵字、下一步與摘要區塊，適合閱讀、研究、工作拆解與訪談紀錄。',
     href: 'templates/notes/topic-notes/topic-notes.html',
     preview: 'previews/notes/topic-notes.svg',
+    orient: 'port',
+  },
+  {
+    id: 'bujo-index',
+    name: '子彈筆記索引頁',
+    category: 'notes',
+    sizes: ['a4', 'a5'],
+    tags: ['BuJo', '索引', '集合'],
+    desc: '頁碼、主題與集合索引整理，適合 bullet journal 的總索引與快速查找。',
+    href: 'templates/notes/bujo-index/bujo-index.html',
+    preview: 'previews/notes/bujo-index.svg',
+    orient: 'port',
+  },
+  {
+    id: 'reading-notes',
+    name: '讀書筆記',
+    category: 'notes',
+    sizes: ['a4', 'a5'],
+    tags: ['閱讀', '摘錄', '摘要'],
+    desc: '書籍資訊、金句摘錄、重點整理與行動欄位，適合閱讀後整理輸出。',
+    href: 'templates/notes/reading-notes/reading-notes.html',
+    preview: 'previews/notes/reading-notes.svg',
+    orient: 'port',
+  },
+  {
+    id: 'dot-grid',
+    name: '方格 / 點陣空白頁',
+    category: 'notes',
+    sizes: ['a4', 'a5'],
+    tags: ['空白頁', '方格', '點陣', '米字格'],
+    desc: '提供方格紙、點陣紙與硬筆練字米字格，適合草圖、手帳、筆記與書寫練習。',
+    href: 'templates/notes/dot-grid/dot-grid.html',
+    preview: 'previews/notes/dot-grid.svg',
     orient: 'port',
   },
   {
@@ -219,6 +317,7 @@ const TEMPLATES = [
 
 let activeCat = 'all';
 let activeSize = 'all';
+let activeView = localStorage.getItem('indexViewMode') || 'thumb';
 
 const CAT_NAMES = {
   all: '所有模板',
@@ -231,6 +330,60 @@ const CAT_NAMES = {
   marketing: '行銷模板',
 };
 
+const CAT_ORDER = ['planner', 'work', 'meeting', 'goals', 'notes', 'ecommerce', 'marketing'];
+
+const CAT_META = {
+  planner: { name: '計畫模板', desc: '日程、週期、年季月規劃與旅行安排' },
+  work: { name: '工作模板', desc: '日誌、報告、站會與專案啟動整理' },
+  meeting: { name: '會議模板', desc: '議題、決議、行動項目與 follow-up' },
+  goals: { name: '目標模板', desc: '拆解主題、里程碑與 OKR 草稿' },
+  notes: { name: '筆記模板', desc: '閱讀、BuJo、Cornell 與空白書寫頁' },
+  ecommerce: { name: '電商模板', desc: '上架、定價、活動與營運追蹤' },
+  marketing: { name: '行銷模板', desc: '社群排程、內容月曆與發布節奏' },
+};
+
+function createTemplateCard(template) {
+  const card = document.createElement('article');
+  card.className = 'tpl-card' + (activeView === 'card' ? ' tpl-card-list' : '');
+
+  const sizeTags = template.sizes
+    .map((size) => '<span class="tag tag-size">' + size.toUpperCase() + '</span>')
+    .join('');
+
+  const topicTags = template.tags
+    .map((tag) => '<span class="tag">' + tag + '</span>')
+    .join('');
+
+  card.innerHTML = `
+    ${activeView === 'thumb' ? `
+    <div class="tpl-thumb${template.orient === 'land' ? ' land' : ''}">
+      <img class="tpl-preview-img" src="${template.preview}" alt="${template.name} 預覽圖" loading="lazy">
+    </div>` : ''}
+    <div class="tpl-info${activeView === 'card' ? ' tpl-info-list' : ''}">
+      <div class="tpl-name">${template.name}</div>
+      <div class="tpl-tags">${sizeTags}${topicTags}</div>
+      <div class="tpl-desc">${template.desc}</div>
+      <div class="tpl-action">
+        <a href="${template.href}" class="btn-open">開啟模板</a>
+      </div>
+    </div>`;
+
+  card.addEventListener('click', (event) => {
+    if (!event.target.closest('.btn-open')) {
+      window.location.href = template.href;
+    }
+  });
+
+  return card;
+}
+
+function renderGrid(grid, items) {
+  grid.className = 'template-grid ' + (activeView === 'card' ? 'view-card' : 'view-thumb');
+  items.forEach((template) => {
+    grid.appendChild(createTemplateCard(template));
+  });
+}
+
 function render() {
   const filtered = TEMPLATES.filter((template) => {
     const catOk = activeCat === 'all' || template.category === activeCat;
@@ -239,6 +392,7 @@ function render() {
   });
 
   const grid = document.getElementById('templateGrid');
+  grid.className = 'template-groups';
   grid.innerHTML = '';
 
   document.getElementById('sectionTitle').textContent = CAT_NAMES[activeCat] || '所有模板';
@@ -249,39 +403,38 @@ function render() {
     return;
   }
 
-  filtered.forEach((template) => {
-    const card = document.createElement('article');
-    card.className = 'tpl-card';
+  if (activeCat === 'all') {
+    CAT_ORDER.forEach((category) => {
+      const items = filtered.filter((template) => template.category === category);
+      if (!items.length) return;
 
-    const sizeTags = template.sizes
-      .map((size) => '<span class="tag tag-size">' + size.toUpperCase() + '</span>')
-      .join('');
+      const group = document.createElement('section');
+      group.className = 'tpl-group';
 
-    const topicTags = template.tags
-      .map((tag) => '<span class="tag">' + tag + '</span>')
-      .join('');
+      const meta = CAT_META[category] || { name: CAT_NAMES[category] || category, desc: '' };
+      group.innerHTML = `
+        <div class="tpl-group-head">
+          <div>
+            <div class="tpl-group-title">${meta.name}</div>
+            <div class="tpl-group-sub">${meta.desc}</div>
+          </div>
+          <div class="tpl-group-count">${items.length} 個</div>
+        </div>`;
 
-    card.innerHTML = `
-      <div class="tpl-thumb${template.orient === 'land' ? ' land' : ''}">
-        <img class="tpl-preview-img" src="${template.preview}" alt="${template.name} 預覽圖" loading="lazy">
-      </div>
-      <div class="tpl-info">
-        <div class="tpl-name">${template.name}</div>
-        <div class="tpl-tags">${sizeTags}${topicTags}</div>
-        <div class="tpl-desc">${template.desc}</div>
-        <div class="tpl-action">
-          <a href="${template.href}" class="btn-open">開啟模板</a>
-        </div>
-      </div>`;
-
-    card.addEventListener('click', (event) => {
-      if (!event.target.closest('.btn-open')) {
-        window.location.href = template.href;
-      }
+      const groupGrid = document.createElement('div');
+      renderGrid(groupGrid, items);
+      group.appendChild(groupGrid);
+      grid.appendChild(group);
     });
+    return;
+  }
 
-    grid.appendChild(card);
-  });
+  const singleGroup = document.createElement('section');
+  singleGroup.className = 'tpl-group tpl-group-single';
+  const groupGrid = document.createElement('div');
+  renderGrid(groupGrid, filtered);
+  singleGroup.appendChild(groupGrid);
+  grid.appendChild(singleGroup);
 }
 
 document.getElementById('catChips').addEventListener('click', (event) => {
@@ -298,6 +451,19 @@ document.getElementById('sizeChips').addEventListener('click', (event) => {
   activeSize = button.dataset.size;
   document.querySelectorAll('[data-size]').forEach((chip) => chip.classList.toggle('active', chip === button));
   render();
+});
+
+document.getElementById('viewChips').addEventListener('click', (event) => {
+  const button = event.target.closest('[data-view]');
+  if (!button) return;
+  activeView = button.dataset.view;
+  localStorage.setItem('indexViewMode', activeView);
+  document.querySelectorAll('[data-view]').forEach((chip) => chip.classList.toggle('active', chip === button));
+  render();
+});
+
+document.querySelectorAll('[data-view]').forEach((chip) => {
+  chip.classList.toggle('active', chip.dataset.view === activeView);
 });
 
 render();

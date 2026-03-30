@@ -26,6 +26,7 @@ body.sel-b .mode-b { display: block; }
 @media print {
   .ui, .note-label { display: none !important; }
   .note-pages { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
   .mode-a, .mode-b { display: none !important; }
   body.sel-a .mode-a { display: block !important; }
   body.sel-b .mode-b { display: block !important; }
@@ -184,3 +185,5 @@ setMode('a');
 </script>
 </body>
 </html>
+
+

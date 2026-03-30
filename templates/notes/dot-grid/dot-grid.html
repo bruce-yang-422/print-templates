@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方格 / 點陣空白頁模板</title>
+<link rel="stylesheet" href="../../../css/style.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.mode-a, .mode-b, .mode-c { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+body.sel-c .mode-c { display: block; }
+.grid-pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.grid-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.grid-shell { height: 297mm; padding: 9mm 10mm 8mm; display: flex; flex-direction: column; gap: 4mm; }
+.grid-kicker { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; }
+.grid-head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 0.75pt solid #111; padding-bottom: 3.4mm; }
+.grid-head strong { font-size: 16pt; letter-spacing: .04em; }
+.grid-head span { font-size: 6pt; letter-spacing: .12em; text-transform: uppercase; color: #bbb; }
+.grid-note { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3mm; }
+.field-label { display: block; font-size: 5.5pt; letter-spacing: .1em; color: #aaa; text-transform: uppercase; margin-bottom: 1mm; }
+.field-blank { display: block; border-bottom: 0.5pt solid #ccc; height: 5mm; }
+.paper-zone { flex: 1; border: 0.4pt solid #ddd; position: relative; overflow: hidden; background: #fff; }
+.square-fill {
+  background-image:
+    linear-gradient(to right, #e5e5e5 1px, transparent 1px),
+    linear-gradient(to bottom, #e5e5e5 1px, transparent 1px);
+  background-size: 8mm 8mm;
+}
+.dot-fill {
+  background-image: radial-gradient(circle, rgba(130,130,130,.55) 0.48mm, transparent 0.5mm);
+  background-size: 8mm 8mm;
+  background-position: 4mm 4mm;
+}
+.rice-fill {
+  background-image:
+    linear-gradient(to right, #e5e5e5 1px, transparent 1px),
+    linear-gradient(to bottom, #e5e5e5 1px, transparent 1px),
+    linear-gradient(to right, transparent calc(50% - 0.35px), rgba(170,170,170,.8) calc(50% - 0.35px) calc(50% + 0.35px), transparent calc(50% + 0.35px)),
+    linear-gradient(to bottom, transparent calc(50% - 0.35px), rgba(170,170,170,.8) calc(50% - 0.35px) calc(50% + 0.35px), transparent calc(50% + 0.35px)),
+    linear-gradient(45deg, transparent 49.4%, rgba(170,170,170,.76) 49.4% 50.6%, transparent 50.6%),
+    linear-gradient(-45deg, transparent 49.4%, rgba(170,170,170,.76) 49.4% 50.6%, transparent 50.6%);
+  background-size: 16mm 16mm, 16mm 16mm, 16mm 16mm, 16mm 16mm, 16mm 16mm, 16mm 16mm;
+}
+.grid-foot { display: grid; grid-template-columns: 1fr .8fr; gap: 3mm; }
+.foot-card { border: 0.4pt solid #ddd; padding: 2.4mm 3mm; }
+.line { display: block; border-bottom: 0.4pt solid #ddd; height: 5mm; }
+.pg-num { position: absolute; bottom: 8mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+@media print {
+  .ui, .grid-label { display: none !important; }
+  .grid-pages { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b, .mode-c { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+  body.sel-c .mode-c { display: block !important; }
+}
+</style>
+</head>
+<body class="template-page sel-a">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      列印模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">方格 / 點陣空白頁 <small>Grid / Dot Grid</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 方格紙 <span style="font-size:9px;opacity:.5">A4直・8mm grid</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 點陣紙 <span style="font-size:9px;opacity:.5">A4直・8mm dot grid</span></button>
+      <button class="card" onclick="setMode('c')"><strong>C</strong> 米字格 <span style="font-size:9px;opacity:.5">A4直・硬筆練字</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="pages grid-pages">
+  <div class="grid-label mode-a">▸ 模式 A — A4 直向・方格紙</div>
+  <div class="page page-port mode-a">
+    <div class="grid-shell">
+      <span class="grid-kicker">Blank Page · Square Grid</span>
+      <div class="grid-head">
+        <strong>方格空白頁</strong>
+        <span>grid paper</span>
+      </div>
+      <div class="grid-note">
+        <div><span class="field-label">主題</span><span class="field-blank"></span></div>
+        <div><span class="field-label">日期</span><span class="field-blank"></span></div>
+        <div><span class="field-label">用途</span><span class="field-blank"></span></div>
+      </div>
+      <div class="paper-zone square-fill"></div>
+      <div class="grid-foot">
+        <div class="foot-card"><span class="field-label">備注</span><span class="line"></span></div>
+        <div class="foot-card"><span class="field-label">頁碼</span><span class="line"></span></div>
+      </div>
+    </div>
+    <div class="pg-num">A · Grid</div>
+  </div>
+
+  <div class="grid-label mode-b">▸ 模式 B — A4 直向・點陣紙</div>
+  <div class="page page-port mode-b">
+    <div class="grid-shell">
+      <span class="grid-kicker">Blank Page · Dot Grid</span>
+      <div class="grid-head">
+        <strong>點陣空白頁</strong>
+        <span>dot grid</span>
+      </div>
+      <div class="grid-note">
+        <div><span class="field-label">主題</span><span class="field-blank"></span></div>
+        <div><span class="field-label">日期</span><span class="field-blank"></span></div>
+        <div><span class="field-label">用途</span><span class="field-blank"></span></div>
+      </div>
+      <div class="paper-zone dot-fill"></div>
+      <div class="grid-foot">
+        <div class="foot-card"><span class="field-label">備注</span><span class="line"></span></div>
+        <div class="foot-card"><span class="field-label">頁碼</span><span class="line"></span></div>
+      </div>
+    </div>
+    <div class="pg-num">B · Dot</div>
+  </div>
+
+  <div class="grid-label mode-c">▸ 模式 C — A4 直向・硬筆練字米字格</div>
+  <div class="page page-port mode-c">
+    <div class="grid-shell">
+      <span class="grid-kicker">Blank Page · Rice Grid Practice</span>
+      <div class="grid-head">
+        <strong>米字格空白頁</strong>
+        <span>rice grid</span>
+      </div>
+      <div class="grid-note">
+        <div><span class="field-label">字帖主題</span><span class="field-blank"></span></div>
+        <div><span class="field-label">日期</span><span class="field-blank"></span></div>
+        <div><span class="field-label">練習內容</span><span class="field-blank"></span></div>
+      </div>
+      <div class="paper-zone rice-fill"></div>
+      <div class="grid-foot">
+        <div class="foot-card"><span class="field-label">備注</span><span class="line"></span></div>
+        <div class="foot-card"><span class="field-label">頁碼</span><span class="line"></span></div>
+      </div>
+    </div>
+    <div class="pg-num">C · Rice</div>
+  </div>
+</div>
+
+<script src="../../../js/template-size.js"></script>
+<script>
+const pageStyles = { a: 'A4 portrait', b: 'A4 portrait', c: 'A4 portrait' };
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
+    card.classList.toggle('active', ['a', 'b', 'c'][index] === mode);
+  });
+}
+
+setMode('a');
+</script>
+</body>
+</html>

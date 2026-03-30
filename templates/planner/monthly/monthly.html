@@ -28,10 +28,18 @@ body.sel-b .mode-b { display: block; }
 .lc      { border-bottom: 0.4pt solid #ddd; height: 5mm; display: block; }
 .sq      { display: inline-block; width: 3mm; height: 3mm; border: 0.65pt solid #777; }
 .ck-sq   { display: inline-block; width: 2.8mm; height: 2.8mm; border: 0.6pt solid #999; vertical-align: middle; margin-right: 1mm; }
-.pg-num  { position: absolute; bottom: 8mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+.pg-num  { position: absolute; bottom: 10mm; right: 12mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
 
 /* ════ Mode A：月曆格 A4橫 ════ */
-.cal-wrap  { width: 100%; height: 100%; display: flex; flex-direction: column; min-height: 0; padding: 0 6mm 8mm var(--bind-gap); box-sizing: border-box; }
+.cal-wrap  {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 4mm 8mm 12mm calc(var(--bind-gap) + 3mm);
+  box-sizing: border-box;
+}
 .cal-head  { padding: 7mm 12mm 4mm; border-bottom: 0.75pt solid #111; display: flex; align-items: baseline; gap: 8mm; flex-shrink: 0; }
 .cal-month { font-size: 18pt; font-weight: 700; letter-spacing: .04em; line-height: 1; }
 .cal-sub   { font-size: 6pt; color: #aaa; letter-spacing: .12em; }
@@ -57,7 +65,14 @@ body.sel-b .mode-b { display: block; }
 .cal-line { border-bottom: 0.4pt solid #efefef; flex: 1; margin-bottom: 0.5mm; }
 
 /* ════ Mode B：目標追蹤 A4橫 ════ */
-.trk-wrap  { width: 100%; height: 100%; display: flex; min-height: 0; padding: 0 6mm 8mm var(--bind-gap); box-sizing: border-box; }
+.trk-wrap  {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  min-height: 0;
+  padding: 4mm 8mm 12mm calc(var(--bind-gap) + 3mm);
+  box-sizing: border-box;
+}
 
 /* 左側：月曆（縮小版） */
 .trk-cal   { width: 46%; border-right: 0.75pt solid #111; display: flex; flex-direction: column; min-height: 0; }
@@ -87,12 +102,12 @@ body.sel-b .mode-b { display: block; }
 .trk-g-num { font-size: 8pt; font-weight: 700; color: #ccc; }
 .trk-bar   { display: flex; gap: 1mm; margin-top: 2mm; }
 .trk-tick  { width: 5mm; height: 3mm; border: 0.5pt solid #ddd; flex-shrink: 0; }
-.trk-notes { flex: 1; border-top: 0.75pt solid #111; padding-top: 4mm; margin-top: auto; }
-.trk-note-line { border-bottom: 0.4pt solid #ddd; height: 5.5mm; display: block; margin-bottom: 0; }
+.trk-notes { flex: 1; border-top: 0.75pt solid #111; padding-top: 4mm; margin-top: auto; display: flex; flex-direction: column; min-height: 0; }
+.trk-note-line { border-bottom: 0.4pt solid #ddd; min-height: 5.5mm; flex: 1; display: block; margin-bottom: 0; }
 
-.page.mode-a .cal-head { padding: 7mm 6mm 4mm !important; }
-.page.mode-b .trk-ch { padding: 7mm 6mm 4mm !important; }
-.page.mode-b .trk-right { padding: 7mm 6mm 7mm 10mm !important; }
+.page.mode-a .cal-head { padding: 6mm 5mm 4mm !important; }
+.page.mode-b .trk-ch { padding: 6mm 5mm 4mm !important; }
+.page.mode-b .trk-right { padding: 6mm 5mm 6mm 8mm !important; }
 
 /* ════ Print ════ */
 @media print {
@@ -135,6 +150,9 @@ body.sel-b .mode-b { display: block; }
 
     <div class="date-picker">
       <span class="toolbar-label" style="margin-left:8px">年月</span>
+      <button type="button" class="picker-btn" onclick="shiftMonth(-1)" aria-label="上個月" title="上個月">
+        <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M7.5 2.5L4 6l3.5 3.5"/></svg>
+      </button>
       <select class="date-select" id="sel-year" onchange="renderCal()"></select>
       <span class="picker-sep" style="color:#555;font-size:11px">年</span>
       <select class="date-select" id="sel-month" onchange="renderCal()">
@@ -146,6 +164,9 @@ body.sel-b .mode-b { display: block; }
         <option value="11">11 月</option><option value="12">12 月</option>
       </select>
       <span class="picker-sep" style="color:#555;font-size:11px">月</span>
+      <button type="button" class="picker-btn" onclick="shiftMonth(1)" aria-label="下個月" title="下個月">
+        <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4.5 2.5L8 6l-3.5 3.5"/></svg>
+      </button>
     </div>
 
     <div class="toolbar-right">
@@ -173,13 +194,13 @@ body.sel-b .mode-b { display: block; }
 
     <!-- 星期欄頭 -->
     <div class="cal-weekdays">
+      <div class="cal-wday sun">日</div>
       <div class="cal-wday">一</div>
       <div class="cal-wday">二</div>
       <div class="cal-wday">三</div>
       <div class="cal-wday">四</div>
       <div class="cal-wday">五</div>
       <div class="cal-wday sat">六</div>
-      <div class="cal-wday sun">日</div>
     </div>
 
     <div class="cal-grid" id="cal-grid-a"></div>
@@ -203,8 +224,8 @@ body.sel-b .mode-b { display: block; }
         </div>
       </div>
       <div class="trk-wdays">
-        <div class="trk-wday">一</div><div class="trk-wday">二</div><div class="trk-wday">三</div>
-        <div class="trk-wday">四</div><div class="trk-wday">五</div><div class="trk-wday">六</div><div class="trk-wday">日</div>
+        <div class="trk-wday">日</div><div class="trk-wday">一</div><div class="trk-wday">二</div>
+        <div class="trk-wday">三</div><div class="trk-wday">四</div><div class="trk-wday">五</div><div class="trk-wday">六</div>
       </div>
       <div class="trk-grid" id="trk-grid-b"></div>
     </div>
@@ -280,7 +301,7 @@ function daysInMonth(year, month) {
 
 function firstDayOffset(year, month) {
   const firstDay = new Date(year, month - 1, 1).getDay();
-  return (firstDay + 6) % 7;
+  return firstDay;
 }
 
 function buildGridA(year, month) {
@@ -296,8 +317,8 @@ function buildGridA(year, month) {
     const day = i - offset + 1;
     const isEmpty = day < 1 || day > total;
     const col = i % 7;
-    const isSat = col === 5;
-    const isSun = col === 6;
+    const isSun = col === 0;
+    const isSat = col === 6;
     const cell = document.createElement('div');
     cell.className = 'cal-cell' +
       (isEmpty ? ' empty' : '') +
@@ -358,8 +379,8 @@ function buildGridB(year, month) {
     const day = i - offset + 1;
     const isEmpty = day < 1 || day > total;
     const col = i % 7;
-    const isSat = col === 5;
-    const isSun = col === 6;
+    const isSun = col === 0;
+    const isSat = col === 6;
     const cell = document.createElement('div');
     cell.className = 'trk-cell' +
       (isEmpty ? ' empty' : '') +
@@ -417,6 +438,35 @@ function renderCal() {
 
   buildGridA(year, month);
   buildGridB(year, month);
+}
+
+function shiftMonth(delta) {
+  const yearSelect = document.getElementById('sel-year');
+  const monthSelect = document.getElementById('sel-month');
+  let year = parseInt(yearSelect.value, 10);
+  let month = parseInt(monthSelect.value, 10) + delta;
+
+  if (month < 1) {
+    month = 12;
+    year -= 1;
+  } else if (month > 12) {
+    month = 1;
+    year += 1;
+  }
+
+  if (![...yearSelect.options].some((option) => parseInt(option.value, 10) === year)) {
+    const option = document.createElement('option');
+    option.value = year;
+    option.textContent = year;
+    yearSelect.appendChild(option);
+    [...yearSelect.options]
+      .sort((a, b) => parseInt(a.value, 10) - parseInt(b.value, 10))
+      .forEach((option) => yearSelect.appendChild(option));
+  }
+
+  yearSelect.value = String(year);
+  monthSelect.value = String(month);
+  renderCal();
 }
 
 let st = document.createElement('style');
