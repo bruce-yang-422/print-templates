@@ -1,3 +1,59 @@
-<!DOCTYPE html><html lang="zh-TW"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>睡眠追蹤表 Sleep Tracker</title><link rel="stylesheet" href="../../../css/style.css"><style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;color:#1a1a1a}a{color:inherit;text-decoration:none}.pages-wrap{padding:104px 0 48px;display:flex;flex-direction:column;align-items:center;gap:24px}.page-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#999;padding-bottom:6px}.meter-card{border:0.4pt solid #ddd;padding:3mm}.meter-dots{display:flex;gap:2.2mm}.meter-dots span{width:5mm;height:5mm;border:0.6pt solid #bbb;border-radius:999px}@media print{.ui,.page-label{display:none!important}.pages-wrap{padding:0!important;gap:0!important}.page{box-shadow:none!important;page-break-after:always;break-after:page}}</style></head><body class="template-page"><div class="ui"><div class="ui-nav"><a href="../../../index.html" class="back-link"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>列印模板庫</a><span class="nav-sep">/</span><div class="ui-title">睡眠追蹤表 <small>Sleep Tracker</small></div></div><div class="ui-toolbar"><span class="toolbar-label">尺寸</span><div class="size-cards"><button type="button" class="card size-card active" data-print-size="a4">A4</button><button type="button" class="card size-card" data-print-size="a5">A5</button><button type="button" class="card size-card" data-print-size="cut">A4裁A5</button></div><div class="toolbar-right"><span class="hint">Chrome → 存PDF → 邊距「無」</span><button class="btn-print" onclick="window.print()">列印 / 存 PDF</button></div></div></div><div class="pages pages-wrap"><div class="page-label">▸ A4 直向・睡眠時間與品質紀錄</div><div class="page page-port"><div class="pr-shell"><span class="pr-kicker">睡眠追蹤表 · Sleep Tracker</span><div class="pr-header-band"><div class="pr-title-row"><strong>睡眠追蹤表</strong><span>入睡 / 起床 / 品質 / 作息</span></div><div class="pr-meta-grid cols-4"><div><span class="pr-field-label">日期</span><span class="pr-field-blank"></span></div><div><span class="pr-field-label">入睡時間</span><span class="pr-field-blank"></span></div><div><span class="pr-field-label">起床時間</span><span class="pr-field-blank"></span></div><div><span class="pr-field-label">總時數</span><span class="pr-field-blank"></span></div></div></div><div class="pr-grid-2"><div class="meter-card"><div class="pr-card-title"><span>睡眠品質</span><em>品質評分</em></div><div class="meter-dots"><span></span><span></span><span></span><span></span><span></span></div></div><div class="pr-card"><div class="pr-card-title"><span>夜間中斷 / 夢境 / 干擾</span><em>夜間狀況</em></div><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span></div></div></div><div class="pr-grid-2"><div class="pr-card"><div class="pr-card-title"><span>睡前儀式</span><em>睡前流程</em></div><div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div><div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div><div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div></div><div class="pr-card"><div class="pr-card-title"><span>早晨狀態</span><em>醒來後感受</em></div><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span></div></div></div><div class="pr-summary-box"><span class="pr-field-label">今天睡眠觀察與下一步調整</span><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span></div></div></div></div></div><script src="../../../js/template-size.js"></script><script>let styleTag=document.createElement('style');styleTag.textContent='@media print { @page { size: A4 portrait; margin: 0; } }';document.head.appendChild(styleTag);</script></body></html>
-
-
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>睡眠追蹤表 Sleep Tracker</title>
+<link rel="stylesheet" href="../../../css/style.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;color:#1a1a1a}
+a{color:inherit;text-decoration:none}
+.mode-a,.mode-b{display:none}
+body.sel-a .mode-a{display:block}
+body.sel-b .mode-b{display:block}
+.pages-wrap{padding:104px 0 48px;display:flex;flex-direction:column;align-items:center;gap:24px}
+.page-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#999;padding-bottom:6px}
+.meter-card{border:0.4pt solid #ddd;padding:3mm}
+.meter-dots{display:flex;gap:2.2mm}
+.meter-dots span{width:5mm;height:5mm;border:0.6pt solid #bbb;border-radius:999px}
+.example-chip{display:inline-flex;align-items:center;gap:1.8mm;padding:1mm 2.2mm;border:0.5pt solid #d7d7d7;border-radius:999px;font-size:5.4pt;color:#666}
+.example-chip::before{content:'';width:3.2mm;height:3.2mm;border-radius:999px;border:0.6pt solid #bbb}
+@media print{.ui,.page-label{display:none!important}.pages-wrap{padding:0!important;gap:0!important}.page{box-shadow:none!important;page-break-after:always;break-after:page}.mode-a,.mode-b{display:none!important}body.sel-a .mode-a{display:block!important}body.sel-b .mode-b{display:block!important}}
+</style>
+</head>
+<body class="template-page sel-a">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>列印模板庫</a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">睡眠追蹤表 <small>Sleep Tracker</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 空白版 <span style="font-size:9px;opacity:.5">A4直・睡眠記錄</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 範例頁 <span style="font-size:9px;opacity:.5">A4直・預填內容</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards"><button type="button" class="card size-card active" data-print-size="a4">A4</button><button type="button" class="card size-card" data-print-size="a5">A5</button><button type="button" class="card size-card" data-print-size="cut">A4裁A5</button></div>
+    <div class="toolbar-right"><span class="hint">Chrome → 存PDF → 邊距「無」</span><button class="btn-print" onclick="window.print()">列印 / 存 PDF</button></div>
+  </div>
+</div>
+<div class="pages pages-wrap">
+  <div class="page-label mode-a">▸ 模式 A — A4 直向・睡眠時間與品質紀錄</div>
+  <div class="page page-port mode-a"><div class="pr-shell"><span class="pr-kicker">睡眠追蹤表 · Sleep Tracker</span><div class="pr-header-band"><div class="pr-title-row"><strong>睡眠追蹤表</strong><span>入睡 / 起床 / 品質 / 作息</span></div><div class="pr-meta-grid cols-4"><div><span class="pr-field-label">日期</span><span class="pr-field-blank"></span></div><div><span class="pr-field-label">入睡時間</span><span class="pr-field-blank"></span></div><div><span class="pr-field-label">起床時間</span><span class="pr-field-blank"></span></div><div><span class="pr-field-label">總時數</span><span class="pr-field-blank"></span></div></div></div><div class="pr-grid-2"><div class="meter-card"><div class="pr-card-title"><span>睡眠品質</span><em>品質評分</em></div><div class="meter-dots"><span></span><span></span><span></span><span></span><span></span></div></div><div class="pr-card"><div class="pr-card-title"><span>夜間中斷 / 夢境 / 干擾</span><em>夜間狀況</em></div><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span></div></div></div><div class="pr-grid-2"><div class="pr-card"><div class="pr-card-title"><span>睡前儀式</span><em>睡前流程</em></div><div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div><div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div><div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div></div><div class="pr-card"><div class="pr-card-title"><span>早晨狀態</span><em>醒來後感受</em></div><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span></div></div></div><div class="pr-summary-box"><span class="pr-field-label">今天睡眠觀察與下一步調整</span><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span></div></div></div></div>
+  <div class="page-label mode-b">▸ 模式 B — A4 直向・睡眠記錄範例頁</div>
+  <div class="page page-port mode-b"><div class="pr-shell"><span class="pr-kicker">睡眠追蹤表 · Example</span><div class="pr-header-band"><div class="pr-title-row"><strong>睡眠追蹤表範例</strong><span>平日作息調整觀察</span></div><div class="pr-meta-grid cols-4"><div><span class="pr-field-label">日期</span><span class="fill-text">2026-03-31</span></div><div><span class="pr-field-label">入睡時間</span><span class="fill-text">23:40</span></div><div><span class="pr-field-label">起床時間</span><span class="fill-text">07:10</span></div><div><span class="pr-field-label">總時數</span><span class="fill-text">7 小時 30 分</span></div></div></div><div class="pr-grid-2"><div class="meter-card"><div class="pr-card-title"><span>睡眠品質</span><em>品質評分</em></div><div class="meter-dots"><span style="background:#f5f5f5"></span><span style="background:#f5f5f5"></span><span style="background:#f5f5f5"></span><span style="background:#f5f5f5"></span><span></span></div><div style="margin-top:2mm"><span class="fill-text">4 / 5，整體算穩定</span></div></div><div class="pr-card"><div class="pr-card-title"><span>夜間中斷 / 夢境 / 干擾</span><em>夜間狀況</em></div><div class="fill-text">凌晨 3:20 醒一次，約 10 分鐘後再次入睡。睡前滑手機較久，入睡偏慢。</div></div></div><div class="pr-grid-2"><div class="pr-card"><div class="pr-card-title"><span>睡前儀式</span><em>睡前流程</em></div><div style="display:flex;flex-direction:column;gap:1.8mm"><span class="example-chip">11:00 後不喝咖啡</span><span class="example-chip">睡前伸展 8 分鐘</span><span class="example-chip">手機提前 20 分鐘放下</span></div></div><div class="pr-card"><div class="pr-card-title"><span>早晨狀態</span><em>醒來後感受</em></div><div class="fill-text">醒來不算賴床，精神普通偏好。上午 10 點前專注度穩定，但中午前有些疲倦。</div></div></div><div class="pr-summary-box"><span class="pr-field-label">今天睡眠觀察與下一步調整</span><div class="fill-text">昨天睡前資訊輸入太多，影響入睡速度。今晚改成 11:10 後只看紙本，觀察是否能提早 15 分鐘入睡。</div></div></div></div>
+</div>
+<script src="../../../js/template-size.js"></script>
+<script>
+const pageStyles={a:'A4 portrait',b:'A4 portrait'};
+let styleTag=document.createElement('style');
+styleTag.id='pg-size';
+document.head.appendChild(styleTag);
+function setMode(mode){document.body.classList.remove('sel-a','sel-b');document.body.classList.add('template-page','sel-'+mode);styleTag.textContent='@media print { @page { size: '+pageStyles[mode]+'; margin: 0; } }';document.querySelectorAll('.mode-cards .card').forEach((card,index)=>card.classList.toggle('active',['a','b'][index]===mode))}
+setMode('a');
+</script>
+</body>
+</html>

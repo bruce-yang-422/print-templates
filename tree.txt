@@ -1,45 +1,185 @@
-¶C•X∏ÍÆ∆ß® PATH
-∫œ∫–∞œß«∏π¨∞ 78AD-CCB5
-D:\TOOLS\PRINT-TEMPLATES
-+---assets
-|   +---fonts
-|   \---images
-+---css
-+---js
-+---previews
-|   +---ecommerce
-|   +---goals
-|   +---marketing
-|   +---meeting
-|   +---notes
-|   +---planner
-|   \---work
-\---templates
-    +---cornell
-    +---ecommerce
-    |   +---pricing
-    |   +---product-listing
-    |   +---promo-plan
-    |   \---weekly-ops
-    +---goals
-    +---marketing
-    |   +---content-calendar
-    |   \---social-plan
-    +---meeting
-    +---notes
-    |   +---bujo-index
-    |   +---dot-grid
-    |   +---reading-notes
-    |   \---topic-notes
-    +---planner
-    |   +---daily
-    |   +---monthly
-    |   +---quarterly
-    |   +---travel
-    |   +---weekly
-    |   \---yearly
-    +---work
-    |   +---project-brief
-    |   +---report
-    |   \---standup
-    \---work-journal
+print-templates
++-- assets
+|   \-- 2026_calendar.json
++-- css
+|   \-- style.css
++-- doc
+|   +-- business-model-canvas-value-proposition-playbook.md
+|   +-- online-learning-notes-layout-research.md
+|   +-- PM_Canvas_A4.html
+|   +-- Project Management CanvasÔΩúA4 ÂñÆÈ†ÅÊµÅÁ®ãÂúñ.md
+|   +-- svg-design-spec.md
+|   \-- template-dev-guide.md
++-- js
+|   +-- calendar-data.js
+|   \-- template-size.js
++-- previews
+|   +-- business
+|   |   +-- business-model-canvas.svg
+|   |   +-- project-management-canvas.svg
+|   |   \-- swot.svg
+|   +-- ecommerce
+|   |   +-- pricing.svg
+|   |   +-- product-listing.svg
+|   |   +-- promo-plan.svg
+|   |   \-- weekly-ops.svg
+|   +-- goals
+|   |   \-- goals.svg
+|   +-- habit
+|   |   +-- daily-check-in.svg
+|   |   +-- goal-tracker.svg
+|   |   +-- habit-tracker.svg
+|   |   +-- monthly-habit-tracker.svg
+|   |   +-- routine-planner.svg
+|   |   \-- weekly-habit-tracker.svg
+|   +-- health
+|   |   +-- blood-pressure.svg
+|   |   +-- body-metrics.svg
+|   |   +-- exercise-log.svg
+|   |   +-- meal-log.svg
+|   |   \-- sleep-tracker.svg
+|   +-- learning
+|   |   \-- online-learning-notes.svg
+|   +-- life
+|   |   +-- daily-log.svg
+|   |   +-- event-journal.svg
+|   |   +-- fragment-log.svg
+|   |   +-- memory-log.svg
+|   |   \-- thematic-log.svg
+|   +-- marketing
+|   |   +-- content-calendar.svg
+|   |   \-- social-plan.svg
+|   +-- meeting
+|   |   +-- creative.svg
+|   |   +-- daily-ops.svg
+|   |   +-- meeting.svg
+|   |   \-- project.svg
+|   +-- notes
+|   |   +-- bujo-index.svg
+|   |   +-- cornell.svg
+|   |   +-- dot-grid.svg
+|   |   +-- lecture-notes.svg
+|   |   +-- reading-notes.svg
+|   |   \-- topic-notes.svg
+|   +-- planner
+|   |   +-- daily.svg
+|   |   +-- monthly.svg
+|   |   +-- quarterly.svg
+|   |   +-- travel.svg
+|   |   +-- weekly.svg
+|   |   \-- yearly.svg
+|   \-- work
+|       +-- project-brief.svg
+|       +-- report.svg
+|       +-- standup.svg
+|       +-- storyboard.svg
+|       \-- work-journal.svg
++-- templates
+|   +-- business
+|   |   +-- business-model-canvas
+|   |   |   \-- business-model-canvas.html
+|   |   +-- project-management-canvas
+|   |   |   \-- project-management-canvas.html
+|   |   \-- swot
+|   |       \-- swot.html
+|   +-- cornell
+|   |   \-- cornell.html
+|   +-- ecommerce
+|   |   +-- pricing
+|   |   |   \-- pricing.html
+|   |   +-- product-listing
+|   |   |   \-- product-listing.html
+|   |   +-- promo-plan
+|   |   |   \-- promo-plan.html
+|   |   \-- weekly-ops
+|   |       \-- weekly-ops.html
+|   +-- goals
+|   |   \-- goals.html
+|   +-- habit
+|   |   +-- daily-check-in
+|   |   |   \-- daily-check-in.html
+|   |   +-- goal-tracker
+|   |   |   \-- goal-tracker.html
+|   |   +-- habit-tracker
+|   |   |   \-- habit-tracker.html
+|   |   +-- monthly-habit-tracker
+|   |   |   \-- monthly-habit-tracker.html
+|   |   +-- routine-planner
+|   |   |   \-- routine-planner.html
+|   |   \-- weekly-habit-tracker
+|   |       \-- weekly-habit-tracker.html
+|   +-- health
+|   |   +-- body-metrics
+|   |   |   \-- body-metrics.html
+|   |   +-- exercise-log
+|   |   |   \-- exercise-log.html
+|   |   +-- meal-log
+|   |   |   \-- meal-log.html
+|   |   +-- sleep-tracker
+|   |   |   \-- sleep-tracker.html
+|   |   \-- blood-pressure.html
+|   +-- life
+|   |   +-- daily-log
+|   |   |   \-- daily-log.html
+|   |   +-- event-journal
+|   |   |   \-- event-journal.html
+|   |   +-- fragment-log
+|   |   |   \-- fragment-log.html
+|   |   +-- memory-log
+|   |   |   \-- memory-log.html
+|   |   \-- thematic-log
+|   |       \-- thematic-log.html
+|   +-- marketing
+|   |   +-- content-calendar
+|   |   |   \-- content-calendar.html
+|   |   \-- social-plan
+|   |       \-- social-plan.html
+|   +-- meeting
+|   |   +-- creative
+|   |   |   \-- creative.html
+|   |   +-- daily-ops
+|   |   |   \-- daily-ops.html
+|   |   +-- project
+|   |   |   \-- project.html
+|   |   \-- meeting.html
+|   +-- notes
+|   |   +-- bujo-index
+|   |   |   \-- bujo-index.html
+|   |   +-- dot-grid
+|   |   |   \-- dot-grid.html
+|   |   +-- lecture-notes
+|   |   |   \-- lecture-notes.html
+|   |   +-- online-learning-notes
+|   |   |   \-- online-learning-notes.html
+|   |   +-- reading-notes
+|   |   |   \-- reading-notes.html
+|   |   \-- topic-notes
+|   |       \-- topic-notes.html
+|   +-- planner
+|   |   +-- daily
+|   |   |   \-- daily.html
+|   |   +-- monthly
+|   |   |   \-- monthly.html
+|   |   +-- quarterly
+|   |   |   \-- quarterly.html
+|   |   +-- travel
+|   |   |   \-- travel.html
+|   |   +-- weekly
+|   |   |   \-- weekly.html
+|   |   \-- yearly
+|   |       \-- yearly.html
+|   +-- work
+|   |   +-- project-brief
+|   |   |   \-- project-brief.html
+|   |   +-- report
+|   |   |   \-- report.html
+|   |   +-- standup
+|   |   |   \-- standup.html
+|   |   \-- storyboard
+|   |       \-- storyboard.html
+|   \-- work-journal
+|       \-- work-journal.html
++-- CNAME
++-- index.html
++-- README.md
+\-- tree.txt

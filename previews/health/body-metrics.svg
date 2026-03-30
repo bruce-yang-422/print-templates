@@ -1,10 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 214">
-  <rect width="100%" height="100%" fill="#ffffff" />
-  <rect x="24" y="16" width="252" height="182" fill="#ffffff" stroke="#e1e1e1" stroke-width="1.5" rx="6" />
-  <g opacity="0.6">
-    <rect x="40" y="30" width="112" height="8" fill="#d2d2d2" stroke="none" stroke-width="1.5" rx="0" /><rect x="40" y="48" width="130" height="102" fill="none" stroke="#ddd" stroke-width="1.5" rx="0" /><line x1="72" y1="48" x2="72" y2="150" stroke="#e7e7e7" stroke-width="1.5" stroke-dasharray="" /><line x1="104" y1="48" x2="104" y2="150" stroke="#e7e7e7" stroke-width="1.5" stroke-dasharray="" /><line x1="136" y1="48" x2="136" y2="150" stroke="#e7e7e7" stroke-width="1.5" stroke-dasharray="" /><rect x="182" y="48" width="78" height="22" fill="#fafafa" stroke="#ddd" stroke-width="1.5" rx="0" /><rect x="182" y="78" width="78" height="22" fill="#fafafa" stroke="#ddd" stroke-width="1.5" rx="0" /><rect x="182" y="108" width="78" height="42" fill="none" stroke="#ddd" stroke-width="1.5" rx="0" />
+  <rect width="300" height="214" fill="#f0f0f0"/>
+  <rect x="18" y="10" width="264" height="188" rx="3" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <rect x="18" y="10" width="264" height="3" fill="#dc2626"/>
+  <line x1="30" y1="10" x2="30" y2="198" stroke="#e8e8e8" stroke-width="0.8"/>
+  <g opacity="0.65">
+    <rect x="34" y="18" width="122" height="7" rx="1" fill="#d0d0d0"/>
+    <rect x="34" y="32" width="70" height="34" rx="1" fill="#fafafa" stroke="#e4e4e4" stroke-width="0.8"/>
+    <rect x="113" y="32" width="70" height="34" rx="1" fill="#fafafa" stroke="#e4e4e4" stroke-width="0.8"/>
+    <rect x="192" y="32" width="70" height="34" rx="1" fill="#fafafa" stroke="#e4e4e4" stroke-width="0.8"/>
+    <rect x="34" y="76" width="228" height="50" rx="1" fill="#fafafa" stroke="#e4e4e4" stroke-width="0.8"/>
+    <polyline points="44,108 84,96 124,100 164,88 204,92 244,82" fill="none" stroke="#d0d0d0" stroke-width="1.5"/>
+    <rect x="34" y="132" width="228" height="16" rx="1" fill="#fafafa" stroke="#e4e4e4" stroke-width="0.8"/>
   </g>
-  <rect x="24" y="158" width="252" height="40" fill="rgba(255,255,255,0.85)" />
-  <path d="M 24 158 L 276 158" stroke="rgba(0,0,0,0.05)" stroke-width="1" />
-  <text x="150" y="178" dominant-baseline="middle" text-anchor="middle" font-size="13" fill="#111" font-family="'PingFang TC', sans-serif" font-weight="600" letter-spacing="0.05em">體重／身體數據追蹤</text>
+  <rect x="18" y="158" width="264" height="40" fill="rgba(255,255,255,0.92)"/>
+  <line x1="18" y1="158" x2="282" y2="158" stroke="#e0e0e0" stroke-width="0.8"/>
+  <text x="150" y="174" dominant-baseline="middle" text-anchor="middle" font-size="13" fill="#111111" font-family="'PingFang TC','Microsoft JhengHei',sans-serif" font-weight="600" letter-spacing="0.04em">體重／身體數據追蹤</text>
+  <text x="150" y="191" dominant-baseline="middle" text-anchor="middle" font-size="8" fill="#aaaaaa" font-family="'PingFang TC','Microsoft JhengHei',sans-serif" letter-spacing="0.08em">Body Metrics Tracker</text>
 </svg>

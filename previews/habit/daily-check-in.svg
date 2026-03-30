@@ -1,10 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 214">
-  <rect width="100%" height="100%" fill="#ffffff" />
-  <rect x="24" y="16" width="252" height="182" fill="#ffffff" stroke="#e1e1e1" stroke-width="1.5" rx="6" />
-  <g opacity="0.6">
-    <rect x="40" y="30" width="92" height="8" fill="#d2d2d2" stroke="none" stroke-width="1.5" rx="0" /><circle cx="78" cy="66" r="12" fill="none" stroke="#ccc" stroke-width="1.5" /><circle cx="128" cy="66" r="12" fill="none" stroke="#ccc" stroke-width="1.5" /><circle cx="178" cy="66" r="12" fill="none" stroke="#ccc" stroke-width="1.5" /><line x1="40" y1="96" x2="260" y2="96" stroke="#eaeaea" stroke-width="1.5" stroke-dasharray="" /><line x1="40" y1="110" x2="260" y2="110" stroke="#eaeaea" stroke-width="1.5" stroke-dasharray="" /><line x1="40" y1="124" x2="260" y2="124" stroke="#eaeaea" stroke-width="1.5" stroke-dasharray="" /><rect x="40" y="142" width="105" height="24" fill="none" stroke="#ddd" stroke-width="1.5" rx="0" /><rect x="155" y="142" width="105" height="24" fill="none" stroke="#ddd" stroke-width="1.5" rx="0" />
+  <rect width="300" height="214" fill="#f0f0f0"/>
+  <rect x="18" y="10" width="264" height="188" rx="3" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <rect x="18" y="10" width="264" height="3" fill="#65a30d"/>
+  <line x1="30" y1="10" x2="30" y2="198" stroke="#e8e8e8" stroke-width="0.8"/>
+  <g opacity="0.65">
+    <rect x="34" y="18" width="116" height="7" rx="1" fill="#d0d0d0"/>
+    <rect x="34" y="32" width="72" height="18" rx="1" fill="#f6f6f6" stroke="#e4e4e4" stroke-width="0.8"/>
+    <rect x="112" y="32" width="72" height="18" rx="1" fill="#f6f6f6" stroke="#e4e4e4" stroke-width="0.8"/>
+    <rect x="190" y="32" width="72" height="18" rx="1" fill="#f6f6f6" stroke="#e4e4e4" stroke-width="0.8"/>
+    <circle cx="50" cy="80" r="12" fill="none" stroke="#d7d7d7" stroke-width="1"/>
+    <circle cx="112" cy="80" r="12" fill="none" stroke="#d7d7d7" stroke-width="1"/>
+    <circle cx="174" cy="80" r="12" fill="none" stroke="#d7d7d7" stroke-width="1"/>
+    <circle cx="236" cy="80" r="12" fill="none" stroke="#d7d7d7" stroke-width="1"/>
+    <line x1="34" y1="104" x2="262" y2="104" stroke="#e0e0e0" stroke-width="1"/>
+    <line x1="34" y1="114" x2="262" y2="114" stroke="#e0e0e0" stroke-width="1"/>
+    <line x1="34" y1="124" x2="262" y2="124" stroke="#e0e0e0" stroke-width="1"/>
   </g>
-  <rect x="24" y="158" width="252" height="40" fill="rgba(255,255,255,0.85)" />
-  <path d="M 24 158 L 276 158" stroke="rgba(0,0,0,0.05)" stroke-width="1" />
-  <text x="150" y="178" dominant-baseline="middle" text-anchor="middle" font-size="13" fill="#111" font-family="'PingFang TC', sans-serif" font-weight="600" letter-spacing="0.05em">每日檢視表</text>
+  <rect x="18" y="158" width="264" height="40" fill="rgba(255,255,255,0.92)"/>
+  <line x1="18" y1="158" x2="282" y2="158" stroke="#e0e0e0" stroke-width="0.8"/>
+  <text x="150" y="174" dominant-baseline="middle" text-anchor="middle" font-size="13" fill="#111111" font-family="'PingFang TC','Microsoft JhengHei',sans-serif" font-weight="600" letter-spacing="0.04em">每日檢視表</text>
+  <text x="150" y="191" dominant-baseline="middle" text-anchor="middle" font-size="8" fill="#aaaaaa" font-family="'PingFang TC','Microsoft JhengHei',sans-serif" letter-spacing="0.08em">Daily Check-in</text>
 </svg>

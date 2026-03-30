@@ -36,7 +36,7 @@
 - 工作日誌 (`work-journal`) － 包含「A日誌」與「B週總結」兩種支援多尺寸的模式
 - 工作報告 (`report`)
 - 每日站會 (`standup`)
-- 專案簡報 (`project-brief`)
+- 專案啟動表 (`project-brief`) － 提供完整版、精簡版與預填範例頁
 - 手繪分鏡圖 (`storyboard`)
 
 ### 📅 計畫與排程 (Planner)
@@ -65,10 +65,10 @@
 
 ### 🤝 會議與任務 (Meeting & Tasks)
 - 會議記錄 (`meeting`)
-- 創意與設計會議 (`creative`)
+- 創意與產品會議 (`creative`)
 - 日常營運會議紀錄 (`daily-ops`)
 - 專案與決策會議 (`project`)
-- 任務拆解表 (`goals`) － 對應大項、子任務、截止與下一步的任務規劃
+- 任務拆解表 (`goals`) － 對應大項、子任務、截止與下一步的任務規劃，含預填範例頁
 
 ### 🌿 生活規劃 (Life)
 - 旅行行程表 (`travel-itinerary`) － 提供完整行程版與精簡攜帶版
@@ -87,18 +87,18 @@
 
 ### 🔄 習慣養成 (Habit)
 - 每日檢視表 (`daily-check-in`)
-- 目標追蹤表 (`goal-tracker`)
+- 目標追蹤表 (`goal-tracker`) － 里程碑版、衝刺版與雙範例頁
 - 習慣追蹤表 (`habit-tracker`)
 - 每月習慣追蹤表 (`monthly-habit-tracker`)
 - 日常流程規劃表 (`routine-planner`)
 - 每週習慣追蹤表 (`weekly-habit-tracker`)
 
 ### 🏥 健康紀錄 (Health)
-- 血壓紀錄表 (`blood-pressure`)
-- 體重／身體數據追蹤 (`body-metrics`)
+- 血壓紀錄表 (`blood-pressure`) － 支援多尺寸與預填範例頁
+- 體重／身體數據追蹤 (`body-metrics`) － 數據趨勢與預填範例頁
 - 運動紀錄表 (`exercise-log`)
 - 飲食紀錄表 (`meal-log`)
-- 睡眠追蹤表 (`sleep-tracker`)
+- 睡眠追蹤表 (`sleep-tracker`) － 睡眠品質、作息觀察與預填範例頁
 
 ---
 
@@ -123,7 +123,7 @@
 - **日曆資料層 (`js/calendar-data.js`, `assets/2026_calendar.json`)**：
   抽出跨模板共用的日曆邏輯，確保 daily/weekly/monthly 等 planner 在日期格式、週次、農曆及台灣國定假日顯示上的絕對一致。
 - **預覽圖 (`previews/`)**：
-  首頁展示用的 `1:1` 畫布 SVG 向量檔，清晰且不失真。
+  首頁展示用的 SVG 向量檔，統一依照 `doc/svg-design-spec.md` 的 `300 × 214` 卡片式預覽規格製作，清晰且不失真。
 
 ## 🚀 下一步 (Roadmap)
 
