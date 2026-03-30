@@ -176,6 +176,10 @@
 
   async function load(path) {
     if (loadPromise) return loadPromise;
+    if (window.location.protocol === 'file:') {
+      loadPromise = Promise.resolve(calendarData);
+      return loadPromise;
+    }
     loadPromise = fetch(path)
       .then((response) => {
         if (!response.ok) throw new Error('calendar json load failed');

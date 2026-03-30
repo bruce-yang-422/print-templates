@@ -303,6 +303,8 @@ const filterClose = document.getElementById('filterClose');
 const filterBackdrop = document.getElementById('filterBackdrop');
 const filterPanel = document.getElementById('siteFilterPanel');
 const mobileFilterMq = window.matchMedia('(max-width: 720px)');
+const FILTER_DRAWER_DURATION = 240;
+let filterCloseTimer = null;
 
 function initTags() {
   const container = document.getElementById('optTags');
@@ -332,16 +334,36 @@ function syncFilterDrawerState() {
   const isMobile = mobileFilterMq.matches;
   const isOpen = document.body.classList.contains('filter-open');
   filterToggle.setAttribute('aria-expanded', isMobile && isOpen ? 'true' : 'false');
-  filterPanel.setAttribute('aria-hidden', isMobile ? String(!isOpen) : 'false');
+  filterPanel.setAttribute(
+    'aria-hidden',
+    isMobile ? String(!isOpen && !document.body.classList.contains('is-filter-closing')) : 'false'
+  );
+  filterPanel.classList.toggle('is-open', isMobile && isOpen);
+  filterPanel.toggleAttribute(
+    'inert',
+    isMobile ? (!isOpen && !document.body.classList.contains('is-filter-closing')) : false
+  );
 }
 
 function closeFilterDrawer() {
+  if (!document.body.classList.contains('filter-open')) return;
+  if (filterPanel.contains(document.activeElement)) {
+    filterToggle.focus({ preventScroll: true });
+  }
   document.body.classList.remove('filter-open');
+  document.body.classList.add('is-filter-closing');
+  window.clearTimeout(filterCloseTimer);
+  filterCloseTimer = window.setTimeout(() => {
+    document.body.classList.remove('is-filter-closing');
+    syncFilterDrawerState();
+  }, FILTER_DRAWER_DURATION);
   syncFilterDrawerState();
 }
 
 function openFilterDrawer() {
   if (!mobileFilterMq.matches) return;
+  window.clearTimeout(filterCloseTimer);
+  document.body.classList.remove('is-filter-closing');
   document.body.classList.add('filter-open');
   syncFilterDrawerState();
 }
@@ -349,6 +371,12 @@ function openFilterDrawer() {
 function toggleFilterDrawer() {
   if (document.body.classList.contains('filter-open')) closeFilterDrawer();
   else openFilterDrawer();
+}
+
+function shouldIgnoreDrawerCloseTarget(target) {
+  return !!target.closest(
+    '#filterToggle, #filterClose, .card, .site-filter-group, .toolbar-label, .site-filter-header .ui-title'
+  );
 }
 
 function createTemplateCard(template) {
@@ -395,8 +423,11 @@ function render() {
 filterToggle.addEventListener('click', toggleFilterDrawer);
 filterClose.addEventListener('click', closeFilterDrawer);
 filterBackdrop.addEventListener('click', closeFilterDrawer);
-filterPanel.addEventListener('click', (e) => {
-  if (e.target === filterPanel) closeFilterDrawer();
+document.addEventListener('pointerdown', (e) => {
+  if (!mobileFilterMq.matches) return;
+  if (!document.body.classList.contains('filter-open')) return;
+  if (shouldIgnoreDrawerCloseTarget(e.target)) return;
+  closeFilterDrawer();
 });
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeFilterDrawer();
