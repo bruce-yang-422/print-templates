@@ -1,26 +1,26 @@
 /* ════════════════════════════════════════════════
    print-templates / style.css
    共用主題：
-   1. 網站介面：莫蘭迪彩色
+   1. 網站介面：彩色主題
    2. 模板頁面：黑白灰階，友善列印
 ════════════════════════════════════════════════ */
 
 :root {
   --font-zh: 'PingFang TC', 'Microsoft JhengHei', 'Heiti TC', sans-serif;
 
-  /* Site / Morandi */
-  --site-bg: #b2bbb8;
-  --site-ink: #6e7c65;
-  --site-ink-soft: #a1aaa7;
-  --site-panel: rgba(178, 187, 184, 0.26);
-  --site-panel-strong: #b2bbb8;
-  --site-line: #a1aaa7;
-  --site-accent: #c49d62;
-  --site-accent-deep: #b1846f;
-  --site-accent-alt: #a1aaa7;
-  --site-accent-warm: #c49d62;
-  --site-accent-soft: #b2bbb8;
-  --site-shadow: 0 20px 48px rgba(110, 124, 101, 0.16);
+  /* Site / custom palette */
+  --site-bg: #c8e9a0;
+  --site-ink: #351e29;
+  --site-ink-soft: #a13d63;
+  --site-panel: rgba(109, 211, 206, 0.24);
+  --site-panel-strong: #6dd3ce;
+  --site-line: #a13d63;
+  --site-accent: #f7a278;
+  --site-accent-deep: #a13d63;
+  --site-accent-alt: #6dd3ce;
+  --site-accent-warm: #f7a278;
+  --site-accent-soft: #c8e9a0;
+  --site-shadow: 0 20px 48px rgba(53, 30, 41, 0.16);
 
   /* Template / grayscale */
   --tpl-bg: #d8d8d8;
@@ -271,17 +271,17 @@ body.site-page .empty-state {
 body.site-page {
   font-family: var(--font-zh);
   background:
-    radial-gradient(circle at top left, rgba(196, 157, 98, 0.22), transparent 28%),
-    radial-gradient(circle at top right, rgba(178, 187, 184, 0.28), transparent 32%),
-    linear-gradient(180deg, rgba(161, 170, 167, 0.26) 0%, var(--site-bg) 100%);
+    radial-gradient(circle at top left, rgba(109, 211, 206, 0.28), transparent 28%),
+    radial-gradient(circle at top right, rgba(247, 162, 120, 0.24), transparent 32%),
+    linear-gradient(180deg, rgba(200, 233, 160, 0.42) 0%, var(--site-bg) 100%);
   color: var(--site-ink);
 }
 
 body.site-page .site-nav {
-  background: rgba(178, 187, 184, 0.82);
+  background: rgba(200, 233, 160, 0.82);
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(110, 124, 101, 0.16);
-  box-shadow: 0 8px 24px rgba(110, 124, 101, 0.08);
+  border-bottom: 1px solid rgba(53, 30, 41, 0.12);
+  box-shadow: 0 8px 24px rgba(53, 30, 41, 0.08);
 }
 
 body.site-page .site-logo {
@@ -298,13 +298,13 @@ body.site-page .nav-right {
 }
 
 body.site-page .site-tagline {
-  border-left-color: rgba(110, 124, 101, 0.2);
+  border-left-color: rgba(53, 30, 41, 0.18);
 }
 
 body.site-page .filter-bar {
-  background: rgba(178, 187, 184, 0.74);
+  background: rgba(109, 211, 206, 0.32);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(161, 170, 167, 0.34);
+  border-bottom: 1px solid rgba(53, 30, 41, 0.12);
 }
 
 body.site-page .filter-label,
@@ -313,11 +313,11 @@ body.site-page .result-count {
 }
 
 body.site-page .filter-divider {
-  background: rgba(110, 124, 101, 0.16);
+  background: rgba(53, 30, 41, 0.16);
 }
 
 body.site-page .chip {
-  border-color: rgba(110, 124, 101, 0.3);
+  border-color: rgba(53, 30, 41, 0.24);
   color: var(--site-ink-soft);
   background: rgba(255, 255, 255, 0.52);
   border-radius: 999px;
@@ -341,37 +341,37 @@ body.site-page .grid-wrap {
 
 body.site-page .section-title {
   color: var(--site-ink-soft);
-  border-bottom-color: rgba(110, 124, 101, 0.22);
+  border-bottom-color: rgba(53, 30, 41, 0.18);
 }
 
 body.site-page .tpl-card {
   background: var(--site-panel);
-  border: 1px solid rgba(161, 170, 167, 0.66);
+  border: 1px solid rgba(53, 30, 41, 0.14);
   box-shadow: var(--site-shadow);
   border-radius: 18px;
   overflow: hidden;
 }
 
 body.site-page .tpl-card:hover {
-  box-shadow: 0 24px 52px rgba(110, 124, 101, 0.2);
+  box-shadow: 0 24px 52px rgba(53, 30, 41, 0.2);
 }
 
 body.site-page .badge-soon {
-  background: rgba(110, 124, 101, 0.9);
+  background: rgba(53, 30, 41, 0.9);
   color: #fff;
   border-radius: 999px;
 }
 
 body.site-page .tpl-thumb {
   background:
-    linear-gradient(180deg, rgba(178, 187, 184, 0.34), rgba(196, 157, 98, 0.22)),
+    linear-gradient(180deg, rgba(109, 211, 206, 0.26), rgba(247, 162, 120, 0.2)),
     rgba(255, 255, 255, 0.9);
-  border-bottom-color: rgba(161, 170, 167, 0.56);
+  border-bottom-color: rgba(53, 30, 41, 0.1);
 }
 
 body.site-page .thumb-paper {
   background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 8px 24px rgba(110, 124, 101, 0.14);
+  box-shadow: 0 8px 24px rgba(53, 30, 41, 0.14);
 }
 
 body.site-page .tp-header,
@@ -385,13 +385,13 @@ body.site-page .tp-section {
 
 body.site-page .tp-week-col {
   background: rgba(255, 255, 255, 0.66);
-  border-top-color: rgba(177, 132, 111, 0.45);
+  border-top-color: rgba(161, 61, 99, 0.42);
 }
 
 body.site-page .tp-cal-cell,
 body.site-page .tp-goal-sub {
   background: rgba(255, 255, 255, 0.72);
-  border-color: rgba(161, 170, 167, 0.66);
+  border-color: rgba(53, 30, 41, 0.14);
 }
 
 body.site-page .tpl-name {
@@ -399,7 +399,7 @@ body.site-page .tpl-name {
 }
 
 body.site-page .tag {
-  border-color: rgba(110, 124, 101, 0.24);
+  border-color: rgba(53, 30, 41, 0.16);
   color: var(--site-ink-soft);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.58);
@@ -408,7 +408,7 @@ body.site-page .tag {
 body.site-page .tag-size {
   border-color: var(--site-accent);
   color: var(--site-accent-deep);
-  background: rgba(196, 157, 98, 0.12);
+  background: rgba(247, 162, 120, 0.14);
 }
 
 body.site-page .tpl-desc,
@@ -420,7 +420,7 @@ body.site-page .btn-open {
   background: linear-gradient(135deg, var(--site-accent), var(--site-accent-soft));
   color: #fff;
   border-radius: 999px;
-  box-shadow: 0 10px 22px rgba(177, 132, 111, 0.24);
+  box-shadow: 0 10px 22px rgba(161, 61, 99, 0.22);
 }
 
 body.site-page .btn-open:hover {
@@ -430,9 +430,9 @@ body.site-page .btn-open:hover {
 body.template-page {
   font-family: var(--font-zh);
   background:
-    radial-gradient(circle at top left, rgba(196, 157, 98, 0.16), transparent 28%),
-    radial-gradient(circle at top right, rgba(178, 187, 184, 0.2), transparent 32%),
-    linear-gradient(180deg, rgba(161, 170, 167, 0.22) 0%, var(--site-bg) 100%);
+    radial-gradient(circle at top left, rgba(109, 211, 206, 0.2), transparent 28%),
+    radial-gradient(circle at top right, rgba(247, 162, 120, 0.16), transparent 32%),
+    linear-gradient(180deg, rgba(200, 233, 160, 0.34) 0%, var(--site-bg) 100%);
   color: var(--tpl-paper-ink);
 }
 
@@ -442,10 +442,10 @@ body.template-page .ui {
   left: 0;
   right: 0;
   z-index: 999;
-  background: rgba(178, 187, 184, 0.84);
+  background: rgba(200, 233, 160, 0.84);
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(110, 124, 101, 0.16);
-  box-shadow: 0 8px 24px rgba(110, 124, 101, 0.08);
+  border-bottom: 1px solid rgba(53, 30, 41, 0.12);
+  box-shadow: 0 8px 24px rgba(53, 30, 41, 0.08);
   display: flex;
   flex-direction: column;
 }
@@ -455,7 +455,7 @@ body.template-page .ui-nav {
   align-items: center;
   gap: 0;
   padding: 10px 28px 9px;
-  border-bottom-color: rgba(161, 170, 167, 0.66);
+  border-bottom-color: rgba(53, 30, 41, 0.12);
 }
 
 body.template-page .ui-toolbar {
@@ -493,7 +493,7 @@ body.template-page .back-link:hover {
 }
 
 body.template-page .nav-sep {
-  color: rgba(110, 124, 101, 0.32);
+  color: rgba(53, 30, 41, 0.28);
   margin: 0 10px;
   font-size: 13px;
 }
@@ -535,8 +535,8 @@ body.template-page .ui-title small {
 }
 
 body.template-page .card {
-  border: 1.5px solid rgba(110, 124, 101, 0.28);
-  border-color: rgba(110, 124, 101, 0.28);
+  border: 1.5px solid rgba(53, 30, 41, 0.2);
+  border-color: rgba(53, 30, 41, 0.2);
   color: var(--site-ink-soft);
   background: rgba(255, 255, 255, 0.52);
   border-radius: 999px;
@@ -578,7 +578,7 @@ body.template-page .btn-print {
   color: #fff;
   border: none;
   border-radius: 999px;
-  box-shadow: 0 10px 22px rgba(177, 132, 111, 0.24);
+  box-shadow: 0 10px 22px rgba(161, 61, 99, 0.22);
   padding: 6px 20px;
   cursor: pointer;
   font-size: 12px;
@@ -616,7 +616,7 @@ body.template-page .page-label {
 
 body.template-page .date-select {
   background: rgba(255, 255, 255, 0.74);
-  border: 1px solid rgba(110, 124, 101, 0.28);
+  border: 1px solid rgba(53, 30, 41, 0.2);
   color: var(--site-ink);
   border-radius: 999px;
   font-size: 11px;
@@ -633,7 +633,7 @@ body.template-page .date-select:hover {
 }
 
 body.template-page .date-select option {
-  background: #b2bbb8;
+  background: #c8e9a0;
   color: var(--site-ink);
 }
 
