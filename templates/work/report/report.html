@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>工作報告模板</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; background: #c8c8c8; color: #1a1a1a; }
+
+/* ════ Pages ════ */
+.pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.page { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.2); overflow: hidden; position: relative; }
+.page::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: #fff; z-index: 4; pointer-events: none; }
+.page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
+.page-port { width: 210mm; height: 297mm; }
+
+/* Mode control */
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+
+/* ════ 共用 ════ */
+.pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; display: block; }
+.f-lbl   { font-size: 6pt; letter-spacing: .1em; color: #aaa; padding-right: 1.5mm; white-space: nowrap; }
+.blank   { border-bottom: 0.6pt solid #111; display: inline-block; height: 4mm; }
+.lc      { border-bottom: 0.4pt solid #ddd; height: 6mm; display: block; }
+.sq      { display: inline-block; width: 3mm; height: 3mm; border: 0.65pt solid #777; }
+.sq-cell { width: 5mm; vertical-align: bottom; padding-bottom: 1mm; }
+.ln      { width: 100%; border-collapse: collapse; }
+.pg-num  { position: absolute; bottom: 6mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+
+/* ════ 報告共用區塊 ════ */
+.rpt-wrap { padding: 12mm 14mm 10mm; height: 297mm; display: flex; flex-direction: column; }
+
+/* 頁首 */
+.rpt-title-bar { border: 1pt solid #111; border-bottom: none; padding: 4mm 5mm; margin-bottom: 0; background: #fff; }
+.rpt-title-text { font-size: 14pt; font-weight: 700; color: #111; letter-spacing: .04em; display: block; margin-bottom: 1mm; }
+.rpt-title-sub  { font-size: 6pt; color: #888; letter-spacing: .1em; text-transform: uppercase; }
+.rpt-meta { border: 0.4pt solid #ddd; border-top: none; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; }
+.rpt-meta-cell { padding: 2mm 3mm; border-right: 0.4pt solid #ddd; }
+.rpt-meta-cell:last-child { border-right: none; }
+.rpt-meta-lbl { font-size: 5.5pt; color: #aaa; letter-spacing: .1em; text-transform: uppercase; display: block; margin-bottom: 1mm; }
+.rpt-meta-val  { border-bottom: 0.5pt solid #ccc; height: 4mm; display: block; }
+
+/* 區塊 */
+.rpt-section { margin-top: 4mm; }
+.rpt-s-hd {
+  font-size: 6.5pt; letter-spacing: .14em; text-transform: uppercase;
+  color: #444; background: #fff; font-weight: 600;
+  padding: 2mm 3mm; display: flex; justify-content: space-between; align-items: center;
+  border: 0.4pt solid #ddd; border-left: 2pt solid #111;
+}
+.rpt-s-hd em { font-style: normal; font-size: 5.5pt; color: #aaa; font-weight: 400; letter-spacing: .06em; }
+.rpt-s-body { border: 0.4pt solid #ddd; border-top: none; padding: 3mm; }
+
+/* 進行中項目（含百分比） */
+.prog-row { display: flex; align-items: baseline; gap: 3mm; margin-bottom: 2.5mm; }
+.prog-row:last-child { margin-bottom: 0; }
+.prog-name { flex: 1; border-bottom: 0.4pt solid #ddd; height: 5.5mm; }
+.prog-pct  { font-size: 5.5pt; color: #aaa; white-space: nowrap; }
+.prog-bar  { display: flex; gap: 0.8mm; }
+.prog-tick { width: 5mm; height: 3mm; border: 0.5pt solid #e0e0e0; flex-shrink: 0; }
+
+/* ════ Mode B：簡報版 A4直 ════ */
+/* 同一份內容但欄位更少、更大字 */
+
+/* ════ Print ════ */
+@media print {
+  body { background: none; }
+  .ui, .page-label { display: none !important; }
+  .pages { padding: 0 !important; gap: 0 !important; }
+  .page  { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+}
+</style>
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body class="template-page sel-a">
+
+<!-- UI -->
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">工作報告 <small>Work Report</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 標準報告 <span style="font-size:9px;opacity:.5">A4直・週報/月報</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 精簡版 <span style="font-size:9px;opacity:.5">A4直・重點摘要</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="pages">
+
+<!-- ══ MODE A：標準報告 A4直 ══ -->
+<div class="page-label mode-a">▸ 模式 A — A4 直向・標準工作報告</div>
+<div class="page page-port mode-a">
+  <div class="rpt-wrap">
+    <span class="pg-type" style="margin-bottom:3mm">Work Report · 工作報告</span>
+
+    <!-- 標題欄 -->
+    <div class="rpt-title-bar">
+      <span class="rpt-title-text"><span style="border-bottom:1pt solid #555;display:inline-block;width:120mm;height:6mm;vertical-align:bottom"></span></span>
+      <span class="rpt-title-sub">Report Title · 報告標題</span>
+    </div>
+
+    <!-- 基本資訊 -->
+    <div class="rpt-meta">
+      <div class="rpt-meta-cell"><span class="rpt-meta-lbl">部門</span><span class="rpt-meta-val"></span></div>
+      <div class="rpt-meta-cell"><span class="rpt-meta-lbl">報告人</span><span class="rpt-meta-val"></span></div>
+      <div class="rpt-meta-cell"><span class="rpt-meta-lbl">報告日期</span><span class="rpt-meta-val"></span></div>
+      <div class="rpt-meta-cell"><span class="rpt-meta-lbl">報告期間</span><span class="rpt-meta-val"></span></div>
+    </div>
+
+    <!-- 本期摘要 -->
+    <div class="rpt-section">
+      <div class="rpt-s-hd">本期摘要 <em>Summary</em></div>
+      <div class="rpt-s-body">
+        <span class="lc"></span>
+        <span class="lc"></span>
+        <span class="lc"></span>
+      </div>
+    </div>
+
+    <!-- 完成事項 -->
+    <div class="rpt-section">
+      <div class="rpt-s-hd">完成事項 <em>Completed</em></div>
+      <div class="rpt-s-body">
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      </div>
+    </div>
+
+    <!-- 進行中 -->
+    <div class="rpt-section">
+      <div class="rpt-s-hd">進行中 <em>In Progress</em></div>
+      <div class="rpt-s-body">
+        <div class="prog-row">
+          <span class="prog-name"></span>
+          <span class="prog-pct">完成度</span>
+          <div class="prog-bar"><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div></div>
+        </div>
+        <div class="prog-row">
+          <span class="prog-name"></span>
+          <span class="prog-pct">完成度</span>
+          <div class="prog-bar"><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div></div>
+        </div>
+        <div class="prog-row">
+          <span class="prog-name"></span>
+          <span class="prog-pct">完成度</span>
+          <div class="prog-bar"><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div><div class="prog-tick"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 問題與風險 -->
+    <div class="rpt-section">
+      <div class="rpt-s-hd">問題與風險 <em>Issues & Risks</em></div>
+      <div class="rpt-s-body">
+        <span class="lc"></span>
+        <span class="lc"></span>
+        <span class="lc"></span>
+      </div>
+    </div>
+
+    <!-- 下期計畫 -->
+    <div class="rpt-section">
+      <div class="rpt-s-hd">下期計畫 <em>Next Period Plan</em></div>
+      <div class="rpt-s-body">
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      </div>
+    </div>
+
+    <!-- 備注 -->
+    <div class="rpt-section" style="flex:1;display:flex;flex-direction:column">
+      <div class="rpt-s-hd">備注 <em>Notes</em></div>
+      <div class="rpt-s-body" style="flex:1">
+        <span class="lc"></span>
+        <span class="lc"></span>
+      </div>
+    </div>
+
+  </div>
+  <div class="pg-num">A · Report</div>
+</div>
+
+
+<!-- ══ MODE B：精簡版 A4直 ══ -->
+<div class="page-label mode-b">▸ 模式 B — A4 直向・精簡重點版</div>
+<div class="page page-port mode-b">
+  <div class="rpt-wrap">
+    <span class="pg-type" style="margin-bottom:3mm">Work Report · 工作報告（精簡）</span>
+
+    <div class="rpt-title-bar">
+      <span class="rpt-title-text"><span style="border-bottom:1pt solid #555;display:inline-block;width:120mm;height:6mm;vertical-align:bottom"></span></span>
+      <span class="rpt-title-sub">Report Title · 報告標題</span>
+    </div>
+    <div class="rpt-meta">
+      <div class="rpt-meta-cell"><span class="rpt-meta-lbl">報告人</span><span class="rpt-meta-val"></span></div>
+      <div class="rpt-meta-cell"><span class="rpt-meta-lbl">日期</span><span class="rpt-meta-val"></span></div>
+      <div class="rpt-meta-cell" style="grid-column:span 2"><span class="rpt-meta-lbl">報告期間</span><span class="rpt-meta-val"></span></div>
+    </div>
+
+    <!-- 本週重點 3 件 -->
+    <div class="rpt-section">
+      <div class="rpt-s-hd">本期最重要的 3 件事 <em>Top 3</em></div>
+      <div class="rpt-s-body">
+        <table class="ln" style="margin-bottom:1mm"><tr>
+          <td style="width:6mm;font-size:8pt;font-weight:700;color:#ccc;vertical-align:bottom;padding-bottom:1mm">1</td>
+          <td><span class="lc" style="height:8mm"></span></td>
+        </tr></table>
+        <table class="ln" style="margin-bottom:1mm"><tr>
+          <td style="width:6mm;font-size:8pt;font-weight:700;color:#ccc;vertical-align:bottom;padding-bottom:1mm">2</td>
+          <td><span class="lc" style="height:8mm"></span></td>
+        </tr></table>
+        <table class="ln"><tr>
+          <td style="width:6mm;font-size:8pt;font-weight:700;color:#ccc;vertical-align:bottom;padding-bottom:1mm">3</td>
+          <td><span class="lc" style="height:8mm"></span></td>
+        </tr></table>
+      </div>
+    </div>
+
+    <!-- 遇到的問題 -->
+    <div class="rpt-section">
+      <div class="rpt-s-hd">遇到的問題 → 解法 <em>Issues → Solutions</em></div>
+      <div class="rpt-s-body">
+        <div style="display:grid;grid-template-columns:1fr 8mm 1fr;gap:0;align-items:end;margin-bottom:2mm">
+          <span style="border-bottom:0.4pt solid #ddd;height:6mm;display:block"></span>
+          <span style="text-align:center;font-size:7pt;color:#ccc;padding-bottom:1mm">→</span>
+          <span style="border-bottom:0.4pt solid #ddd;height:6mm;display:block"></span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 8mm 1fr;gap:0;align-items:end;margin-bottom:2mm">
+          <span style="border-bottom:0.4pt solid #ddd;height:6mm;display:block"></span>
+          <span style="text-align:center;font-size:7pt;color:#ccc;padding-bottom:1mm">→</span>
+          <span style="border-bottom:0.4pt solid #ddd;height:6mm;display:block"></span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 8mm 1fr;gap:0;align-items:end">
+          <span style="border-bottom:0.4pt solid #ddd;height:6mm;display:block"></span>
+          <span style="text-align:center;font-size:7pt;color:#ccc;padding-bottom:1mm">→</span>
+          <span style="border-bottom:0.4pt solid #ddd;height:6mm;display:block"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 下期計畫 -->
+    <div class="rpt-section">
+      <div class="rpt-s-hd">下期計畫 <em>Next Steps</em></div>
+      <div class="rpt-s-body">
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="ln"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      </div>
+    </div>
+
+    <!-- 備注 -->
+    <div class="rpt-section" style="flex:1;display:flex;flex-direction:column">
+      <div class="rpt-s-hd">備注 / 其他 <em>Notes</em></div>
+      <div class="rpt-s-body" style="flex:1">
+        <span class="lc"></span>
+        <span class="lc"></span>
+        <span class="lc"></span>
+        <span class="lc"></span>
+        <span class="lc"></span>
+      </div>
+    </div>
+
+  </div>
+  <div class="pg-num">B · Report</div>
+</div>
+
+</div><!-- /pages -->
+
+<script src="../../../js/template-size.js"></script>
+<script>
+let st = document.createElement('style'); st.id='pg-size'; document.head.appendChild(st);
+function setMode(m) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + m);
+  st.textContent = '@media print { @page { size: A4 portrait; margin:0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((c,i) => c.classList.toggle('active', ['a','b'][i]===m));
+}
+setMode('a');
+</script>
+</body>
+</html>

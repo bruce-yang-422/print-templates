@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>目標分解模板</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; background: #c8c8c8; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.page { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.2); overflow: hidden; position: relative; }
+.page::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: #fff; z-index: 4; pointer-events: none; }
+.page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
+.page-port { width: 210mm; height: 297mm; }
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+.pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; display: block; }
+.f-lbl { font-size: 5.5pt; letter-spacing: .1em; color: #aaa; display: block; margin-bottom: 1mm; text-transform: uppercase; }
+.blank { display: block; border-bottom: 0.5pt solid #ccc; height: 4.5mm; }
+.line { display: block; border-bottom: 0.4pt solid #ddd; height: 5.2mm; }
+.tiny-line { display: block; border-bottom: 0.4pt solid #e3e3e3; height: 4.4mm; }
+.sq { display: inline-block; width: 3mm; height: 3mm; border: 0.65pt solid #777; margin-right: 1.4mm; vertical-align: middle; }
+.pg-num { position: absolute; bottom: 6mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+.sec-hd { font-size: 6.5pt; letter-spacing: .14em; text-transform: uppercase; color: #777; font-weight: 600; border-left: 2pt solid #111; padding-left: 3mm; margin-bottom: 2.5mm; display: flex; justify-content: space-between; align-items: baseline; }
+.sec-hd em { font-style: normal; font-size: 5pt; color: #bbb; font-weight: 400; letter-spacing: .06em; }
+.a-wrap { padding: 11mm 14mm 9mm; height: 297mm; display: flex; flex-direction: column; }
+.goal-head { border: 1pt solid #111; border-bottom: none; color: #111; padding: 4mm 5mm; background: #fff; }
+.goal-head strong { font-size: 15pt; letter-spacing: .04em; display: block; }
+.goal-sub { display: grid; grid-template-columns: 1.2fr .8fr .6fr; gap: 2.5mm; border: 0.4pt solid #ddd; border-top: none; padding: 3mm; }
+.why-box { border: 0.4pt solid #ddd; padding: 2.5mm 3mm; margin-top: 4mm; }
+.tree-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin-top: 4mm; }
+.tree-col { border: 0.4pt solid #ddd; padding: 3mm; display: flex; flex-direction: column; }
+.tree-col h3 { font-size: 6.5pt; letter-spacing: .12em; text-transform: uppercase; color: #777; margin-bottom: 2mm; }
+.steps { margin-top: 2.5mm; }
+.step-row { display: flex; align-items: flex-end; gap: 2mm; margin-bottom: 1.8mm; }
+.step-row:last-child { margin-bottom: 0; }
+.mid-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-top: 4mm; }
+.milestone-table { width: 100%; border-collapse: collapse; border: 0.4pt solid #ddd; table-layout: fixed; }
+.milestone-table th, .milestone-table td { border-right: 0.4pt solid #ddd; border-bottom: 0.4pt solid #ddd; padding: 2mm 2.5mm; vertical-align: top; }
+.milestone-table th:last-child, .milestone-table td:last-child { border-right: none; }
+.milestone-table th { background: #fafafa; font-size: 5.5pt; color: #aaa; font-weight: 400; text-align: left; letter-spacing: .08em; text-transform: uppercase; }
+.risk-box { border: 0.4pt solid #ddd; padding: 3mm; }
+.risk-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm; margin-bottom: 2.5mm; }
+.risk-row:last-child { margin-bottom: 0; }
+.review { margin-top: auto; border-top: 0.75pt solid #111; padding-top: 4mm; display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.review-card { border: 0.4pt solid #ddd; padding: 3mm; }
+.b-wrap { padding: 11mm 14mm 9mm; height: 297mm; display: flex; flex-direction: column; }
+.okr-head { border-bottom: 0.75pt solid #111; padding-bottom: 4mm; }
+.okr-obj { margin-top: 4mm; border: 1pt solid #111; color: #111; padding: 4mm 5mm; background: #fff; }
+.kr-list { display: flex; flex-direction: column; gap: 4mm; margin-top: 4mm; }
+.kr-card { border-left: 2pt solid #111; padding-left: 4mm; }
+.kr-meta { display: grid; grid-template-columns: 1fr 22mm 22mm; gap: 3mm; margin-top: 2mm; }
+.bar-row { display: flex; gap: 1mm; margin-top: 2mm; }
+.tick { width: 6mm; height: 3mm; border: 0.5pt solid #ddd; }
+.okr-bottom { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.check-table { width: 100%; border-collapse: collapse; border: 0.4pt solid #ddd; }
+.check-table td { border-right: 0.4pt solid #ddd; border-bottom: 0.4pt solid #ddd; padding: 2mm 2.5mm; }
+.check-table td:last-child { border-right: none; }
+@media print {
+  body { background: none; }
+  .ui, .page-label { display: none !important; }
+  .pages { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+}
+</style>
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body class="template-page sel-a">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">目標分解 <small>Goal Breakdown</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 樹狀分解 <span style="font-size:9px;opacity:.5">A4直・目標拆解</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> OKR <span style="font-size:9px;opacity:.5">A4直・Objective + KR</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+<div class="pages">
+  <div class="page-label mode-a">▸ 模式 A — A4 直向・樹狀目標分解</div>
+  <div class="page page-port mode-a">
+    <div class="a-wrap">
+      <span class="pg-type">Goal Breakdown · 目標分解</span>
+      <div class="goal-head">
+        <strong>我的大目標</strong>
+        <span style="font-size:6pt;color:#666;letter-spacing:.1em;text-transform:uppercase">from outcome to action</span>
+      </div>
+      <div class="goal-sub">
+        <div><span class="f-lbl">目標名稱</span><span class="blank"></span></div>
+        <div><span class="f-lbl">截止日期</span><span class="blank"></span></div>
+        <div><span class="f-lbl">優先度</span><span class="blank"></span></div>
+      </div>
+      <div class="why-box">
+        <span class="f-lbl">Why / 為什麼這件事重要</span>
+        <span class="line"></span><span class="line"></span><span class="line"></span>
+      </div>
+      <div class="tree-grid">
+        <div class="tree-col">
+          <h3>子目標 1</h3>
+          <span class="blank"></span>
+          <div class="steps">
+            <div class="step-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="step-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="step-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="step-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+          </div>
+        </div>
+        <div class="tree-col">
+          <h3>子目標 2</h3>
+          <span class="blank"></span>
+          <div class="steps">
+            <div class="step-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="step-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="step-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="step-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+          </div>
+        </div>
+        <div class="tree-col">
+          <h3>子目標 3</h3>
+          <span class="blank"></span>
+          <div class="steps">
+            <div class="step-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="step-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="step-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="step-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mid-grid">
+        <div>
+          <div class="sec-hd"><span>里程碑 / 檢核點</span><em>milestones</em></div>
+          <table class="milestone-table">
+            <tr><th style="width:18%">#</th><th style="width:46%">里程碑</th><th style="width:18%">日期</th><th style="width:18%">狀態</th></tr>
+            <tr><td>1</td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+            <tr><td>2</td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+            <tr><td>3</td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="sec-hd"><span>可能障礙 / 對策</span><em>risks and response</em></div>
+          <div class="risk-box">
+            <div class="risk-row">
+              <div><span class="f-lbl">障礙</span><span class="line"></span></div>
+              <div><span class="f-lbl">對策</span><span class="line"></span></div>
+            </div>
+            <div class="risk-row"><div><span class="line"></span></div><div><span class="line"></span></div></div>
+            <div class="risk-row"><div><span class="line"></span></div><div><span class="line"></span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="review">
+        <div class="review-card">
+          <span class="f-lbl">本週最重要下一步</span>
+          <span class="line"></span><span class="line"></span>
+        </div>
+        <div class="review-card">
+          <span class="f-lbl">完成後如何驗證</span>
+          <span class="line"></span><span class="line"></span>
+        </div>
+      </div>
+    </div>
+    <div class="pg-num">A · Breakdown</div>
+  </div>
+  <div class="page-label mode-b">▸ 模式 B — A4 直向・OKR 版</div>
+  <div class="page page-port mode-b">
+    <div class="b-wrap">
+      <span class="pg-type">Goal Breakdown · OKR</span>
+      <div class="okr-head">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:6mm">
+          <strong style="font-size:17pt;letter-spacing:.04em">OKR 計畫頁</strong>
+          <span style="font-size:6pt;color:#bbb;letter-spacing:.12em;text-transform:uppercase">quarter / month / sprint</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 28mm 28mm;gap:3mm;margin-top:3.5mm">
+          <div><span class="f-lbl">Owner / 團隊</span><span class="blank"></span></div>
+          <div><span class="f-lbl">期間</span><span class="blank"></span></div>
+          <div><span class="f-lbl">信心度</span><span class="blank"></span></div>
+        </div>
+      </div>
+      <div class="okr-obj">
+        <span style="font-size:6pt;color:#666;letter-spacing:.12em;text-transform:uppercase">Objective</span>
+        <div style="margin-top:2.5mm;border-bottom:0.8pt solid #555;height:8mm"></div>
+      </div>
+      <div class="kr-list">
+        <div class="kr-card">
+          <div class="sec-hd" style="margin-bottom:0;border-left:none;padding-left:0"><span>Key Result 1</span><em>measure + target</em></div>
+          <span class="blank"></span>
+          <div class="kr-meta">
+            <div><span class="f-lbl">關鍵行動</span><span class="line"></span></div>
+            <div><span class="f-lbl">起始值</span><span class="line"></span></div>
+            <div><span class="f-lbl">目標值</span><span class="line"></span></div>
+          </div>
+          <div class="bar-row"><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span></div>
+        </div>
+        <div class="kr-card">
+          <div class="sec-hd" style="margin-bottom:0;border-left:none;padding-left:0"><span>Key Result 2</span><em>measure + target</em></div>
+          <span class="blank"></span>
+          <div class="kr-meta">
+            <div><span class="f-lbl">關鍵行動</span><span class="line"></span></div>
+            <div><span class="f-lbl">起始值</span><span class="line"></span></div>
+            <div><span class="f-lbl">目標值</span><span class="line"></span></div>
+          </div>
+          <div class="bar-row"><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span></div>
+        </div>
+        <div class="kr-card">
+          <div class="sec-hd" style="margin-bottom:0;border-left:none;padding-left:0"><span>Key Result 3</span><em>measure + target</em></div>
+          <span class="blank"></span>
+          <div class="kr-meta">
+            <div><span class="f-lbl">關鍵行動</span><span class="line"></span></div>
+            <div><span class="f-lbl">起始值</span><span class="line"></span></div>
+            <div><span class="f-lbl">目標值</span><span class="line"></span></div>
+          </div>
+          <div class="bar-row"><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span></div>
+        </div>
+      </div>
+      <div class="okr-bottom">
+        <div>
+          <div class="sec-hd"><span>每週檢查</span><em>weekly check-in</em></div>
+          <table class="check-table">
+            <tr><td style="width:22%">週次</td><td>進度摘要</td></tr>
+            <tr><td>W1</td><td><div class="line"></div></td></tr>
+            <tr><td>W2</td><td><div class="line"></div></td></tr>
+            <tr><td>W3</td><td><div class="line"></div></td></tr>
+            <tr><td>W4</td><td><div class="line"></div></td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="sec-hd"><span>風險 / 支援需求</span><em>blockers</em></div>
+          <div style="border:0.4pt solid #ddd;padding:3mm">
+            <span class="line"></span><span class="line"></span><span class="line"></span><span class="line"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pg-num">B · OKR</div>
+  </div>
+</div>
+<script src="../../js/template-size.js"></script>
+<script>
+const pageStyles = { a: 'A4 portrait', b: 'A4 portrait' };
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
+    card.classList.toggle('active', ['a', 'b'][index] === mode);
+  });
+}
+setMode('a');
+</script>
+</body>
+</html>

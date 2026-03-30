@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>Cornell 筆記模板</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; background: #c8c8c8; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.page { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.2); overflow: hidden; position: relative; }
+.page::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: #fff; z-index: 4; pointer-events: none; }
+.page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
+.page-port { width: 210mm; height: 297mm; }
+.page-a5 { width: 148mm; height: 210mm; }
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+.pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; display: block; }
+.f-lbl { font-size: 5.5pt; letter-spacing: .1em; color: #aaa; display: block; margin-bottom: 1mm; text-transform: uppercase; }
+.blank { display: block; border-bottom: 0.5pt solid #ccc; height: 4.6mm; }
+.summary-line { display: block; border-bottom: 0.4pt solid #ddd; height: 6mm; }
+.pg-num { position: absolute; bottom: 6mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+.a-wrap { padding: 11mm 14mm 9mm; height: 297mm; display: flex; flex-direction: column; }
+.head { border-bottom: 0.75pt solid #111; padding-bottom: 4mm; }
+.head-row { display: grid; grid-template-columns: 1.3fr .7fr .8fr; gap: 3mm; margin-top: 3mm; }
+.cornell-grid { flex: 1; display: grid; grid-template-columns: 32% 1fr; border: 0.75pt solid #111; border-top: none; margin-top: 4mm; }
+.cue-col { border-right: 0.75pt solid #111; padding: 3mm; display: flex; flex-direction: column; }
+.note-col { padding: 3mm; display: flex; flex-direction: column; }
+.cue-row { border-bottom: 0.4pt solid #eee; height: 16.2mm; }
+.note-row { border-bottom: 0.4pt solid #ddd; height: 8.1mm; }
+.summary-box { border: 0.75pt solid #111; border-top: none; padding: 3mm; min-height: 48mm; }
+.b-wrap { padding: 9mm 10mm 7mm; height: 210mm; display: flex; flex-direction: column; }
+.b-head { border-bottom: 0.75pt solid #111; padding-bottom: 3mm; }
+.b-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5mm; margin-top: 2.5mm; }
+.b-cornell { flex: 1; display: grid; grid-template-columns: 30% 1fr; border: 0.75pt solid #111; border-top: none; margin-top: 3mm; }
+.b-cue { border-right: 0.75pt solid #111; padding: 2.5mm; }
+.b-note { padding: 2.5mm; }
+.b-cue-line { border-bottom: 0.4pt solid #eee; height: 13mm; }
+.b-note-line { border-bottom: 0.4pt solid #ddd; height: 6.5mm; }
+.b-summary { border: 0.75pt solid #111; border-top: none; padding: 2.5mm; min-height: 33mm; }
+@media print {
+  body { background: none; }
+  .ui, .page-label { display: none !important; }
+  .pages { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+}
+</style>
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body class="template-page sel-a">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">Cornell 筆記 <small>Cornell Notes</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 標準版 <span style="font-size:9px;opacity:.5">A4直・三區結構</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 精簡版 <span style="font-size:9px;opacity:.5">A5直・快速筆記</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+<div class="pages">
+  <div class="page-label mode-a">▸ 模式 A — A4 直向・Cornell 標準版</div>
+  <div class="page page-port mode-a">
+    <div class="a-wrap">
+      <span class="pg-type">Cornell Notes · 標準版</span>
+      <div class="head">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:6mm">
+          <strong style="font-size:16pt;letter-spacing:.04em">Cornell Notes</strong>
+          <span style="font-size:6pt;color:#bbb;letter-spacing:.12em;text-transform:uppercase">cue / notes / summary</span>
+        </div>
+        <div class="head-row">
+          <div><span class="f-lbl">標題 / 主題</span><span class="blank"></span></div>
+          <div><span class="f-lbl">日期</span><span class="blank"></span></div>
+          <div><span class="f-lbl">科目 / 專案</span><span class="blank"></span></div>
+        </div>
+      </div>
+      <div class="cornell-grid">
+        <div class="cue-col">
+          <span class="f-lbl">Cue / 關鍵字・問題</span>
+          <span class="cue-row"></span><span class="cue-row"></span><span class="cue-row"></span><span class="cue-row"></span>
+          <span class="cue-row"></span><span class="cue-row"></span><span class="cue-row"></span><span class="cue-row"></span>
+        </div>
+        <div class="note-col">
+          <span class="f-lbl">Notes / 筆記主體</span>
+          <span class="note-row"></span><span class="note-row"></span><span class="note-row"></span><span class="note-row"></span>
+          <span class="note-row"></span><span class="note-row"></span><span class="note-row"></span><span class="note-row"></span>
+          <span class="note-row"></span><span class="note-row"></span><span class="note-row"></span><span class="note-row"></span>
+          <span class="note-row"></span><span class="note-row"></span><span class="note-row"></span><span class="note-row"></span>
+        </div>
+      </div>
+      <div class="summary-box">
+        <span class="f-lbl">Summary / 摘要</span>
+        <span class="summary-line"></span><span class="summary-line"></span><span class="summary-line"></span>
+      </div>
+    </div>
+    <div class="pg-num">A · Cornell</div>
+  </div>
+  <div class="page-label mode-b">▸ 模式 B — A5 直向・Cornell 精簡版</div>
+  <div class="page page-a5 mode-b">
+    <div class="b-wrap">
+      <span class="pg-type">Cornell Notes · Quick</span>
+      <div class="b-head">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:5mm">
+          <strong style="font-size:14pt;letter-spacing:.04em">Cornell</strong>
+          <span style="font-size:6pt;color:#bbb;letter-spacing:.12em;text-transform:uppercase">quick notes</span>
+        </div>
+        <div class="b-row">
+          <div><span class="f-lbl">主題</span><span class="blank"></span></div>
+          <div><span class="f-lbl">日期</span><span class="blank"></span></div>
+        </div>
+      </div>
+      <div class="b-cornell">
+        <div class="b-cue">
+          <span class="f-lbl">Cue</span>
+          <span class="b-cue-line"></span><span class="b-cue-line"></span><span class="b-cue-line"></span><span class="b-cue-line"></span><span class="b-cue-line"></span>
+        </div>
+        <div class="b-note">
+          <span class="f-lbl">Notes</span>
+          <span class="b-note-line"></span><span class="b-note-line"></span><span class="b-note-line"></span><span class="b-note-line"></span><span class="b-note-line"></span>
+          <span class="b-note-line"></span><span class="b-note-line"></span><span class="b-note-line"></span><span class="b-note-line"></span><span class="b-note-line"></span>
+        </div>
+      </div>
+      <div class="b-summary">
+        <span class="f-lbl">Summary</span>
+        <span class="summary-line"></span><span class="summary-line"></span>
+      </div>
+    </div>
+    <div class="pg-num">B · Quick</div>
+  </div>
+</div>
+<script src="../../js/template-size.js"></script>
+<script>
+const pageStyles = { a: 'A4 portrait', b: 'A5 portrait' };
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
+    card.classList.toggle('active', ['a', 'b'][index] === mode);
+  });
+}
+setMode('a');
+</script>
+</body>
+</html>

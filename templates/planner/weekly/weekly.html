@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>週計畫模板</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; background: #c8c8c8; color: #1a1a1a; }
+
+/* ════ Pages ════ */
+.pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.page { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.2); overflow: hidden; position: relative; }
+.page::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: #fff; z-index: 4; pointer-events: none; }
+.page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
+.page-land { width: 297mm; height: 210mm; }
+.page-port { width: 210mm; height: 297mm; }
+
+/* Mode control */
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+
+/* ════ 共用 ════ */
+.pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; display: block; }
+.f-lbl   { font-size: 6pt; letter-spacing: .1em; color: #aaa; padding-right: 1.5mm; white-space: nowrap; }
+.blank   { border-bottom: 0.6pt solid #111; display: inline-block; height: 4mm; }
+.s-hd    { font-size: 6pt; letter-spacing: .13em; text-transform: uppercase; color: #777; font-weight: 600; display: block; }
+.lc      { border-bottom: 0.4pt solid #ddd; }
+.sq      { display: inline-block; width: 3mm; height: 3mm; border: 0.65pt solid #777; }
+.ck-sq   { display: inline-block; width: 2.8mm; height: 2.8mm; border: 0.6pt solid #999; vertical-align: middle; margin-right: 1mm; }
+.pg-num  { position: absolute; bottom: 6mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+
+/* ════ Mode A：七欄 A4橫 ════ */
+.wk-tbl { width: 297mm; height: 210mm; border-collapse: collapse; table-layout: fixed; }
+
+/* 頁首列 */
+.wk-head { padding: 8mm 14mm 5mm; border-bottom: 0.75pt solid #111; }
+.wk-info { display: flex; align-items: baseline; gap: 6mm; flex-wrap: wrap; }
+.wk-goal { margin-top: 2.5mm; display: flex; align-items: baseline; }
+
+/* 日期欄頭 */
+.day-hd {
+  border-bottom: 0.75pt solid #111;
+  border-right: 0.4pt solid #ddd;
+  padding: 2mm 3mm;
+  vertical-align: bottom;
+  text-align: left;
+  background: #fafafa;
+}
+.day-hd:last-child { border-right: none; }
+.day-name { font-size: 7.5pt; font-weight: 700; letter-spacing: .04em; display: block; }
+.day-date { font-size: 5.5pt; color: #bbb; letter-spacing: .06em; }
+.day-hd.weekend { background: #f5f5f5; }
+.day-hd.weekend .day-name { color: #bbb; }
+
+/* 主要內容列 */
+.day-body { border-right: 0.4pt solid #ddd; padding: 3mm; vertical-align: top; }
+.day-body:last-child { border-right: none; }
+.day-body.weekend { background: #fafafa; }
+.day-line { border-bottom: 0.4pt solid #eee; height: 7mm; display: block; }
+
+/* 待辦列 */
+.day-todo { border-top: 0.4pt solid #ddd; border-right: 0.4pt solid #ddd; padding: 2mm 3mm; vertical-align: top; }
+.day-todo:last-child { border-right: none; }
+.day-todo.weekend { background: #fafafa; }
+.todo-row { display: flex; align-items: flex-end; margin-bottom: 1.5mm; gap: 1.5mm; }
+.todo-row:last-child { margin-bottom: 0; }
+.todo-line { flex: 1; border-bottom: 0.4pt solid #ddd; height: 4.5mm; }
+
+/* ════ Mode B：清單 A4直 ════ */
+.b-wrap  { padding: 11mm 14mm 8mm; height: 297mm; display: flex; flex-direction: column; }
+.b-head  { border-bottom: 0.75pt solid #111; padding-bottom: 4mm; margin-bottom: 4mm; }
+.b-goals { display: flex; gap: 4mm; margin-top: 3mm; }
+.b-goal-item { flex: 1; display: flex; align-items: baseline; }
+.b-days  { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 6mm; }
+.b-day   { border-left: 1.5pt solid #111; padding-left: 3mm; }
+.b-day-hd { font-size: 6.5pt; font-weight: 700; letter-spacing: .06em; margin-bottom: 1.5mm; display: flex; justify-content: space-between; align-items: baseline; }
+.b-day-hd em { font-style: normal; font-size: 5pt; color: #ccc; font-weight: 400; }
+.b-line  { border-bottom: 0.4pt solid #ddd; height: 5.5mm; display: block; margin-bottom: 0; }
+.b-review { border-top: 0.75pt solid #111; padding-top: 3mm; margin-top: 3mm; }
+.b-reflect { width: 100%; border-collapse: collapse; margin-top: 2mm; }
+.b-reflect td { border: 0.4pt solid #ddd; padding: 2.5mm 3mm; vertical-align: top; width: 50%; }
+.b-r-hd { font-size: 5.5pt; letter-spacing: .08em; color: #bbb; text-transform: uppercase; margin-bottom: 1.5mm; display: block; }
+
+/* ════ Print ════ */
+@media print {
+  body { background: none; }
+  .ui, .page-label { display: none !important; }
+  .pages { padding: 0 !important; gap: 0 !important; }
+  .page  { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+}
+</style>
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body class="template-page sel-a">
+
+<!-- UI -->
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">週計畫 <small>Weekly Planner</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 七欄日程 <span style="font-size:9px;opacity:.5">A4橫・週一至週日</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 清單 <span style="font-size:9px;opacity:.5">A4直・七日區塊</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="pages">
+
+<!-- ══ MODE A：七欄 A4橫 ══ -->
+<div class="page-label mode-a">▸ 模式 A — A4 橫向・七欄日程（週一至週日）</div>
+<div class="page page-land mode-a">
+<table class="wk-tbl">
+
+  <!-- 頁首 -->
+  <tr style="height:28mm">
+    <td colspan="7" style="padding:8mm 14mm 5mm;border-bottom:0.75pt solid #111;vertical-align:top">
+      <span class="pg-type">Weekly Planner · 週計畫</span>
+      <div class="wk-info" style="margin-top:2mm">
+        <span><span class="f-lbl">第</span><span class="blank" style="width:8mm"></span><span class="f-lbl" style="padding-left:1mm">週</span></span>
+        <span><span class="f-lbl">期間</span><span class="blank" style="width:22mm"></span><span class="f-lbl" style="padding:0 1mm">—</span><span class="blank" style="width:22mm"></span></span>
+      </div>
+      <div class="wk-goal" style="margin-top:2mm">
+        <span class="f-lbl">本週主目標</span><span class="blank" style="flex:1;max-width:100mm"></span>
+      </div>
+    </td>
+  </tr>
+
+  <!-- 欄頭：週一至週日 -->
+  <tr style="height:12mm">
+    <td class="day-hd"><span class="day-name">週一</span><span class="day-date f-lbl">日期&ensp;<span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:12mm;height:3mm"></span></span></td>
+    <td class="day-hd"><span class="day-name">週二</span><span class="day-date f-lbl">日期&ensp;<span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:12mm;height:3mm"></span></span></td>
+    <td class="day-hd"><span class="day-name">週三</span><span class="day-date f-lbl">日期&ensp;<span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:12mm;height:3mm"></span></span></td>
+    <td class="day-hd"><span class="day-name">週四</span><span class="day-date f-lbl">日期&ensp;<span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:12mm;height:3mm"></span></span></td>
+    <td class="day-hd"><span class="day-name">週五</span><span class="day-date f-lbl">日期&ensp;<span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:12mm;height:3mm"></span></span></td>
+    <td class="day-hd weekend"><span class="day-name">週六</span><span class="day-date f-lbl">日期&ensp;<span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:12mm;height:3mm"></span></span></td>
+    <td class="day-hd weekend"><span class="day-name">週日</span><span class="day-date f-lbl">日期&ensp;<span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:12mm;height:3mm"></span></span></td>
+  </tr>
+
+  <!-- 主要書寫區 -->
+  <tr>
+    <td class="day-body"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body weekend"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+    <td class="day-body weekend"><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span><span class="day-line"></span></td>
+  </tr>
+
+  <!-- 待辦列 -->
+  <tr style="height:38mm">
+    <td class="day-todo"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo weekend"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+    <td class="day-todo weekend"><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div><div class="todo-row"><span class="sq"></span><span class="todo-line"></span></div></td>
+  </tr>
+
+</table>
+<div class="pg-num" style="bottom:4mm">A · Weekly</div>
+</div>
+
+
+<!-- ══ MODE B：清單 A4直 ══ -->
+<div class="page-label mode-b">▸ 模式 B — A4 直向・七日區塊清單</div>
+<div class="page page-port mode-b">
+  <div class="b-wrap">
+    <div class="b-head">
+      <span class="pg-type">Weekly Planner · 週計畫</span>
+      <div style="display:flex;align-items:baseline;gap:6mm;margin-top:2.5mm">
+        <span><span class="f-lbl">第</span><span class="blank" style="width:8mm"></span><span class="f-lbl" style="padding-left:1mm">週</span></span>
+        <span><span class="f-lbl">期間</span><span class="blank" style="width:22mm"></span><span class="f-lbl" style="padding:0 1mm">—</span><span class="blank" style="width:22mm"></span></span>
+      </div>
+      <div class="b-goals">
+        <div class="b-goal-item"><span style="font-size:6pt;color:#ccc;margin-right:1.5mm">①</span><span class="blank" style="flex:1"></span></div>
+        <div class="b-goal-item"><span style="font-size:6pt;color:#ccc;margin-right:1.5mm">②</span><span class="blank" style="flex:1"></span></div>
+        <div class="b-goal-item"><span style="font-size:6pt;color:#ccc;margin-right:1.5mm">③</span><span class="blank" style="flex:1"></span></div>
+      </div>
+    </div>
+
+    <div class="b-days">
+      <div class="b-day">
+        <div class="b-day-hd">週一 <em><span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:14mm;height:3mm"></span></em></div>
+        <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
+      </div>
+      <div class="b-day">
+        <div class="b-day-hd">週二 <em><span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:14mm;height:3mm"></span></em></div>
+        <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
+      </div>
+      <div class="b-day">
+        <div class="b-day-hd">週三 <em><span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:14mm;height:3mm"></span></em></div>
+        <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
+      </div>
+      <div class="b-day">
+        <div class="b-day-hd">週四 <em><span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:14mm;height:3mm"></span></em></div>
+        <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
+      </div>
+      <div class="b-day">
+        <div class="b-day-hd">週五 <em><span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:14mm;height:3mm"></span></em></div>
+        <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
+      </div>
+      <div class="b-day">
+        <div class="b-day-hd" style="color:#bbb">週六 <em><span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:14mm;height:3mm"></span></em></div>
+        <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
+      </div>
+      <div class="b-day">
+        <div class="b-day-hd" style="color:#bbb">週日 <em><span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:14mm;height:3mm"></span></em></div>
+        <span class="b-line"></span><span class="b-line"></span><span class="b-line"></span><span class="b-line"></span>
+      </div>
+    </div>
+
+    <div class="b-review">
+      <span class="s-hd" style="margin-bottom:2mm">週回顧</span>
+      <table class="b-reflect"><tr>
+        <td><span class="b-r-hd">本週最有價值</span>
+          <span style="border-bottom:0.4pt solid #ddd;display:block;height:5.5mm;margin-bottom:1.5mm"></span>
+          <span style="border-bottom:0.4pt solid #ddd;display:block;height:5.5mm"></span>
+        </td>
+        <td><span class="b-r-hd">下週注意 / 可優化</span>
+          <span style="border-bottom:0.4pt solid #ddd;display:block;height:5.5mm;margin-bottom:1.5mm"></span>
+          <span style="border-bottom:0.4pt solid #ddd;display:block;height:5.5mm"></span>
+        </td>
+      </tr></table>
+    </div>
+  </div>
+  <div class="pg-num">B · Weekly</div>
+</div>
+
+</div><!-- /pages -->
+
+<script src="../../../js/template-size.js"></script>
+<script>
+const pgSize = { a:'landscape', b:'portrait' };
+let st = document.createElement('style'); st.id='pg-size'; document.head.appendChild(st);
+function setMode(m) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + m);
+  st.textContent = '@media print { @page { size: A4 ' + pgSize[m] + '; margin:0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((c,i) => c.classList.toggle('active', ['a','b'][i]===m));
+}
+setMode('a');
+</script>
+</body>
+</html>

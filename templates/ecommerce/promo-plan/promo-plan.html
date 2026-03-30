@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>優惠活動企劃表模板</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; background: #c8c8c8; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.page { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.2); overflow: hidden; position: relative; }
+.page::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: #fff; z-index: 4; pointer-events: none; }
+.page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
+.page-port { width: 210mm; height: 297mm; }
+.page-land { width: 297mm; height: 210mm; }
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+.pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; display: block; }
+.f-lbl { font-size: 5.5pt; letter-spacing: .1em; color: #aaa; display: block; margin-bottom: 1mm; text-transform: uppercase; }
+.blank { display: block; border-bottom: 0.5pt solid #ccc; height: 4.5mm; }
+.line { display: block; border-bottom: 0.4pt solid #ddd; height: 5.2mm; }
+.pg-num { position: absolute; bottom: 6mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+.sec { margin-top: 4mm; }
+.sec-hd { font-size: 6.5pt; letter-spacing: .14em; text-transform: uppercase; color: #777; font-weight: 600; border-left: 2pt solid #111; padding-left: 3mm; margin-bottom: 2.5mm; display: flex; justify-content: space-between; align-items: baseline; }
+.sec-hd em { font-style: normal; font-size: 5pt; color: #bbb; font-weight: 400; letter-spacing: .06em; }
+.a-wrap { padding: 11mm 14mm 9mm; height: 297mm; display: flex; flex-direction: column; }
+.b-wrap { padding: 10mm 12mm 8mm; width: 297mm; height: 210mm; display: flex; flex-direction: column; }
+.hero { border: 1pt solid #111; color: #111; padding: 4mm 5mm; background: #fff; }
+.hero strong { font-size: 15pt; letter-spacing: .04em; display: block; }
+.meta-grid { display: grid; grid-template-columns: 1.1fr .9fr .8fr; gap: 2.5mm; border: 0.4pt solid #ddd; border-top: none; padding: 3mm; }
+.dual { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.table { width: 100%; border-collapse: collapse; border: 0.4pt solid #ddd; table-layout: fixed; }
+.table th, .table td { border-right: 0.4pt solid #ddd; border-bottom: 0.4pt solid #ddd; padding: 2mm 2.5mm; vertical-align: top; }
+.table th:last-child, .table td:last-child { border-right: none; }
+.table th { background: #fafafa; font-size: 5.5pt; color: #aaa; text-transform: uppercase; font-weight: 400; text-align: left; letter-spacing: .08em; }
+.track-box { border: 0.4pt solid #ddd; padding: 3mm; }
+.timeline { width: 100%; border-collapse: collapse; border: 0.4pt solid #ddd; table-layout: fixed; margin-top: 4mm; }
+.timeline th, .timeline td { border-right: 0.4pt solid #ddd; border-bottom: 0.4pt solid #ddd; padding: 2mm; vertical-align: middle; }
+.timeline th:last-child, .timeline td:last-child { border-right: none; }
+.timeline th { background: #fafafa; font-size: 5.5pt; color: #aaa; font-weight: 400; text-align: center; letter-spacing: .08em; text-transform: uppercase; }
+.time-block { height: 10mm; border: 0.4pt solid #111; background: linear-gradient(90deg,#f0f0f0 0%, #fff 100%); }
+@media print {
+  body { background: none; }
+  .ui, .page-label { display: none !important; }
+  .pages { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a, body.sel-b .mode-b { display: block !important; }
+}
+</style>
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body class="template-page sel-a">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">優惠活動企劃表 <small>Promotion Planning Sheet</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 單檔活動 <span style="font-size:9px;opacity:.5">A4直・完整企劃</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 月活動總覽 <span style="font-size:9px;opacity:.5">A4橫・時間軸</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+<div class="pages">
+  <div class="page-label mode-a">▸ 模式 A — A4 直向・單檔活動企劃</div>
+  <div class="page page-port mode-a">
+    <div class="a-wrap">
+      <span class="pg-type">Promotion Planning Sheet · 單檔活動版</span>
+      <div class="hero">
+        <strong>優惠活動企劃表</strong>
+        <span style="font-size:6pt;color:#666;letter-spacing:.1em;text-transform:uppercase">offer / budget / channels / roi</span>
+      </div>
+      <div class="meta-grid">
+        <div><span class="f-lbl">活動名稱</span><span class="blank"></span></div>
+        <div><span class="f-lbl">活動期間</span><span class="blank"></span></div>
+        <div><span class="f-lbl">活動目的</span><span class="blank"></span></div>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><span>參與商品與優惠</span><em>products + offer</em></div>
+        <table class="table">
+          <tr><th style="width:28%">商品</th><th style="width:14%">原價</th><th style="width:14%">活動價</th><th style="width:14%">折扣率</th><th>機制</th></tr>
+          <tr><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+          <tr><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+          <tr><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+        </table>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><span>平台 / 預算 / 業績</span><em>channels and targets</em></div>
+        <div class="dual">
+          <div class="track-box">
+            <span class="f-lbl">適用平台 / 推廣管道</span>
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+          </div>
+          <div class="track-box">
+            <span class="f-lbl">預算上限 / 預期目標</span>
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+          </div>
+        </div>
+      </div>
+      <div class="sec" style="margin-top:auto">
+        <div class="sec-hd"><span>活動後成效記錄</span><em>actual result / roi</em></div>
+        <div class="track-box">
+          <span class="line"></span><span class="line"></span><span class="line"></span><span class="line"></span>
+        </div>
+      </div>
+    </div>
+    <div class="pg-num">A · Promo</div>
+  </div>
+  <div class="page-label mode-b">▸ 模式 B — A4 橫向・月活動總覽</div>
+  <div class="page page-land mode-b">
+    <div class="b-wrap">
+      <span class="pg-type">Promotion Planning Sheet · 月總覽</span>
+      <div class="hero">
+        <strong>月活動總覽</strong>
+        <span style="font-size:6pt;color:#666;letter-spacing:.1em;text-transform:uppercase">campaign overview timeline</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 24mm 24mm;gap:3mm;margin-top:4mm">
+        <div><span class="f-lbl">月份 / 主題</span><span class="blank"></span></div>
+        <div><span class="f-lbl">預算</span><span class="blank"></span></div>
+        <div><span class="f-lbl">目標業績</span><span class="blank"></span></div>
+      </div>
+      <table class="timeline">
+        <tr><th style="width:20%">活動</th><th>W1</th><th>W2</th><th>W3</th><th>W4</th><th style="width:18%">平台 / 備注</th></tr>
+        <tr><td>Campaign 01</td><td><div class="time-block"></div></td><td></td><td></td><td></td><td><div class="line"></div></td></tr>
+        <tr><td>Campaign 02</td><td></td><td><div class="time-block"></div></td><td><div class="time-block"></div></td><td></td><td><div class="line"></div></td></tr>
+        <tr><td>Campaign 03</td><td></td><td></td><td><div class="time-block"></div></td><td><div class="time-block"></div></td><td><div class="line"></div></td></tr>
+        <tr><td>Campaign 04</td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+      </table>
+      <div class="dual" style="margin-top:auto">
+        <div class="track-box">
+          <span class="f-lbl">本月主題與素材需求</span>
+          <span class="line"></span><span class="line"></span><span class="line"></span>
+        </div>
+        <div class="track-box">
+          <span class="f-lbl">風險與依賴</span>
+          <span class="line"></span><span class="line"></span><span class="line"></span>
+        </div>
+      </div>
+    </div>
+    <div class="pg-num">B · Timeline</div>
+  </div>
+</div>
+<script src="../../../js/template-size.js"></script>
+<script>
+const pageStyles = { a: 'A4 portrait', b: 'A4 landscape' };
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
+    card.classList.toggle('active', ['a', 'b'][index] === mode);
+  });
+}
+setMode('a');
+</script>
+</body>
+</html>

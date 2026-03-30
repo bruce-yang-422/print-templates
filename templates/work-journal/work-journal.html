@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>工作日誌模板</title>
+<style>
+/* ─── 字型：用系統字，不依賴外部連線 ─── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;
+  background: #c8c8c8;
+  color: #1a1a1a;
+}
+
+/* ════════════════════════
+   頁面容器
+════════════════════════ */
+.pages {
+  padding: 104px 0 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.page-label {
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #999;
+  padding-bottom: 6px;
+}
+
+/* ── 頁面 box ── */
+.page {
+  background: #fff;
+  box-shadow: 0 2px 20px rgba(0,0,0,.2);
+  overflow: hidden;
+  position: relative;
+}
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 10mm;
+  background: #fff;
+  z-index: 4;
+  pointer-events: none;
+}
+.page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 10mm;
+  border-left: 0.6pt solid #d6d6d6;
+  z-index: 5;
+  pointer-events: none;
+}
+.page-land { width: 297mm; height: 210mm; }
+.page-port { width: 210mm; height: 297mm; }
+
+/* ── 模式顯示控制 ── */
+.mode-a, .mode-b, .mode-c, .mode-d { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+body.sel-c .mode-c { display: block; }
+body.sel-d .mode-d { display: block; }
+
+
+/* ════════════════════════
+   模板共用元件
+   全用 TABLE 確保列印穩定
+════════════════════════ */
+
+/* 頁面內層 padding */
+.inner-a5 {
+  padding: 20mm 10mm 8mm 10mm;
+  width: 100%;
+  height: 100%;
+  vertical-align: top;
+}
+.inner-a5-bind {
+  padding-left: 20mm;
+  background-image: linear-gradient(
+    to right,
+    transparent 0,
+    transparent 10mm,
+    #d6d6d6 10mm,
+    #d6d6d6 calc(10mm + 0.6pt),
+    transparent calc(10mm + 0.6pt)
+  );
+  background-repeat: no-repeat;
+}
+.inner-a4 {
+  display: block;
+  padding: 20mm 14mm 10mm 14mm;
+  width: 210mm;
+  height: 297mm;
+}
+
+/* 日誌 / 週總結 小標籤 */
+.pg-type {
+  font-size: 6pt;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #bbb;
+  margin-bottom: 3mm;
+  display: block;
+}
+
+/* 日期列 */
+.date-row {
+  width: 100%;
+  border-collapse: collapse;
+  border-bottom: 0.75pt solid #111;
+  margin-bottom: 3.5mm;
+}
+.date-row td { vertical-align: bottom; padding-bottom: 2mm; }
+.f-lbl { font-size: 6pt; letter-spacing: .12em; color: #aaa; padding-right: 1.5mm; white-space: nowrap; }
+.blank { border-bottom: 0.6pt solid #111; display: inline-block; height: 4mm; }
+.blank-l  { width: 24mm; }
+.blank-m  { width: 16mm; }
+.blank-s  { width: 9mm; }
+.blank-xs { width: 9mm; border-bottom: 0.4pt solid #ccc; }
+.sq-stat { display: inline-block; width: 2.8mm; height: 2.8mm; border: 0.6pt solid #777; vertical-align: middle; }
+.stat-item { font-size: 6.5pt; color: #666; white-space: nowrap; }
+.stat-item .sq-stat { margin-right: 1mm; }
+
+/* 區塊標題 */
+.s-hd {
+  font-size: 6pt;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: #777;
+  font-weight: 600;
+  display: block;
+  margin-top: 3mm;
+  margin-bottom: 1.8mm;
+}
+.s-hd-a4 {
+  font-size: 7pt;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: #777;
+  font-weight: 600;
+  display: block;
+  margin-top: 4mm;
+  margin-bottom: 2.2mm;
+}
+
+/* 單純橫線 */
+.line-tbl { width: 100%; border-collapse: collapse; margin-bottom: 2mm; }
+.lc      { border-bottom: 0.4pt solid #ccc; height: 5.5mm; }
+.lc-a4   { border-bottom: 0.4pt solid #ccc; height: 6.5mm; }
+
+/* 勾選框 + 橫線 */
+.sq-cell { width: 5mm; vertical-align: bottom; padding-bottom: 1.2mm; }
+.sq { display: inline-block; width: 3mm; height: 3mm; border: 0.65pt solid #777; }
+.sq-a4 { display: inline-block; width: 3.5mm; height: 3.5mm; border: 0.65pt solid #777; }
+
+/* 問題→解法 split */
+.arrow-cell { width: 8mm; text-align: center; vertical-align: bottom; font-size: 7pt; color: #bbb; padding-bottom: 1mm; }
+
+/* 裁切線（橫向版） */
+.cut-col { width: 0; border-right: 0.6pt dashed #bbb; position: relative; }
+
+/* 頁碼 */
+.pg-num {
+  position: absolute;
+  bottom: 6mm; right: 10mm;
+  font-size: 6.5pt;
+  letter-spacing: .1em;
+  color: #ccc;
+}
+
+/* 週總結標題 */
+.week-main {
+  font-size: 16pt;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1;
+  display: block;
+}
+.week-main-a4 {
+  font-size: 20pt;
+  font-weight: 700;
+  letter-spacing: .04em;
+  line-height: 1;
+  display: block;
+}
+.week-sub {
+  display: flex;
+  gap: 6mm;
+  margin-top: 2.5mm;
+  font-size: 6.5pt;
+  color: #bbb;
+  letter-spacing: .06em;
+  align-items: baseline;
+}
+.week-head-border {
+  border-bottom: 1.2pt solid #111;
+  padding-bottom: 3mm;
+  margin-bottom: 4mm;
+}
+.w-hd {
+  font-size: 6.5pt;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #777;
+  font-weight: 600;
+  border-left: 1.8pt solid #111;
+  padding-left: 2.5mm;
+  margin-bottom: 2mm;
+  display: block;
+}
+.w-hd-a4 {
+  font-size: 7.5pt;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #777;
+  font-weight: 600;
+  border-left: 2pt solid #111;
+  padding-left: 3mm;
+  margin-bottom: 2.5mm;
+  display: block;
+}
+.w-sec { margin-bottom: 4mm; }
+.n-cell { width: 5mm; vertical-align: bottom; font-size: 7pt; color: #bbb; text-align: right; padding-right: 2mm; padding-bottom: 1mm; }
+
+/* 週回顧 2欄 */
+.reflect-tbl { width: 100%; border-collapse: collapse; }
+.reflect-tbl td { border: 0.4pt solid #ddd; padding: 2.5mm 3mm 2mm; vertical-align: top; width: 50%; }
+.r-hd { font-size: 6pt; letter-spacing: .08em; color: #bbb; text-transform: uppercase; margin-bottom: 2mm; display: block; }
+
+
+/* ════════════════════════
+   PRINT
+════════════════════════ */
+@media print {
+  body { background: none; }
+  .ui       { display: none !important; }
+  .page-label { display: none !important; }
+  .pages    { padding: 0 !important; gap: 0 !important; background: none !important; }
+  .page     { box-shadow: none !important; page-break-after: always; break-after: page; }
+
+  /* hide non-selected modes */
+  .mode-a, .mode-b, .mode-c, .mode-d { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+  body.sel-c .mode-c { display: block !important; }
+  body.sel-d .mode-d { display: block !important; }
+}
+</style>
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body class="template-page sel-a">
+
+<!-- ════════════ 螢幕 UI ════════════ -->
+<div class="ui">
+
+  <!-- 麵包屑列 -->
+  <div class="ui-nav">
+    <a href="../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M7 1L3 5l4 4"/>
+      </svg>
+      模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">工作日誌 <small>Work Journal</small></div>
+  </div>
+
+  <!-- 工具列 -->
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')">
+        <strong>A</strong> 日誌 × 2 <span style="font-size:9px;opacity:.5">A4橫・裁A5</span>
+      </button>
+      <button class="card" onclick="setMode('b')">
+        <strong>B</strong> 週總結 × 2 <span style="font-size:9px;opacity:.5">A4橫・裁A5</span>
+      </button>
+      <button class="card" onclick="setMode('c')">
+        <strong>C</strong> 日誌 A4 <span style="font-size:9px;opacity:.5">直向・通用</span>
+      </button>
+      <button class="card" onclick="setMode('d')">
+        <strong>D</strong> 週總結 A4 <span style="font-size:9px;opacity:.5">直向・通用</span>
+      </button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════ 頁面區 ════════════ -->
+<div class="pages">
+
+  <!-- ══════════════════════════════
+       MODE A：A4 橫・日誌 × 2
+  ══════════════════════════════ -->
+  <div class="page-label mode-a">▸ 模式 A — A4 橫向・日誌 × 2，沿虛線裁切成 A5</div>
+  <div class="page page-land mode-a">
+    <table style="width:297mm;height:210mm;border-collapse:collapse;table-layout:fixed;">
+    <tr>
+
+      <!-- 左半 A5 -->
+      <td class="inner-a5 inner-a5-bind">
+        <span class="pg-type">Daily Log · 工作日誌</span>
+
+        <!-- 日期列 -->
+        <table class="date-row"><tr>
+          <td><span class="f-lbl">日期</span><span class="blank blank-l"></span></td>
+          <td style="padding-left:3mm"><span class="f-lbl">週</span><span class="blank blank-s"></span></td>
+          <td style="text-align:right">
+            <span class="f-lbl" style="margin-right:2mm">狀態</span>
+            <span class="stat-item"><span class="sq-stat"></span>順</span>&ensp;
+            <span class="stat-item"><span class="sq-stat"></span>普通</span>&ensp;
+            <span class="stat-item"><span class="sq-stat"></span>卡住</span>
+          </td>
+        </tr></table>
+
+        <!-- 今日工作 -->
+        <span class="s-hd">今日工作</span>
+        <table class="line-tbl"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+
+        <!-- 問題→解法 -->
+        <span class="s-hd">問題 → 怎麼解</span>
+        <table class="line-tbl"><tr><td class="lc"></td><td class="arrow-cell">→</td><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td><td class="arrow-cell">→</td><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td><td class="arrow-cell">→</td><td class="lc"></td></tr></table>
+
+        <!-- 最有價值 -->
+        <span class="s-hd">今天最有價值的一件事</span>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+
+        <!-- 備注 -->
+        <span class="s-hd">備注 / 其他</span>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+
+        <!-- 明天 -->
+        <span class="s-hd">明天最不能忘的一件事</span>
+        <table class="line-tbl"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      </td>
+
+      <!-- 裁切虛線 -->
+      <td style="width:0;border-left:0.6pt dashed #bbb;padding:0;position:relative;">
+        <div style="position:absolute;top:3mm;left:50%;transform:translateX(-50%);font-size:8pt;color:#ccc;writing-mode:vertical-lr;">✂ 裁切線 ✂</div>
+      </td>
+
+      <!-- 右半 A5（同內容） -->
+      <td class="inner-a5 inner-a5-bind">
+        <span class="pg-type">Daily Log · 工作日誌</span>
+        <table class="date-row"><tr>
+          <td><span class="f-lbl">日期</span><span class="blank blank-l"></span></td>
+          <td style="padding-left:3mm"><span class="f-lbl">週</span><span class="blank blank-s"></span></td>
+          <td style="text-align:right">
+            <span class="f-lbl" style="margin-right:2mm">狀態</span>
+            <span class="stat-item"><span class="sq-stat"></span>順</span>&ensp;
+            <span class="stat-item"><span class="sq-stat"></span>普通</span>&ensp;
+            <span class="stat-item"><span class="sq-stat"></span>卡住</span>
+          </td>
+        </tr></table>
+        <span class="s-hd">今日工作</span>
+        <table class="line-tbl"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+        <span class="s-hd">問題 → 怎麼解</span>
+        <table class="line-tbl"><tr><td class="lc"></td><td class="arrow-cell">→</td><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td><td class="arrow-cell">→</td><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td><td class="arrow-cell">→</td><td class="lc"></td></tr></table>
+        <span class="s-hd">今天最有價值的一件事</span>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <span class="s-hd">備注 / 其他</span>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        <span class="s-hd">明天最不能忘的一件事</span>
+        <table class="line-tbl"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      </td>
+
+    </tr>
+    </table>
+    <div class="pg-num" style="right:auto;left:14mm">A</div>
+  </div><!-- /mode-a page -->
+
+
+  <!-- ══════════════════════════════
+       MODE B：A4 橫・週總結 × 2
+  ══════════════════════════════ -->
+  <div class="page-label mode-b">▸ 模式 B — A4 橫向・週總結 × 2，沿虛線裁切成 A5</div>
+  <div class="page page-land mode-b">
+    <table style="width:297mm;height:210mm;border-collapse:collapse;table-layout:fixed;">
+    <tr>
+
+      <!-- 左半 -->
+      <td class="inner-a5 inner-a5-bind">
+        <div class="week-head-border">
+          <span class="week-main">週總結</span>
+          <div class="week-sub">
+            <span>第 <span class="blank blank-s"></span> 週</span>
+            <span>期間 <span class="blank blank-m"></span> — <span class="blank blank-m"></span></span>
+          </div>
+        </div>
+
+        <div class="w-sec">
+          <span class="w-hd">本週最有價值的 3 件事</span>
+          <table class="line-tbl"><tr><td class="n-cell">1</td><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="n-cell">2</td><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="n-cell">3</td><td class="lc"></td></tr></table>
+        </div>
+        <div class="w-sec">
+          <span class="w-hd">本週解決的關鍵問題</span>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        </div>
+        <div class="w-sec">
+          <span class="w-hd">可以優化 ／ 下週注意</span>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        </div>
+        <div class="w-sec">
+          <span class="w-hd">備注</span>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        </div>
+        <div class="w-sec" style="margin-bottom:0">
+          <span class="w-hd">本週回顧</span>
+          <table class="reflect-tbl"><tr>
+            <td>
+              <span class="r-hd">狀態分佈（天數）</span>
+              <span style="font-size:6.5pt;color:#666">
+                順<span class="blank blank-xs" style="margin:0 1mm"></span>
+                普<span class="blank blank-xs" style="margin:0 1mm"></span>
+                卡<span class="blank blank-xs" style="margin:0 1mm"></span>
+              </span>
+            </td>
+            <td>
+              <span class="r-hd">整體感受</span>
+              <table class="line-tbl" style="margin-bottom:2mm"><tr><td class="lc"></td></tr></table>
+              <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+            </td>
+          </tr></table>
+        </div>
+      </td>
+
+      <!-- 裁切線 -->
+      <td style="width:0;border-left:0.6pt dashed #bbb;padding:0;position:relative;">
+        <div style="position:absolute;top:3mm;left:50%;transform:translateX(-50%);font-size:8pt;color:#ccc;writing-mode:vertical-lr;">✂ 裁切線 ✂</div>
+      </td>
+
+      <!-- 右半（同內容） -->
+      <td class="inner-a5 inner-a5-bind">
+        <div class="week-head-border">
+          <span class="week-main">週總結</span>
+          <div class="week-sub">
+            <span>第 <span class="blank blank-s"></span> 週</span>
+            <span>期間 <span class="blank blank-m"></span> — <span class="blank blank-m"></span></span>
+          </div>
+        </div>
+        <div class="w-sec">
+          <span class="w-hd">本週最有價值的 3 件事</span>
+          <table class="line-tbl"><tr><td class="n-cell">1</td><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="n-cell">2</td><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="n-cell">3</td><td class="lc"></td></tr></table>
+        </div>
+        <div class="w-sec">
+          <span class="w-hd">本週解決的關鍵問題</span>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        </div>
+        <div class="w-sec">
+          <span class="w-hd">可以優化 ／ 下週注意</span>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        </div>
+        <div class="w-sec">
+          <span class="w-hd">備注</span>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+          <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+        </div>
+        <div class="w-sec" style="margin-bottom:0">
+          <span class="w-hd">本週回顧</span>
+          <table class="reflect-tbl"><tr>
+            <td>
+              <span class="r-hd">狀態分佈（天數）</span>
+              <span style="font-size:6.5pt;color:#666">
+                順<span class="blank blank-xs" style="margin:0 1mm"></span>
+                普<span class="blank blank-xs" style="margin:0 1mm"></span>
+                卡<span class="blank blank-xs" style="margin:0 1mm"></span>
+              </span>
+            </td>
+            <td>
+              <span class="r-hd">整體感受</span>
+              <table class="line-tbl" style="margin-bottom:2mm"><tr><td class="lc"></td></tr></table>
+              <table class="line-tbl"><tr><td class="lc"></td></tr></table>
+            </td>
+          </tr></table>
+        </div>
+      </td>
+
+    </tr>
+    </table>
+    <div class="pg-num" style="right:auto;left:14mm">B</div>
+  </div><!-- /mode-b page -->
+
+
+  <!-- ══════════════════════════════
+       MODE C：A4 直・日誌通用
+  ══════════════════════════════ -->
+  <div class="page-label mode-c">▸ 模式 C — A4 直向・日誌通用版</div>
+  <div class="page page-port mode-c">
+    <div class="inner-a4">
+      <span class="pg-type">Daily Log · 工作日誌</span>
+
+      <!-- 日期列 -->
+      <table class="date-row"><tr>
+        <td><span class="f-lbl" style="font-size:7pt">日期</span><span class="blank" style="width:32mm"></span></td>
+        <td style="padding-left:4mm"><span class="f-lbl" style="font-size:7pt">週</span><span class="blank" style="width:12mm"></span></td>
+        <td style="text-align:right">
+          <span class="f-lbl" style="font-size:7pt;margin-right:2mm">狀態</span>
+          <span class="stat-item" style="font-size:7.5pt"><span class="sq-a4"></span>順</span>&ensp;
+          <span class="stat-item" style="font-size:7.5pt"><span class="sq-a4"></span>普通</span>&ensp;
+          <span class="stat-item" style="font-size:7.5pt"><span class="sq-a4"></span>卡住</span>
+        </td>
+      </tr></table>
+
+      <span class="s-hd-a4">今日工作</span>
+      <table class="line-tbl"><tr><td class="sq-cell"><span class="sq-a4"></span></td><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="sq-cell"><span class="sq-a4"></span></td><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="sq-cell"><span class="sq-a4"></span></td><td class="lc-a4"></td></tr></table>
+
+      <span class="s-hd-a4">問題 → 怎麼解</span>
+      <table class="line-tbl"><tr><td class="lc-a4"></td><td class="arrow-cell" style="width:12mm">→</td><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td><td class="arrow-cell" style="width:12mm">→</td><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td><td class="arrow-cell" style="width:12mm">→</td><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td><td class="arrow-cell" style="width:12mm">→</td><td class="lc-a4"></td></tr></table>
+
+      <span class="s-hd-a4">今天最有價值的一件事</span>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+
+      <span class="s-hd-a4">備注 / 其他</span>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+
+      <span class="s-hd-a4">明天最不能忘的一件事</span>
+      <table class="line-tbl"><tr><td class="sq-cell"><span class="sq-a4"></span></td><td class="lc-a4"></td></tr></table>
+    </div>
+    <div class="pg-num">C · 日誌</div>
+  </div><!-- /mode-c -->
+
+
+  <!-- ══════════════════════════════
+       MODE D：A4 直・週總結通用
+  ══════════════════════════════ -->
+  <div class="page-label mode-d">▸ 模式 D — A4 直向・週總結通用版</div>
+  <div class="page page-port mode-d">
+    <div class="inner-a4">
+
+      <div class="week-head-border" style="margin-bottom:5mm">
+        <span class="week-main-a4">週總結</span>
+        <div class="week-sub" style="font-size:7.5pt">
+          <span>第 <span class="blank" style="width:12mm"></span> 週</span>
+          <span>期間 <span class="blank" style="width:20mm"></span> — <span class="blank" style="width:20mm"></span></span>
+        </div>
+      </div>
+
+      <div class="w-sec">
+        <span class="w-hd-a4">本週最有價值的 3 件事</span>
+        <table class="line-tbl"><tr><td class="n-cell" style="font-size:8pt">1</td><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="n-cell" style="font-size:8pt">2</td><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="n-cell" style="font-size:8pt">3</td><td class="lc-a4"></td></tr></table>
+      </div>
+      <div class="w-sec">
+        <span class="w-hd-a4">本週解決的關鍵問題</span>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      </div>
+      <div class="w-sec">
+        <span class="w-hd-a4">可以優化的地方 ／ 下週注意</span>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      </div>
+      <div class="w-sec">
+        <span class="w-hd-a4">備注 / 其他</span>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+        <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+      </div>
+      <div class="w-sec" style="margin-bottom:0">
+        <span class="w-hd-a4">本週回顧</span>
+        <table class="reflect-tbl"><tr>
+          <td style="padding:3mm 4mm">
+            <span class="r-hd" style="font-size:7pt">狀態分佈（填天數）</span>
+            <div style="font-size:7.5pt;color:#666;margin-top:1mm">
+              順<span class="blank" style="width:13mm;margin:0 2mm"></span>
+              普通<span class="blank" style="width:13mm;margin:0 2mm"></span>
+              卡住<span class="blank" style="width:13mm;margin:0 2mm"></span>
+            </div>
+          </td>
+          <td style="padding:3mm 4mm">
+            <span class="r-hd" style="font-size:7pt">整體感受</span>
+            <table class="line-tbl" style="margin-top:1mm;margin-bottom:2.5mm"><tr><td class="lc-a4"></td></tr></table>
+            <table class="line-tbl" style="margin-bottom:2.5mm"><tr><td class="lc-a4"></td></tr></table>
+            <table class="line-tbl"><tr><td class="lc-a4"></td></tr></table>
+          </td>
+        </tr></table>
+      </div>
+
+    </div>
+    <div class="pg-num">D · 週總結</div>
+  </div><!-- /mode-d -->
+
+</div><!-- /pages -->
+
+<script src="../../js/template-size.js"></script>
+<script>
+const pageStyles = {
+  a: 'landscape', b: 'landscape', c: 'portrait', d: 'portrait'
+};
+
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+
+function setMode(m) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + m);
+  // 更新 @page 方向
+  const ori = pageStyles[m];
+  styleTag.textContent = '@media print { @page { size: A4 ' + ori + '; margin: 0; } }';
+  // 更新卡片選取狀態
+  document.querySelectorAll('.mode-cards .card').forEach((c, i) => {
+    c.classList.toggle('active', ['a','b','c','d'][i] === m);
+  });
+}
+
+// 預設 A 模式
+setMode('a');
+</script>
+</body>
+</html>

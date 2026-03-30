@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>月計畫模板</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; background: #c8c8c8; color: #1a1a1a; }
+
+/* ════ Pages ════ */
+.pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.page { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.2); overflow: hidden; position: relative; }
+.page::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: #fff; z-index: 4; pointer-events: none; }
+.page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
+.page-land { width: 297mm; height: 210mm; }
+
+/* Mode control */
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+
+/* ════ 共用 ════ */
+.pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; display: block; }
+.f-lbl   { font-size: 6pt; letter-spacing: .1em; color: #aaa; padding-right: 1.5mm; white-space: nowrap; }
+.blank   { border-bottom: 0.6pt solid #111; display: inline-block; height: 4mm; }
+.s-hd    { font-size: 6pt; letter-spacing: .13em; text-transform: uppercase; color: #777; font-weight: 600; display: block; }
+.lc      { border-bottom: 0.4pt solid #ddd; height: 5mm; display: block; }
+.sq      { display: inline-block; width: 3mm; height: 3mm; border: 0.65pt solid #777; }
+.ck-sq   { display: inline-block; width: 2.8mm; height: 2.8mm; border: 0.6pt solid #999; vertical-align: middle; margin-right: 1mm; }
+.pg-num  { position: absolute; bottom: 4mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+
+/* ════ Mode A：月曆格 A4橫 ════ */
+.cal-wrap  { width: 297mm; height: 210mm; display: flex; flex-direction: column; }
+.cal-head  { padding: 7mm 12mm 4mm; border-bottom: 0.75pt solid #111; display: flex; align-items: baseline; gap: 8mm; flex-shrink: 0; }
+.cal-month { font-size: 18pt; font-weight: 700; letter-spacing: .04em; line-height: 1; }
+.cal-sub   { font-size: 6pt; color: #aaa; letter-spacing: .12em; }
+
+/* 星期列 */
+.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 0.75pt solid #111; flex-shrink: 0; }
+.cal-wday { text-align: center; font-size: 6.5pt; letter-spacing: .1em; color: #777; padding: 2mm 0; font-weight: 600; }
+.cal-wday.sat, .cal-wday.sun { color: #ccc; }
+
+/* 日期格 */
+.cal-grid { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); }
+.cal-cell { border-right: 0.4pt solid #e8e8e8; border-bottom: 0.4pt solid #e8e8e8; padding: 2mm 2.5mm 1.5mm; display: flex; flex-direction: column; overflow: hidden; }
+.cal-cell:nth-child(7n) { border-right: none; }
+.cal-cell.sat, .cal-cell.sun { background: #fafafa; }
+.cal-cell.empty { background: #f7f7f7; }
+.cal-num  { font-size: 8pt; font-weight: 700; color: #333; margin-bottom: 1mm; flex-shrink: 0; }
+.cal-cell.sat .cal-num, .cal-cell.sun .cal-num { color: #bbb; }
+.cal-cell.empty .cal-num { color: #ddd; }
+.cal-line { border-bottom: 0.4pt solid #efefef; flex: 1; margin-bottom: 0.5mm; }
+
+/* ════ Mode B：目標追蹤 A4橫 ════ */
+.trk-wrap  { width: 297mm; height: 210mm; display: flex; }
+
+/* 左側：月曆（縮小版） */
+.trk-cal   { width: 46%; border-right: 0.75pt solid #111; display: flex; flex-direction: column; }
+.trk-ch    { padding: 7mm 10mm 4mm; border-bottom: 0.75pt solid #111; flex-shrink: 0; }
+.trk-month { font-size: 16pt; font-weight: 700; letter-spacing: .04em; }
+.trk-wdays { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 0.5pt solid #ddd; flex-shrink: 0; }
+.trk-wday  { text-align: center; font-size: 5.5pt; color: #aaa; padding: 1.5mm 0; }
+.trk-grid  { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); }
+.trk-cell  { border-right: 0.3pt solid #efefef; border-bottom: 0.3pt solid #efefef; padding: 1mm; display: flex; flex-direction: column; }
+.trk-cell:nth-child(7n) { border-right: none; }
+.trk-num   { font-size: 6.5pt; color: #555; }
+.trk-cell.sat .trk-num, .trk-cell.sun .trk-num { color: #ccc; }
+.trk-cell.empty .trk-num { color: #e8e8e8; }
+.trk-dot   { flex: 1; }
+
+/* 右側：目標追蹤 */
+.trk-right { flex: 1; padding: 7mm 12mm 7mm 10mm; display: flex; flex-direction: column; gap: 0; }
+.trk-rhead { margin-bottom: 4mm; }
+.trk-goals { display: flex; flex-direction: column; gap: 5mm; }
+.trk-goal  { border-left: 2pt solid #111; padding-left: 4mm; }
+.trk-g-hd  { font-size: 6pt; letter-spacing: .1em; text-transform: uppercase; color: #777; font-weight: 600; margin-bottom: 2mm; display: flex; justify-content: space-between; align-items: center; }
+.trk-g-title { display: flex; align-items: baseline; gap: 2mm; }
+.trk-g-num { font-size: 8pt; font-weight: 700; color: #ccc; }
+.trk-bar   { display: flex; gap: 1mm; margin-top: 2mm; }
+.trk-tick  { width: 5mm; height: 3mm; border: 0.5pt solid #ddd; flex-shrink: 0; }
+.trk-notes { flex: 1; border-top: 0.75pt solid #111; padding-top: 4mm; margin-top: auto; }
+.trk-note-line { border-bottom: 0.4pt solid #ddd; height: 5.5mm; display: block; margin-bottom: 0; }
+
+/* ════ Print ════ */
+@media print {
+  body { background: none; }
+  .ui, .page-label { display: none !important; }
+  .pages { padding: 0 !important; gap: 0 !important; }
+  .page  { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+}
+</style>
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body class="template-page sel-a">
+
+<!-- UI -->
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">月計畫 <small>Monthly Planner</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 月曆格 <span style="font-size:9px;opacity:.5">A4橫・5×7日期格</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 目標追蹤 <span style="font-size:9px;opacity:.5">A4橫・月曆+目標</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+
+    <div class="date-picker">
+      <span class="toolbar-label" style="margin-left:8px">年月</span>
+      <select class="date-select" id="sel-year" onchange="renderCal()"></select>
+      <span class="picker-sep" style="color:#555;font-size:11px">年</span>
+      <select class="date-select" id="sel-month" onchange="renderCal()">
+        <option value="1">1 月</option><option value="2">2 月</option>
+        <option value="3">3 月</option><option value="4">4 月</option>
+        <option value="5">5 月</option><option value="6">6 月</option>
+        <option value="7">7 月</option><option value="8">8 月</option>
+        <option value="9">9 月</option><option value="10">10 月</option>
+        <option value="11">11 月</option><option value="12">12 月</option>
+      </select>
+      <span class="picker-sep" style="color:#555;font-size:11px">月</span>
+    </div>
+
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="pages">
+
+<!-- ══ MODE A：月曆格 A4橫 ══ -->
+<div class="page-label mode-a">▸ 模式 A — A4 橫向・月曆格（5 × 7）</div>
+<div class="page page-land mode-a">
+  <div class="cal-wrap">
+    <!-- 頁首 -->
+    <div class="cal-head">
+      <span class="pg-type" style="margin-bottom:0;margin-right:4mm">Monthly Planner · 月計畫</span>
+      <span id="a-year" class="cal-sub" style="font-size:10pt;color:#777;font-weight:600;letter-spacing:.04em"></span>
+      <span class="cal-sub" style="margin-left:1mm">年</span>
+      <span id="a-month" class="cal-month" style="margin-left:4mm"></span>
+      <span class="cal-sub">月</span>
+      <span style="margin-left:8mm"><span class="f-lbl">本月主目標</span><span class="blank" style="width:60mm"></span></span>
+    </div>
+
+    <!-- 星期欄頭 -->
+    <div class="cal-weekdays">
+      <div class="cal-wday">一</div>
+      <div class="cal-wday">二</div>
+      <div class="cal-wday">三</div>
+      <div class="cal-wday">四</div>
+      <div class="cal-wday">五</div>
+      <div class="cal-wday sat">六</div>
+      <div class="cal-wday sun">日</div>
+    </div>
+
+    <div class="cal-grid" id="cal-grid-a"></div>
+  </div>
+  <div class="pg-num">A · Monthly</div>
+</div>
+
+
+<!-- ══ MODE B：目標追蹤 A4橫 ══ -->
+<div class="page-label mode-b">▸ 模式 B — A4 橫向・月曆 + 目標追蹤</div>
+<div class="page page-land mode-b">
+  <div class="trk-wrap">
+
+    <!-- 左：縮小月曆 -->
+    <div class="trk-cal">
+      <div class="trk-ch">
+        <span class="pg-type" style="margin-bottom:1mm">Monthly Planner · 月計畫</span>
+        <div style="display:flex;align-items:baseline;gap:3mm">
+          <span id="b-year" style="font-size:9pt;font-weight:600;color:#555;letter-spacing:.04em"></span><span class="f-lbl">年</span>
+          <span class="trk-month" id="b-month"></span><span class="f-lbl">月</span>
+        </div>
+      </div>
+      <div class="trk-wdays">
+        <div class="trk-wday">一</div><div class="trk-wday">二</div><div class="trk-wday">三</div>
+        <div class="trk-wday">四</div><div class="trk-wday">五</div><div class="trk-wday">六</div><div class="trk-wday">日</div>
+      </div>
+      <div class="trk-grid" id="trk-grid-b"></div>
+    </div>
+
+    <!-- 右：目標追蹤 -->
+    <div class="trk-right">
+      <div class="trk-rhead">
+        <span class="s-hd" style="margin-bottom:0">本月目標追蹤</span>
+      </div>
+      <div class="trk-goals">
+        <div class="trk-goal">
+          <div class="trk-g-hd"><span class="trk-g-title"><span class="trk-g-num">01</span><span class="blank" style="width:55mm"></span></span><span style="font-size:5.5pt;color:#ccc">截止</span><span class="blank" style="width:14mm;margin-left:1mm"></span></div>
+          <div class="trk-bar">
+            <div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div>
+            <div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div>
+          </div>
+          <span class="lc" style="margin-top:2mm"></span>
+        </div>
+        <div class="trk-goal">
+          <div class="trk-g-hd"><span class="trk-g-title"><span class="trk-g-num">02</span><span class="blank" style="width:55mm"></span></span><span style="font-size:5.5pt;color:#ccc">截止</span><span class="blank" style="width:14mm;margin-left:1mm"></span></div>
+          <div class="trk-bar">
+            <div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div>
+            <div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div>
+          </div>
+          <span class="lc" style="margin-top:2mm"></span>
+        </div>
+        <div class="trk-goal">
+          <div class="trk-g-hd"><span class="trk-g-title"><span class="trk-g-num">03</span><span class="blank" style="width:55mm"></span></span><span style="font-size:5.5pt;color:#ccc">截止</span><span class="blank" style="width:14mm;margin-left:1mm"></span></div>
+          <div class="trk-bar">
+            <div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div>
+            <div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div><div class="trk-tick"></div>
+          </div>
+          <span class="lc" style="margin-top:2mm"></span>
+        </div>
+      </div>
+      <div class="trk-notes">
+        <span class="s-hd" style="margin-bottom:2mm">重要事項 / 備注</span>
+        <span class="trk-note-line"></span>
+        <span class="trk-note-line"></span>
+        <span class="trk-note-line"></span>
+        <span class="trk-note-line"></span>
+        <span class="trk-note-line"></span>
+      </div>
+    </div>
+
+  </div>
+  <div class="pg-num">B · Monthly</div>
+</div>
+
+</div><!-- /pages -->
+
+<script src="../../../js/template-size.js"></script>
+<script>
+(function () {
+  const now = new Date();
+  const selYear = document.getElementById('sel-year');
+  for (let y = now.getFullYear() - 1; y <= now.getFullYear() + 3; y++) {
+    const option = document.createElement('option');
+    option.value = y;
+    option.textContent = y;
+    if (y === now.getFullYear()) option.selected = true;
+    selYear.appendChild(option);
+  }
+  document.getElementById('sel-month').value = now.getMonth() + 1;
+})();
+
+function daysInMonth(year, month) {
+  return new Date(year, month, 0).getDate();
+}
+
+function firstDayOffset(year, month) {
+  const firstDay = new Date(year, month - 1, 1).getDay();
+  return (firstDay + 6) % 7;
+}
+
+function buildGridA(year, month) {
+  const total = daysInMonth(year, month);
+  const offset = firstDayOffset(year, month);
+  const rows = Math.ceil((total + offset) / 7);
+  const cells = rows * 7;
+  const grid = document.getElementById('cal-grid-a');
+  grid.style.gridTemplateRows = 'repeat(' + rows + ', 1fr)';
+  grid.innerHTML = '';
+
+  for (let i = 0; i < cells; i++) {
+    const day = i - offset + 1;
+    const isEmpty = day < 1 || day > total;
+    const col = i % 7;
+    const isSat = col === 5;
+    const isSun = col === 6;
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell' +
+      (isEmpty ? ' empty' : '') +
+      (isSat ? ' sat' : '') +
+      (isSun ? ' sun' : '');
+
+    const num = document.createElement('span');
+    num.className = 'cal-num';
+    num.textContent = isEmpty ? '' : day;
+    cell.appendChild(num);
+
+    for (let lineIndex = 0; lineIndex < 2; lineIndex++) {
+      const line = document.createElement('span');
+      line.className = 'cal-line';
+      cell.appendChild(line);
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function buildGridB(year, month) {
+  const total = daysInMonth(year, month);
+  const offset = firstDayOffset(year, month);
+  const rows = Math.ceil((total + offset) / 7);
+  const cells = rows * 7;
+  const grid = document.getElementById('trk-grid-b');
+  grid.style.gridTemplateRows = 'repeat(' + rows + ', 1fr)';
+  grid.innerHTML = '';
+
+  for (let i = 0; i < cells; i++) {
+    const day = i - offset + 1;
+    const isEmpty = day < 1 || day > total;
+    const col = i % 7;
+    const isSat = col === 5;
+    const isSun = col === 6;
+    const cell = document.createElement('div');
+    cell.className = 'trk-cell' +
+      (isEmpty ? ' empty' : '') +
+      (isSat ? ' sat' : '') +
+      (isSun ? ' sun' : '');
+
+    const num = document.createElement('span');
+    num.className = 'trk-num';
+    num.textContent = isEmpty ? '' : day;
+    cell.appendChild(num);
+
+    const dot = document.createElement('span');
+    dot.className = 'trk-dot';
+    cell.appendChild(dot);
+
+    grid.appendChild(cell);
+  }
+}
+
+function renderCal() {
+  const year = parseInt(document.getElementById('sel-year').value, 10);
+  const month = parseInt(document.getElementById('sel-month').value, 10);
+
+  document.getElementById('a-year').textContent = year;
+  document.getElementById('a-month').textContent = month;
+  document.getElementById('b-year').textContent = year;
+  document.getElementById('b-month').textContent = month;
+
+  buildGridA(year, month);
+  buildGridB(year, month);
+}
+
+let st = document.createElement('style');
+st.id = 'pg-size';
+document.head.appendChild(st);
+
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  st.textContent = '@media print { @page { size: A4 landscape; margin:0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
+    card.classList.toggle('active', ['a', 'b'][index] === mode);
+  });
+}
+
+setMode('a');
+renderCal();
+</script>
+</body>
+</html>

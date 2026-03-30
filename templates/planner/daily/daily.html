@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>日計畫模板</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; background: #c8c8c8; color: #1a1a1a; }
+
+/* ════ Pages ════ */
+.pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.page { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.2); overflow: hidden; position: relative; }
+.page::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: #fff; z-index: 4; pointer-events: none; }
+.page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
+.page-port { width: 210mm; height: 297mm; }
+.page-a5  { width: 148mm; height: 210mm; }
+
+/* Mode control */
+.mode-a, .mode-b, .mode-c { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+body.sel-c .mode-c { display: block; }
+
+/* ════ 共用元件 ════ */
+.pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; margin-bottom: 3mm; display: block; }
+.f-lbl   { font-size: 6pt; letter-spacing: .1em; color: #aaa; padding-right: 1.5mm; white-space: nowrap; }
+.blank   { border-bottom: 0.6pt solid #111; display: inline-block; height: 4mm; }
+.s-hd    { font-size: 6pt; letter-spacing: .13em; text-transform: uppercase; color: #777; font-weight: 600; display: block; margin-top: 3mm; margin-bottom: 1.8mm; }
+.lc      { border-bottom: 0.4pt solid #ccc; height: 6mm; }
+.sq      { display: inline-block; width: 3mm; height: 3mm; border: 0.65pt solid #777; }
+.sq-cell { width: 5mm; vertical-align: bottom; padding-bottom: 1mm; }
+.ln      { width: 100%; border-collapse: collapse; }
+.chk     { width: 100%; border-collapse: collapse; margin-bottom: 0; }
+.pg-num  { position: absolute; bottom: 6mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+.ck-sq   { display: inline-block; width: 2.8mm; height: 2.8mm; border: 0.6pt solid #999; vertical-align: middle; margin-right: 1mm; }
+
+/* ════ Mode A: 時間軸 A4直 ════ */
+.a-header { padding: 11mm 14mm 4mm; border-bottom: 0.75pt solid #111; }
+.a-body   { display: flex; height: 257mm; }
+.a-left   { width: 55%; border-right: 0.4pt solid #ddd; padding: 4mm 4mm 4mm 14mm; }
+.a-right  { flex: 1; padding: 4mm 14mm 4mm 5mm; display: flex; flex-direction: column; }
+.time-tbl { width: 100%; border-collapse: collapse; }
+.t-lbl    { font-size: 5.5pt; color: #bbb; width: 13mm; text-align: right; padding-right: 3mm; padding-bottom: 1mm; vertical-align: bottom; white-space: nowrap; }
+.t-line   { border-bottom: 0.4pt solid #ddd; height: 12.5mm; }
+.t-noon   { border-bottom: 0.6pt dashed #ccc !important; }
+.t-eve    { border-bottom: 0.6pt dashed #ccc !important; }
+.a-review { border-top: 0.75pt solid #111; padding: 2.5mm 14mm; display: flex; align-items: baseline; gap: 5mm; }
+
+/* ════ Mode B: 區塊 A4直 ════ */
+.b-wrap  { padding: 11mm 14mm 8mm; height: 297mm; display: flex; flex-direction: column; }
+.b-header { border-bottom: 0.75pt solid #111; padding-bottom: 3.5mm; margin-bottom: 4mm; }
+.b-goal  { display: flex; align-items: baseline; gap: 0; margin-top: 3mm; }
+.block   { flex: 1; border-left: 2pt solid #111; padding-left: 4mm; margin-bottom: 4mm; }
+.blk-hd  { font-size: 6pt; letter-spacing: .12em; text-transform: uppercase; color: #777; font-weight: 600; margin-bottom: 3mm; display: flex; justify-content: space-between; align-items: baseline; }
+.blk-hd em { font-style: normal; font-size: 5pt; color: #ccc; font-weight: 400; letter-spacing: .04em; }
+.b-review { border-top: 0.75pt solid #111; padding-top: 2.5mm; margin-top: auto; }
+
+/* ════ Mode C: A5 精簡直 ════ */
+.c-wrap   { padding: 9mm 10mm 7mm; height: 210mm; display: flex; flex-direction: column; }
+.c-header { border-bottom: 0.75pt solid #111; padding-bottom: 2.5mm; margin-bottom: 3mm; }
+.c-grid   { flex: 1; display: grid; grid-template-columns: 10mm 1fr; align-content: start; }
+.c-lbl    { font-size: 5pt; color: #ccc; text-align: right; padding-right: 2mm; padding-top: 1.5mm; }
+.c-line   { border-bottom: 0.4pt solid #ddd; height: 9mm; }
+.c-noon   { border-bottom: 0.5pt dashed #ccc !important; }
+.c-review { border-top: 0.75pt solid #111; padding-top: 2mm; margin-top: 2mm; }
+
+/* ════ Print ════ */
+@media print {
+  body { background: none; }
+  .ui, .page-label { display: none !important; }
+  .pages { padding: 0 !important; gap: 0 !important; }
+  .page  { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b, .mode-c { display: none !important; }
+  body.sel-a .mode-a, body.sel-b .mode-b, body.sel-c .mode-c { display: block !important; }
+}
+</style>
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body class="template-page sel-a">
+
+<!-- UI -->
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">日計畫 <small>Daily Planner</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 時間軸 <span style="font-size:9px;opacity:.5">A4直・6–22時</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 區塊 <span style="font-size:9px;opacity:.5">A4直・上午/下午/晚上</span></button>
+      <button class="card" onclick="setMode('c')"><strong>C</strong> 精簡 <span style="font-size:9px;opacity:.5">A5直・輕量版</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="pages">
+
+<!-- ══ MODE A：時間軸 A4直 ══ -->
+<div class="page-label mode-a">▸ 模式 A — A4 直向・時間軸（6:00–22:00）</div>
+<div class="page page-port mode-a">
+  <div class="a-header">
+    <span class="pg-type">Daily Planner · 日計畫</span>
+    <table style="width:100%;border-collapse:collapse"><tr>
+      <td><span class="f-lbl">日期</span><span class="blank" style="width:28mm"></span></td>
+      <td style="padding-left:4mm"><span class="f-lbl">週</span><span class="blank" style="width:9mm"></span></td>
+      <td style="text-align:right">
+        <span style="font-size:6.5pt;color:#666">
+          <span class="ck-sq"></span>好&ensp;<span class="ck-sq"></span>普&ensp;<span class="ck-sq"></span>累
+        </span>
+      </td>
+    </tr></table>
+    <div style="margin-top:2.5mm;display:flex;align-items:baseline">
+      <span class="f-lbl">今日主目標</span><span class="blank" style="flex:1"></span>
+    </div>
+  </div>
+  <div class="a-body">
+    <!-- 左：時間軸 -->
+    <div class="a-left">
+      <span class="s-hd">時間軸</span>
+      <table class="time-tbl">
+        <tr><td class="t-lbl">06:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">07:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">08:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">09:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">10:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">11:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">12:00</td><td class="t-line t-noon"></td></tr>
+        <tr><td class="t-lbl">13:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">14:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">15:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">16:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">17:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">18:00</td><td class="t-line t-eve"></td></tr>
+        <tr><td class="t-lbl">19:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">20:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">21:00</td><td class="t-line"></td></tr>
+        <tr><td class="t-lbl">22:00</td><td style="height:6mm"></td></tr>
+      </table>
+    </div>
+    <!-- 右：任務區 -->
+    <div class="a-right">
+      <span class="s-hd">今日前三件事</span>
+      <table class="ln"><tr><td style="width:5mm;font-size:6pt;color:#ccc;vertical-align:bottom;padding-bottom:1mm">1</td><td class="lc"></td></tr></table>
+      <table class="ln"><tr><td style="width:5mm;font-size:6pt;color:#ccc;vertical-align:bottom;padding-bottom:1mm">2</td><td class="lc"></td></tr></table>
+      <table class="ln"><tr><td style="width:5mm;font-size:6pt;color:#ccc;vertical-align:bottom;padding-bottom:1mm">3</td><td class="lc"></td></tr></table>
+
+      <span class="s-hd">其他待辦</span>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+
+      <span class="s-hd">備注 / 想法</span>
+      <table class="ln"><tr><td class="lc"></td></tr></table>
+      <table class="ln"><tr><td class="lc"></td></tr></table>
+      <table class="ln"><tr><td class="lc"></td></tr></table>
+      <table class="ln"><tr><td class="lc"></td></tr></table>
+      <table class="ln"><tr><td class="lc"></td></tr></table>
+      <table class="ln" style="margin-top:auto"><tr><td style="height:6mm"></td></tr></table>
+    </div>
+  </div>
+  <div class="a-review">
+    <span class="f-lbl">今日回顧</span>
+    <span class="blank" style="flex:1;max-width:55mm"></span>
+    <span style="font-size:6pt;color:#aaa;white-space:nowrap;margin-left:auto">完成度&ensp;
+      <span class="ck-sq"></span>25%&ensp;<span class="ck-sq"></span>50%&ensp;<span class="ck-sq"></span>75%&ensp;<span class="ck-sq"></span>100%
+    </span>
+  </div>
+  <div class="pg-num">A · Daily</div>
+</div>
+
+
+<!-- ══ MODE B：區塊 A4直 ══ -->
+<div class="page-label mode-b">▸ 模式 B — A4 直向・上午 / 下午 / 晚上 區塊</div>
+<div class="page page-port mode-b">
+  <div class="b-wrap">
+    <div class="b-header">
+      <span class="pg-type">Daily Planner · 日計畫</span>
+      <table style="width:100%;border-collapse:collapse"><tr>
+        <td><span class="f-lbl">日期</span><span class="blank" style="width:28mm"></span></td>
+        <td style="padding-left:4mm"><span class="f-lbl">週</span><span class="blank" style="width:9mm"></span></td>
+        <td style="text-align:right"><span style="font-size:6.5pt;color:#666"><span class="ck-sq"></span>好&ensp;<span class="ck-sq"></span>普&ensp;<span class="ck-sq"></span>累</span></td>
+      </tr></table>
+      <div class="b-goal"><span class="f-lbl">今日主目標</span><span class="blank" style="flex:1"></span></div>
+    </div>
+
+    <div class="block">
+      <div class="blk-hd">上午 Morning <em>07:00 – 12:00</em></div>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="ln" style="margin-top:2mm"><tr><td class="lc" style="border-bottom-color:#eee"></td></tr></table>
+    </div>
+
+    <div class="block">
+      <div class="blk-hd">下午 Afternoon <em>13:00 – 18:00</em></div>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="ln" style="margin-top:2mm"><tr><td class="lc" style="border-bottom-color:#eee"></td></tr></table>
+    </div>
+
+    <div class="block">
+      <div class="blk-hd">晚上 Evening <em>19:00 – 22:00</em></div>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="chk"><tr><td class="sq-cell"><span class="sq"></span></td><td class="lc"></td></tr></table>
+      <table class="ln" style="margin-top:2mm"><tr><td class="lc" style="border-bottom-color:#eee"></td></tr></table>
+    </div>
+
+    <div class="b-review">
+      <table style="width:100%;border-collapse:collapse"><tr>
+        <td style="vertical-align:bottom"><span class="f-lbl">今日回顧</span><span class="blank" style="width:50mm"></span></td>
+        <td style="text-align:right;vertical-align:bottom;white-space:nowrap">
+          <span style="font-size:6pt;color:#aaa">完成度&ensp;</span>
+          <span style="font-size:6.5pt;color:#666"><span class="ck-sq"></span>25%&ensp;<span class="ck-sq"></span>50%&ensp;<span class="ck-sq"></span>75%&ensp;<span class="ck-sq"></span>100%</span>
+        </td>
+      </tr></table>
+    </div>
+  </div>
+  <div class="pg-num">B · Daily</div>
+</div>
+
+
+<!-- ══ MODE C：A5 精簡直 ══ -->
+<div class="page-label mode-c">▸ 模式 C — A5 直向・精簡版</div>
+<div class="page page-a5 mode-c">
+  <div class="c-wrap">
+    <div class="c-header">
+      <span style="font-size:5.5pt;letter-spacing:.18em;text-transform:uppercase;color:#bbb;display:block;margin-bottom:2mm">Daily Planner · 日計畫</span>
+      <table style="width:100%;border-collapse:collapse"><tr>
+        <td><span style="font-size:5.5pt;color:#aaa;padding-right:1mm">日期</span><span style="border-bottom:0.6pt solid #111;display:inline-block;width:22mm;height:3.5mm"></span></td>
+        <td style="padding-left:3mm"><span style="font-size:5.5pt;color:#aaa;padding-right:1mm">週</span><span style="border-bottom:0.6pt solid #111;display:inline-block;width:7mm;height:3.5mm"></span></td>
+        <td style="text-align:right"><span style="font-size:5.5pt;color:#666"><span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle"></span>好&ensp;<span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle"></span>普&ensp;<span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle"></span>累</span></td>
+      </tr></table>
+      <div style="margin-top:2mm;display:flex;align-items:baseline">
+        <span style="font-size:5.5pt;color:#aaa;padding-right:1.5mm;white-space:nowrap">目標</span>
+        <span style="border-bottom:0.6pt solid #111;display:inline-block;flex:1;height:3.5mm"></span>
+      </div>
+    </div>
+    <div class="c-grid">
+      <div class="c-lbl">07</div><div class="c-line"></div>
+      <div class="c-lbl">08</div><div class="c-line"></div>
+      <div class="c-lbl">09</div><div class="c-line"></div>
+      <div class="c-lbl">10</div><div class="c-line"></div>
+      <div class="c-lbl">11</div><div class="c-line"></div>
+      <div class="c-lbl">12</div><div class="c-line c-noon"></div>
+      <div class="c-lbl">13</div><div class="c-line"></div>
+      <div class="c-lbl">14</div><div class="c-line"></div>
+      <div class="c-lbl">15</div><div class="c-line"></div>
+      <div class="c-lbl">16</div><div class="c-line"></div>
+      <div class="c-lbl">17</div><div class="c-line"></div>
+      <div class="c-lbl">18</div><div class="c-line c-noon"></div>
+      <div class="c-lbl">19</div><div class="c-line"></div>
+      <div class="c-lbl">20</div><div class="c-line"></div>
+      <div class="c-lbl">21</div><div class="c-line" style="border:none"></div>
+    </div>
+    <div class="c-review">
+      <table style="width:100%;border-collapse:collapse"><tr>
+        <td style="vertical-align:bottom"><span style="font-size:5.5pt;color:#aaa;padding-right:1.5mm">回顧</span><span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:42mm;height:3mm"></span></td>
+        <td style="text-align:right;vertical-align:bottom;white-space:nowrap"><span style="font-size:5.5pt;color:#666"><span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle;margin-right:.5mm"></span>25%&ensp;<span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle;margin-right:.5mm"></span>50%&ensp;<span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle;margin-right:.5mm"></span>100%</span></td>
+      </tr></table>
+    </div>
+  </div>
+  <div class="pg-num" style="bottom:4mm;right:6mm;font-size:5.5pt">C · A5</div>
+</div>
+
+</div><!-- /pages -->
+
+<script src="../../../js/template-size.js"></script>
+<script>
+const pgSize = { a:'portrait', b:'portrait', c:'portrait' };
+const pgPaper = { a:'A4', b:'A4', c:'A5' };
+let st = document.createElement('style'); st.id='pg-size'; document.head.appendChild(st);
+function setMode(m) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + m);
+  st.textContent = '@media print { @page { size: ' + pgPaper[m] + ' ' + pgSize[m] + '; margin:0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((c,i) => c.classList.toggle('active', ['a','b','c'][i]===m));
+}
+setMode('a');
+</script>
+</body>
+</html>

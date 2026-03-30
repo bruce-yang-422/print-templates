@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>會議記錄模板</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; background: #c8c8c8; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.page { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.2); overflow: hidden; position: relative; }
+.page::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: #fff; z-index: 4; pointer-events: none; }
+.page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
+.page-port { width: 210mm; height: 297mm; }
+.page-a5 { width: 148mm; height: 210mm; }
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+.pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; display: block; }
+.f-lbl { font-size: 5.5pt; letter-spacing: .1em; color: #aaa; display: block; margin-bottom: 1mm; text-transform: uppercase; }
+.blank { display: block; border-bottom: 0.5pt solid #ccc; height: 4.5mm; }
+.line { display: block; border-bottom: 0.4pt solid #ddd; height: 5.5mm; }
+.mini-line { display: block; border-bottom: 0.4pt solid #ddd; height: 4.5mm; }
+.sq { display: inline-block; width: 3mm; height: 3mm; border: 0.65pt solid #777; margin-right: 1.6mm; vertical-align: middle; }
+.pg-num { position: absolute; bottom: 6mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+.sec { margin-top: 4mm; }
+.sec-hd { display: flex; justify-content: space-between; align-items: baseline; font-size: 6.5pt; letter-spacing: .14em; text-transform: uppercase; color: #777; font-weight: 600; border-left: 2pt solid #111; padding-left: 3mm; margin-bottom: 2.5mm; }
+.sec-hd em { font-style: normal; font-size: 5pt; color: #bbb; font-weight: 400; letter-spacing: .06em; }
+.a-wrap { padding: 11mm 14mm 9mm; height: 297mm; display: flex; flex-direction: column; }
+.head { border-bottom: 0.75pt solid #111; padding-bottom: 4mm; }
+.head-title { display: flex; justify-content: space-between; align-items: baseline; gap: 8mm; }
+.head-title strong { font-size: 17pt; letter-spacing: .04em; }
+.head-title span { font-size: 6pt; color: #bbb; letter-spacing: .12em; text-transform: uppercase; }
+.meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5mm; margin-top: 3.5mm; }
+.meta-card { border: 0.4pt solid #ddd; padding: 2.2mm 3mm; }
+.attendees { border: 0.4pt solid #ddd; border-top: none; padding: 2.5mm 3mm; }
+.agenda-grid { display: grid; grid-template-columns: 9mm 1fr 1fr; border: 0.4pt solid #ddd; border-top: none; }
+.agenda-grid > div { border-right: 0.4pt solid #ddd; border-bottom: 0.4pt solid #ddd; padding: 2mm 2.5mm; min-height: 17mm; }
+.agenda-grid > div:nth-child(3n) { border-right: none; }
+.agenda-grid .ag-head { min-height: auto; background: #fafafa; font-size: 5.5pt; color: #aaa; text-transform: uppercase; letter-spacing: .08em; }
+.agenda-no { font-size: 8pt; font-weight: 700; color: #bbb; text-align: center; }
+.list-box { border: 0.4pt solid #ddd; border-top: none; padding: 2.5mm 3mm; }
+.chk-row { display: flex; align-items: flex-end; gap: 2mm; margin-bottom: 2mm; }
+.chk-row:last-child { margin-bottom: 0; }
+.action-table { width: 100%; border-collapse: collapse; border: 0.4pt solid #ddd; border-top: none; table-layout: fixed; }
+.action-table th, .action-table td { border-right: 0.4pt solid #ddd; border-bottom: 0.4pt solid #ddd; padding: 2mm 2.5mm; vertical-align: top; }
+.action-table th:last-child, .action-table td:last-child { border-right: none; }
+.action-table th { background: #fafafa; font-size: 5.5pt; color: #aaa; text-transform: uppercase; letter-spacing: .08em; text-align: left; font-weight: 400; }
+.action-line { border-bottom: 0.4pt solid #ddd; height: 6mm; }
+.foot-grid { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.foot-card { border: 0.4pt solid #ddd; padding: 2.5mm 3mm; }
+.b-wrap { padding: 9mm 10mm 7mm; height: 210mm; display: flex; flex-direction: column; }
+.b-head { border-bottom: 0.75pt solid #111; padding-bottom: 3mm; }
+.b-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; margin-top: 3mm; }
+.b-card { border-left: 1.5pt solid #111; padding-left: 3mm; margin-top: 3mm; }
+.b-card h3 { font-size: 6pt; letter-spacing: .12em; text-transform: uppercase; color: #777; margin-bottom: 2mm; }
+.b-action { width: 100%; border-collapse: collapse; margin-top: 2mm; }
+.b-action td { border-bottom: 0.4pt solid #ddd; height: 8mm; }
+.b-action td:first-child { width: 60%; }
+@media print {
+  body { background: none; }
+  .ui, .page-label { display: none !important; }
+  .pages { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+}
+</style>
+<link rel="stylesheet" href="../../css/style.css">
+</head>
+<body class="template-page sel-a">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">會議記錄 <small>Meeting Notes</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 標準版 <span style="font-size:9px;opacity:.5">A4直・完整會議記錄</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 快速版 <span style="font-size:9px;opacity:.5">A5直・重點速記</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+<div class="pages">
+  <div class="page-label mode-a">▸ 模式 A — A4 直向・標準會議記錄</div>
+  <div class="page page-port mode-a">
+    <div class="a-wrap">
+      <span class="pg-type">Meeting Notes · 會議記錄</span>
+      <div class="head">
+        <div class="head-title">
+          <strong>會議記錄</strong>
+          <span>agenda / decisions / action items</span>
+        </div>
+        <div class="meta-grid">
+          <div class="meta-card"><span class="f-lbl">會議名稱</span><span class="blank"></span></div>
+          <div class="meta-card"><span class="f-lbl">日期</span><span class="blank"></span></div>
+          <div class="meta-card"><span class="f-lbl">時間</span><span class="blank"></span></div>
+          <div class="meta-card"><span class="f-lbl">地點 / 連結</span><span class="blank"></span></div>
+        </div>
+        <div class="meta-grid" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="meta-card"><span class="f-lbl">主持人</span><span class="blank"></span></div>
+          <div class="meta-card"><span class="f-lbl">記錄人</span><span class="blank"></span></div>
+          <div class="meta-card"><span class="f-lbl">下次會議</span><span class="blank"></span></div>
+        </div>
+        <div class="attendees">
+          <span class="f-lbl">出席者</span>
+          <span class="line"></span>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><span>議題列表 / 討論摘要</span><em>agenda + discussion</em></div>
+        <div class="agenda-grid">
+          <div class="ag-head">#</div>
+          <div class="ag-head">議題</div>
+          <div class="ag-head">討論摘要 / 決議</div>
+          <div class="agenda-no">1</div>
+          <div><span class="line"></span><span class="mini-line"></span></div>
+          <div><span class="line"></span><span class="mini-line"></span></div>
+          <div class="agenda-no">2</div>
+          <div><span class="line"></span><span class="mini-line"></span></div>
+          <div><span class="line"></span><span class="mini-line"></span></div>
+          <div class="agenda-no">3</div>
+          <div><span class="line"></span><span class="mini-line"></span></div>
+          <div><span class="line"></span><span class="mini-line"></span></div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><span>決議事項</span><em>decision checklist</em></div>
+        <div class="list-box">
+          <div class="chk-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+          <div class="chk-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+          <div class="chk-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+          <div class="chk-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><span>行動項目</span><em>owner / due date</em></div>
+        <table class="action-table">
+          <tr>
+            <th style="width:50%">行動項目</th>
+            <th style="width:20%">負責人</th>
+            <th style="width:15%">截止日</th>
+            <th style="width:15%">狀態</th>
+          </tr>
+          <tr><td><div class="action-line"></div></td><td><div class="action-line"></div></td><td><div class="action-line"></div></td><td><div class="action-line"></div></td></tr>
+          <tr><td><div class="action-line"></div></td><td><div class="action-line"></div></td><td><div class="action-line"></div></td><td><div class="action-line"></div></td></tr>
+          <tr><td><div class="action-line"></div></td><td><div class="action-line"></div></td><td><div class="action-line"></div></td><td><div class="action-line"></div></td></tr>
+        </table>
+      </div>
+      <div class="foot-grid">
+        <div class="foot-card">
+          <span class="f-lbl">待確認事項 / Parking Lot</span>
+          <span class="line"></span><span class="line"></span><span class="line"></span>
+        </div>
+        <div class="foot-card">
+          <span class="f-lbl">會後備注</span>
+          <span class="line"></span><span class="line"></span><span class="line"></span>
+        </div>
+      </div>
+    </div>
+    <div class="pg-num">A · Meeting</div>
+  </div>
+  <div class="page-label mode-b">▸ 模式 B — A5 直向・快速會議速記</div>
+  <div class="page page-a5 mode-b">
+    <div class="b-wrap">
+      <span class="pg-type">Meeting Notes · 快速版</span>
+      <div class="b-head">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:5mm">
+          <strong style="font-size:14pt;letter-spacing:.04em">會議速記</strong>
+          <span style="font-size:6pt;color:#bbb;letter-spacing:.1em;text-transform:uppercase">quick capture</span>
+        </div>
+        <div class="b-meta">
+          <div><span class="f-lbl">會議</span><span class="blank"></span></div>
+          <div><span class="f-lbl">日期 / 時間</span><span class="blank"></span></div>
+          <div><span class="f-lbl">主持人</span><span class="blank"></span></div>
+          <div><span class="f-lbl">出席者</span><span class="blank"></span></div>
+        </div>
+      </div>
+      <div class="b-card">
+        <h3>議題與討論</h3>
+        <span class="line"></span><span class="line"></span><span class="line"></span><span class="line"></span>
+      </div>
+      <div class="b-card">
+        <h3>決議</h3>
+        <div class="chk-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+        <div class="chk-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+        <div class="chk-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+      </div>
+      <div class="b-card">
+        <h3>行動項目</h3>
+        <table class="b-action">
+          <tr><td><span class="mini-line"></span></td><td><span class="mini-line"></span></td></tr>
+          <tr><td><span class="mini-line"></span></td><td><span class="mini-line"></span></td></tr>
+          <tr><td><span class="mini-line"></span></td><td><span class="mini-line"></span></td></tr>
+        </table>
+      </div>
+      <div class="b-card" style="margin-top:auto">
+        <h3>下次跟進</h3>
+        <span class="line"></span><span class="line"></span>
+      </div>
+    </div>
+    <div class="pg-num">B · Quick</div>
+  </div>
+</div>
+<script src="../../js/template-size.js"></script>
+<script>
+const pageStyles = { a: 'A4 portrait', b: 'A5 portrait' };
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
+    card.classList.toggle('active', ['a', 'b'][index] === mode);
+  });
+}
+setMode('a');
+</script>
+</body>
+</html>

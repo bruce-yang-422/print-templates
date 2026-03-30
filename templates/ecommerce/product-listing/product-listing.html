@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>商品上架檢查表模板</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; background: #c8c8c8; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.page { background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,.2); overflow: hidden; position: relative; }
+.page::before { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 10mm; background: #fff; z-index: 4; pointer-events: none; }
+.page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
+.page-port { width: 210mm; height: 297mm; }
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+.pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; display: block; }
+.f-lbl { font-size: 5.5pt; letter-spacing: .1em; color: #aaa; display: block; margin-bottom: 1mm; text-transform: uppercase; }
+.blank { display: block; border-bottom: 0.5pt solid #ccc; height: 4.5mm; }
+.line { display: block; border-bottom: 0.4pt solid #ddd; height: 5.2mm; }
+.tiny-line { display: block; border-bottom: 0.4pt solid #e5e5e5; height: 4.4mm; }
+.sq { display: inline-block; width: 3mm; height: 3mm; border: 0.65pt solid #777; margin-right: 1.6mm; vertical-align: middle; }
+.pg-num { position: absolute; bottom: 6mm; right: 10mm; font-size: 6.5pt; letter-spacing: .1em; color: #ccc; }
+.sec { margin-top: 4mm; }
+.sec-hd { font-size: 6.5pt; letter-spacing: .14em; text-transform: uppercase; color: #777; font-weight: 600; border-left: 2pt solid #111; padding-left: 3mm; margin-bottom: 2.5mm; display: flex; justify-content: space-between; align-items: baseline; }
+.sec-hd em { font-style: normal; font-size: 5pt; color: #bbb; font-weight: 400; letter-spacing: .06em; }
+.a-wrap, .b-wrap { padding: 11mm 14mm 9mm; height: 297mm; display: flex; flex-direction: column; }
+.hero { border: 1pt solid #111; color: #111; padding: 4mm 5mm; background: #fff; }
+.hero strong { font-size: 15pt; letter-spacing: .04em; display: block; }
+.meta-grid { display: grid; grid-template-columns: 1.3fr .8fr .9fr 1fr; gap: 2.5mm; border: 0.4pt solid #ddd; border-top: none; padding: 3mm; }
+.triple { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4mm; }
+.card-box { border: 0.4pt solid #ddd; padding: 3mm; }
+.check-row { display: flex; align-items: flex-end; gap: 2mm; margin-bottom: 1.8mm; }
+.check-row:last-child { margin-bottom: 0; }
+.price-table { width: 100%; border-collapse: collapse; border: 0.4pt solid #ddd; table-layout: fixed; }
+.price-table th, .price-table td { border-right: 0.4pt solid #ddd; border-bottom: 0.4pt solid #ddd; padding: 2mm 2.5mm; vertical-align: top; }
+.price-table th:last-child, .price-table td:last-child { border-right: none; }
+.price-table th { background: #fafafa; font-size: 5.5pt; color: #aaa; text-transform: uppercase; font-weight: 400; text-align: left; letter-spacing: .08em; }
+.flow-grid { display: grid; grid-template-columns: 26mm 1fr; gap: 4mm; flex: 1; }
+.flow-nav { border-right: 0.75pt solid #111; padding-right: 4mm; }
+.flow-step { margin-bottom: 3mm; padding: 2.5mm 0; border-bottom: 0.4pt solid #eee; }
+.flow-step strong { display: block; font-size: 7pt; color: #bbb; margin-bottom: .8mm; }
+.qa-card { border: 0.4pt solid #ddd; padding: 3mm; margin-bottom: 4mm; }
+.qa-card:last-child { margin-bottom: 0; }
+@media print {
+  body { background: none; }
+  .ui, .page-label { display: none !important; }
+  .pages { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a, body.sel-b .mode-b { display: block !important; }
+}
+</style>
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body class="template-page sel-a">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">商品上架檢查表 <small>Product Listing Checklist</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 單商品檢查 <span style="font-size:9px;opacity:.5">A4直・完整上架</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 發佈前 QA <span style="font-size:9px;opacity:.5">A4直・流程快查</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+<div class="pages">
+  <div class="page-label mode-a">▸ 模式 A — A4 直向・單商品上架檢查</div>
+  <div class="page page-port mode-a">
+    <div class="a-wrap">
+      <span class="pg-type">Product Listing Checklist · 單商品版</span>
+      <div class="hero">
+        <strong>商品上架檢查表</strong>
+        <span style="font-size:6pt;color:#666;letter-spacing:.1em;text-transform:uppercase">images / copy / pricing / stock / publish</span>
+      </div>
+      <div class="meta-grid">
+        <div><span class="f-lbl">商品名稱</span><span class="blank"></span></div>
+        <div><span class="f-lbl">SKU</span><span class="blank"></span></div>
+        <div><span class="f-lbl">分類</span><span class="blank"></span></div>
+        <div><span class="f-lbl">上架平台</span><span class="blank"></span></div>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><span>素材與標題</span><em>images + keywords</em></div>
+        <div class="triple">
+          <div class="card-box">
+            <span class="f-lbl">圖片確認</span>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+          </div>
+          <div class="card-box">
+            <span class="f-lbl">主標 / 副標</span>
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+          </div>
+          <div class="card-box">
+            <span class="f-lbl">賣點 / 規格 / 注意事項</span>
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+          </div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><span>價格與庫存</span><em>cost and margin</em></div>
+        <table class="price-table">
+          <tr><th>原價</th><th>活動價</th><th>成本</th><th>毛利率</th><th>庫存</th><th>倉位</th></tr>
+          <tr><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+        </table>
+      </div>
+      <div class="sec">
+        <div class="sec-hd"><span>平台檢查清單</span><em>pre-publish checks</em></div>
+        <div class="triple">
+          <div class="card-box">
+            <span class="f-lbl">商品頁</span>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+          </div>
+          <div class="card-box">
+            <span class="f-lbl">物流 / 規格</span>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+          </div>
+          <div class="card-box">
+            <span class="f-lbl">上架狀態</span>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="tiny-line" style="flex:1"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="sec" style="margin-top:auto">
+        <div class="sec-hd"><span>備注</span><em>notes</em></div>
+        <div class="card-box">
+          <span class="line"></span><span class="line"></span><span class="line"></span>
+        </div>
+      </div>
+    </div>
+    <div class="pg-num">A · Listing</div>
+  </div>
+  <div class="page-label mode-b">▸ 模式 B — A4 直向・上架前 QA 流程</div>
+  <div class="page page-port mode-b">
+    <div class="b-wrap">
+      <span class="pg-type">Product Listing Checklist · QA Flow</span>
+      <div class="hero">
+        <strong>發佈前 QA</strong>
+        <span style="font-size:6pt;color:#666;letter-spacing:.1em;text-transform:uppercase">workflow review</span>
+      </div>
+      <div class="flow-grid" style="margin-top:4mm">
+        <div class="flow-nav">
+          <div class="flow-step"><strong>01</strong><span class="f-lbl">商品資料</span></div>
+          <div class="flow-step"><strong>02</strong><span class="f-lbl">視覺素材</span></div>
+          <div class="flow-step"><strong>03</strong><span class="f-lbl">價格促銷</span></div>
+          <div class="flow-step"><strong>04</strong><span class="f-lbl">物流庫存</span></div>
+          <div class="flow-step"><strong>05</strong><span class="f-lbl">上架確認</span></div>
+        </div>
+        <div>
+          <div class="qa-card">
+            <div class="sec-hd"><span>商品資料</span><em>title / sku / category</em></div>
+            <div class="check-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+          </div>
+          <div class="qa-card">
+            <div class="sec-hd"><span>素材與價格</span><em>images / copy / pricing</em></div>
+            <div class="check-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+            <div class="check-row"><span class="sq"></span><span class="line" style="flex:1"></span></div>
+          </div>
+          <div class="qa-card">
+            <div class="sec-hd"><span>發佈結果</span><em>publish / verify</em></div>
+            <span class="line"></span><span class="line"></span><span class="line"></span><span class="line"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pg-num">B · QA</div>
+  </div>
+</div>
+<script src="../../../js/template-size.js"></script>
+<script>
+const pageStyles = { a: 'A4 portrait', b: 'A4 portrait' };
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
+    card.classList.toggle('active', ['a', 'b'][index] === mode);
+  });
+}
+setMode('a');
+</script>
+</body>
+</html>
