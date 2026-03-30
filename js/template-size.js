@@ -14,6 +14,106 @@
   let printStyleTag = null;
   let refreshTimer = null;
   let pagesObserver = null;
+  let screenFitTimer = null;
+  let templateOffsetTimer = null;
+  let uiResizeObserver = null;
+
+  function getPageContainers() {
+    const containers = new Set();
+
+    document.querySelectorAll('.pages, [class*="pages"], #print-stage').forEach(function (element) {
+      if (
+        element.id === 'print-stage' ||
+        element.querySelector('.page') ||
+        element.querySelector('.print-sheet')
+      ) {
+        containers.add(element);
+      }
+    });
+
+    return Array.from(containers);
+  }
+
+  function syncTemplateUiOffset() {
+    const ui = document.querySelector('.ui');
+    const fallbackOffset = 104;
+    const containers = getPageContainers();
+    if (!ui) {
+      document.body.style.setProperty('--template-ui-offset', fallbackOffset + 'px');
+      containers.forEach(function (container) {
+        container.style.paddingTop = fallbackOffset + 'px';
+      });
+      return;
+    }
+
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+    const uiRect = ui.getBoundingClientRect();
+    const extraGap = viewportWidth <= 900 ? 28 : 24;
+    const offset = Math.max(fallbackOffset, Math.ceil(uiRect.bottom + extraGap));
+    document.body.style.setProperty('--template-ui-offset', offset + 'px');
+    containers.forEach(function (container) {
+      container.style.paddingTop = offset + 'px';
+    });
+  }
+
+  function scheduleTemplateUiOffset() {
+    window.clearTimeout(templateOffsetTimer);
+    templateOffsetTimer = window.setTimeout(function () {
+      syncTemplateUiOffset();
+      applyResponsiveScreenFit();
+    }, 24);
+  }
+
+  function getScreenFitTargets() {
+    return Array.from(document.querySelectorAll(
+      document.body.classList.contains('is-size-preview')
+        ? '#print-stage .print-sheet'
+        : '.pages .page'
+    ));
+  }
+
+  function clearResponsiveScreenFit() {
+    document.querySelectorAll('.pages .page, #print-stage .print-sheet').forEach(function (target) {
+      target.style.removeProperty('zoom');
+      target.style.removeProperty('transform');
+      target.style.removeProperty('transform-origin');
+      target.style.removeProperty('margin-bottom');
+    });
+  }
+
+  function applyResponsiveScreenFit() {
+    clearResponsiveScreenFit();
+
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 0;
+    if (viewportWidth <= 0) return;
+
+    const availableWidth = Math.max(280, viewportWidth - (viewportWidth <= 720 ? 20 : 48));
+
+    getScreenFitTargets().forEach(function (target) {
+      const rectWidth = target.offsetWidth;
+      const rectHeight = target.offsetHeight;
+      if (!rectWidth || !rectHeight) return;
+
+      const scale = Math.min(1, availableWidth / rectWidth);
+      if (scale >= 0.999) return;
+
+      if (viewportWidth <= 900 && CSS.supports && CSS.supports('zoom', '1')) {
+        target.style.zoom = String(scale);
+        return;
+      }
+
+      target.style.transform = 'scale(' + scale + ')';
+      target.style.transformOrigin = 'top center';
+      target.style.marginBottom = ((scale - 1) * rectHeight) + 'px';
+    });
+  }
+
+  function scheduleScreenFit() {
+    window.clearTimeout(screenFitTimer);
+    screenFitTimer = window.setTimeout(function () {
+      applyResponsiveScreenFit();
+    }, 24);
+  }
 
   function ensurePrintStage() {
     let stage = document.getElementById('print-stage');
@@ -258,11 +358,15 @@
     if (sizeMode === 'a4') {
       document.body.classList.remove(SCREEN_PREVIEW_CLASS);
       clearStage();
+      syncTemplateUiOffset();
+      applyResponsiveScreenFit();
       return;
     }
 
     if (!renderStageLayout()) return;
     document.body.classList.add(SCREEN_PREVIEW_CLASS);
+    syncTemplateUiOffset();
+    applyResponsiveScreenFit();
   }
 
   function schedulePreviewRefresh() {
@@ -270,6 +374,7 @@
     window.clearTimeout(refreshTimer);
     refreshTimer = window.setTimeout(function () {
       renderScreenPreview();
+      applyResponsiveScreenFit();
     }, 24);
   }
 
@@ -279,6 +384,8 @@
 
     pagesObserver = new MutationObserver(function () {
       schedulePreviewRefresh();
+      scheduleTemplateUiOffset();
+      scheduleScreenFit();
     });
 
     pagesObserver.observe(pages, {
@@ -287,6 +394,17 @@
       characterData: true,
       attributes: true,
     });
+  }
+
+  function initUiObserver() {
+    const ui = document.querySelector('.ui');
+    if (!ui || typeof ResizeObserver === 'undefined') return;
+
+    uiResizeObserver = new ResizeObserver(function () {
+      scheduleTemplateUiOffset();
+    });
+
+    uiResizeObserver.observe(ui);
   }
 
   function stagePrintLayout() {
@@ -302,6 +420,7 @@
     if (sizeMode !== 'a4') {
       renderScreenPreview();
     }
+    applyResponsiveScreenFit();
   }
 
   function syncButtons() {
@@ -326,18 +445,28 @@
     if (button) {
       if (button.disabled) return;
       setSize(button.dataset.printSize);
+      scheduleTemplateUiOffset();
       return;
     }
 
     if (event.target.closest('.mode-cards .card')) {
       window.setTimeout(function () {
         if (sizeMode !== 'a4') renderScreenPreview();
+        syncTemplateUiOffset();
       }, 0);
     }
   });
 
   window.addEventListener('beforeprint', stagePrintLayout);
   window.addEventListener('afterprint', clearPrintLayout);
+  window.addEventListener('resize', function () {
+    scheduleTemplateUiOffset();
+    scheduleScreenFit();
+  });
+  window.addEventListener('load', function () {
+    scheduleTemplateUiOffset();
+    scheduleScreenFit();
+  });
 
   window.TemplatePrintSize = {
     getSize: function () { return sizeMode; },
@@ -350,5 +479,12 @@
 
   normalizeSizeButtons();
   initPagesObserver();
+  initUiObserver();
   setSize('a4');
+  syncTemplateUiOffset();
+  applyResponsiveScreenFit();
+  window.requestAnimationFrame(function () {
+    scheduleTemplateUiOffset();
+    scheduleScreenFit();
+  });
 })();

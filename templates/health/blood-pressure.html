@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>血壓紀錄表 Blood Pressure Log</title>
+<link rel="stylesheet" href="../../css/style.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.pages-wrap { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.bp-shell { padding: 9.2mm 11.5mm 7.4mm; gap: 3mm; }
+.bp-log-table th { vertical-align: top; padding-top: 2.6mm; padding-bottom: 2.1mm; }
+.bp-log-table td { height: 6.9mm; }
+.bp-log-table td .pr-line { margin: 0 1.2mm; }
+.bp-th-title { display: block; font-size: 6.2pt; color: #444; }
+.bp-th-example { display: block; font-size: 4.8pt; font-weight: 400; color: #b8b8b8; margin-top: 0.7mm; line-height: 1.25; }
+.bp-meta-example { display: block; font-size: 4.8pt; color: #b8b8b8; margin-top: 0.8mm; }
+.bp-standard-card { font-size: 6pt; }
+.bp-standard-card .pr-card-title em,
+.bp-trend-card .pr-card-title em,
+.bp-notes-card .pr-card-title em { font-size: 5.1pt; }
+.bp-standard-table { font-size: 5.2pt; }
+.bp-standard-table th,
+.bp-standard-table td { padding-top: 1.3mm; padding-bottom: 1.3mm; }
+.note-small { font-size: 4.4pt; color: #888; line-height: 1.42; margin-top: 1.3mm; }
+.chart-shell { margin-top: 0.8mm; }
+.bp-bottom-grid { gap: 3mm; }
+.bp-standard-card,
+.bp-trend-card,
+.bp-notes-card { padding: 2.6mm; }
+.bp-notes-card .pr-lines { gap: 1.2mm; }
+.bp-notes-card .pr-line,
+.bp-log-table .pr-line { height: 4.5mm; }
+.chart-box {
+  --bp-ticks: 15;
+  border: 0.4pt solid #ddd;
+  min-height: 32mm;
+  background-image:
+    linear-gradient(to right, #ececec 1px, transparent 1px),
+    linear-gradient(to bottom, #f0f0f0 1px, transparent 1px);
+  background-size: calc(100% / var(--bp-ticks)) 100%, 100% 25%;
+  background-position: left top, left top;
+}
+.chart-axis {
+  display: grid;
+  gap: 0;
+  margin-top: 1.2mm;
+  color: #b1b1b1;
+  font-size: 4.5pt;
+  letter-spacing: .02em;
+}
+.chart-axis span {
+  text-align: center;
+}
+.bp-size-note {
+  display: inline-block;
+  margin-top: 0.7mm;
+  color: #a5a5a5;
+  font-size: 4.8pt;
+}
+@media print {
+  .ui, .page-label { display: none !important; }
+  .pages-wrap { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+}
+</style>
+</head>
+<body class="template-page" data-print-size="a4">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../index.html" class="back-link"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>列印模板庫</a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">血壓紀錄表 <small>Blood Pressure Log</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="b5">B5</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right"><span class="hint">Chrome → 存PDF → 邊距「無」</span><button class="btn-print" onclick="window.print()">列印 / 存 PDF</button></div>
+  </div>
+</div>
+<div class="pages pages-wrap">
+  <div class="page-label" id="bpPageLabel">▸ A4 直向・15天血壓、脈搏與分類趨勢紀錄</div>
+  <div class="page page-port">
+    <div class="pr-shell bp-shell">
+      <span class="pr-kicker">血壓紀錄表 · Blood Pressure Log</span>
+      <div class="pr-header-band">
+        <div class="pr-title-row">
+          <strong>血壓紀錄表</strong>
+          <span id="bpTitleHint">日期 / 血壓 / 心率 / 分類 / 趨勢</span>
+        </div>
+        <div class="pr-meta-grid cols-4">
+          <div>
+            <span class="pr-field-label">追蹤期間</span>
+            <span class="bp-meta-example">例：2026/03/30 - 2026/04/13</span>
+            <span class="pr-field-blank"></span>
+          </div>
+          <div>
+            <span class="pr-field-label">醫師 / 追蹤目標</span>
+            <span class="bp-meta-example">例：晨晚各量一次</span>
+            <span class="pr-field-blank"></span>
+          </div>
+          <div>
+            <span class="pr-field-label">量測頻率</span>
+            <span class="bp-meta-example">例：起床後、睡前</span>
+            <span class="pr-field-blank"></span>
+          </div>
+          <div>
+            <span class="pr-field-label">備註</span>
+            <span class="bp-meta-example">例：配合用藥或飲食觀察</span>
+            <span class="pr-field-blank"></span>
+          </div>
+        </div>
+      </div>
+      <table class="pr-table bp-log-table">
+        <thead>
+          <tr>
+            <th style="width:15%"><span class="bp-th-title">日期 / 時間</span><span class="bp-th-example">例：03/30 07:30</span></th>
+            <th style="width:11%"><span class="bp-th-title">收縮壓</span><span class="bp-th-example">例：118</span></th>
+            <th style="width:11%"><span class="bp-th-title">舒張壓</span><span class="bp-th-example">例：76</span></th>
+            <th style="width:10%"><span class="bp-th-title">心率</span><span class="bp-th-example">例：68</span></th>
+            <th style="width:11%"><span class="bp-th-title">測量時段</span><span class="bp-th-example">例：早 / 晚</span></th>
+            <th style="width:12%"><span class="bp-th-title">狀態</span><span class="bp-th-example">例：空腹 / 運動後</span></th>
+            <th style="width:14%"><span class="bp-th-title">分類</span><span class="bp-th-example">例：正常 / 偏高</span></th>
+            <th style="width:16%"><span class="bp-th-title">備註</span><span class="bp-th-example">例：頭暈、忘記吃藥</span></th>
+          </tr>
+        </thead>
+        <tbody id="bpRows"></tbody>
+      </table>
+      <div class="pr-grid-2 bp-bottom-grid">
+        <div>
+          <div class="pr-card bp-standard-card">
+            <div class="pr-card-title"><span>國際標準值參考</span><em>血壓分類對照</em></div>
+            <table class="pr-table bp-standard-table">
+              <tr><th style="width:40%">分類</th><th style="width:30%">收縮壓（mmHg）</th><th style="width:30%">舒張壓（mmHg）</th></tr>
+              <tr><td>正常 Normal</td><td>&lt; 120</td><td>&lt; 80</td></tr>
+              <tr><td>偏高 Elevated</td><td>120-129</td><td>&lt; 80</td></tr>
+              <tr><td>高血壓第一期</td><td>130-139</td><td>80-89</td></tr>
+              <tr><td>高血壓第二期</td><td>&ge; 140</td><td>&ge; 90</td></tr>
+              <tr><td>高血壓危象</td><td>&ge; 180</td><td>&ge; 120</td></tr>
+            </table>
+            <div class="note-small">分類請依照當次量測較高的數值判讀；若量測值達危象區間或身體不適，應儘速就醫並依專業醫療建議處理。</div>
+          </div>
+        </div>
+        <div>
+          <div class="pr-card bp-trend-card">
+            <div class="pr-card-title"><span>趨勢區</span><em>簡易趨勢圖</em></div>
+            <div class="chart-shell">
+              <div class="chart-box" id="bpTrendBox"></div>
+              <div class="chart-axis" id="bpTrendAxis"></div>
+            </div>
+            <span class="bp-size-note" id="bpTrendNote">X 軸顯示近 15 天刻度</span>
+          </div>
+          <div class="pr-card bp-notes-card" style="margin-top:4mm;">
+            <div class="pr-card-title"><span>量測提醒</span><em>量測前後注意事項</em></div>
+            <div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pr-page-num">血壓</div>
+  </div>
+</div>
+<script src="../../js/template-size.js"></script>
+<script>
+let styleTag = document.createElement('style');
+styleTag.textContent = '@media print { @page { size: A4 portrait; margin: 0; } }';
+document.head.appendChild(styleTag);
+
+const BP_LAYOUTS = {
+  a4: { days: 15, label: '▸ A4 直向・15天血壓、脈搏與分類趨勢紀錄', trend: 'X 軸顯示近 15 天刻度' },
+  b5: { days: 10, label: '▸ B5 直向・10天血壓、脈搏與分類趨勢紀錄', trend: 'X 軸顯示近 10 天刻度' },
+  a5: { days: 7, label: '▸ A5 直向・7天血壓、脈搏與分類趨勢紀錄', trend: 'X 軸顯示近 7 天刻度' },
+  cut: { days: 7, label: '▸ A4裁A5・7天血壓、脈搏與分類趨勢紀錄', trend: 'X 軸顯示近 7 天刻度' }
+};
+
+const bpRows = document.getElementById('bpRows');
+const bpTrendAxis = document.getElementById('bpTrendAxis');
+const bpTrendBox = document.getElementById('bpTrendBox');
+const bpPageLabel = document.getElementById('bpPageLabel');
+const bpTrendNote = document.getElementById('bpTrendNote');
+const bpTitleHint = document.getElementById('bpTitleHint');
+
+function renderBloodPressureLayout(size) {
+  const layout = BP_LAYOUTS[size] || BP_LAYOUTS.a4;
+
+  bpRows.innerHTML = Array.from({ length: layout.days }, function () {
+    return '<tr>' +
+      '<td><div class="pr-line"></div></td>' +
+      '<td><div class="pr-line"></div></td>' +
+      '<td><div class="pr-line"></div></td>' +
+      '<td><div class="pr-line"></div></td>' +
+      '<td><div class="pr-line"></div></td>' +
+      '<td><div class="pr-line"></div></td>' +
+      '<td><div class="pr-line"></div></td>' +
+      '<td><div class="pr-line"></div></td>' +
+      '</tr>';
+  }).join('');
+
+  bpTrendAxis.style.gridTemplateColumns = 'repeat(' + layout.days + ', minmax(0, 1fr))';
+  bpTrendAxis.innerHTML = Array.from({ length: layout.days }, function (_, index) {
+    return '<span>' + (index + 1) + '</span>';
+  }).join('');
+
+  bpTrendBox.style.setProperty('--bp-ticks', String(layout.days));
+  bpPageLabel.textContent = layout.label;
+  bpTrendNote.textContent = layout.trend;
+  bpTitleHint.textContent = '日期 / 血壓 / 心率 / 分類 / ' + layout.days + ' 天趨勢';
+}
+
+function syncBloodPressureLayout() {
+  const size = window.TemplatePrintSize ? window.TemplatePrintSize.getSize() : (document.body.dataset.printSize || 'a4');
+  renderBloodPressureLayout(size);
+  if (window.TemplatePrintSize && size !== 'a4') {
+    window.TemplatePrintSize.refreshPreview();
+  }
+}
+
+document.addEventListener('template-print-size-change', function (event) {
+  renderBloodPressureLayout(event.detail.size);
+  if (window.TemplatePrintSize && event.detail.size !== 'a4') {
+    window.TemplatePrintSize.refreshPreview();
+  }
+});
+
+renderBloodPressureLayout('a4');
+</script>
+</body>
+</html>

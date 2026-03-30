@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>每週習慣追蹤表 Weekly Habit Tracker</title>
+<link rel="stylesheet" href="../../../css/style.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0} body{font-family:'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif;color:#1a1a1a} a{color:inherit;text-decoration:none}
+.mode-a,.mode-b{display:none} body.sel-a .mode-a{display:block} body.sel-b .mode-b{display:block}
+.wk-pages{padding:104px 0 48px;display:flex;flex-direction:column;align-items:center;gap:24px}.wk-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#999;padding-bottom:6px}
+.quick-shell{height:210mm;padding:9mm 10mm 7mm 10mm}.wk-layout{display:grid;grid-template-columns:1.25fr .75fr;gap:4mm;flex:1}.wk-side{display:flex;flex-direction:column;gap:4mm}
+.week-board{border:0.4pt solid #ddd}.week-grid{display:grid;grid-template-columns:34mm repeat(7,1fr)}.week-grid.quick{grid-template-columns:28mm repeat(7,1fr)}
+.week-grid>div{min-height:12mm;border-right:0.4pt solid #ececec;border-bottom:0.4pt solid #ececec;display:flex;align-items:center;justify-content:center;font-size:6.2pt}.week-grid>div:nth-child(8n){border-right:none}
+.week-head{background:#fafafa;color:#888;letter-spacing:.08em;text-transform:uppercase}.week-name{justify-content:flex-start !important;padding:0 2.4mm}.week-name-line{width:100%;border-bottom:0.4pt solid #ddd;height:4.4mm}.week-check::after{content:'';width:4.5mm;height:4.5mm;border:0.55pt solid #bdbdbd;border-radius:999px}
+.score-row{display:grid;grid-template-columns:20mm 1fr 12mm;gap:2mm;align-items:center;margin-bottom:2mm}.score-label,.score-value{border-bottom:0.4pt solid #ddd;height:4mm}.score-bar{height:3mm;border:0.4pt solid #ddd}
+@media print{.ui,.wk-label{display:none!important}.wk-pages{padding:0!important;gap:0!important}.page{box-shadow:none!important;page-break-after:always;break-after:page}.mode-a,.mode-b{display:none!important}body.sel-a .mode-a{display:block!important}body.sel-b .mode-b{display:block!important}}
+</style>
+</head>
+<body class="template-page sel-a">
+<div class="ui"><div class="ui-nav"><a href="../../../index.html" class="back-link"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>列印模板庫</a><span class="nav-sep">/</span><div class="ui-title">每週習慣追蹤表 <small>Weekly Habit Tracker</small></div></div><div class="ui-toolbar"><span class="toolbar-label">版面</span><div class="mode-cards"><button class="card active" onclick="setMode('a')"><strong>A</strong> 每週總覽 <span style="font-size:9px;opacity:.5">A4直・7日追蹤</span></button><button class="card" onclick="setMode('b')"><strong>B</strong> 簡版 <span style="font-size:9px;opacity:.5">A5直・本週焦點</span></button></div><span class="toolbar-label">尺寸</span><div class="size-cards"><button type="button" class="card size-card active" data-print-size="a4">A4</button><button type="button" class="card size-card" data-print-size="a5">A5</button><button type="button" class="card size-card" data-print-size="cut">A4裁A5</button></div><div class="toolbar-right"><span class="hint">Chrome → 存PDF → 邊距「無」</span><button class="btn-print" onclick="window.print()">列印 / 存 PDF</button></div></div></div>
+<div class="pages wk-pages">
+  <div class="wk-label mode-a">▸ 模式 A — A4 直向・每週習慣總覽</div>
+  <div class="page page-port mode-a"><div class="pr-shell"><span class="pr-kicker">每週習慣追蹤表 · Weekly Habit Tracker</span><div class="pr-header-band"><div class="pr-title-row"><strong>每週習慣追蹤表</strong><span>每週焦點 / 完成度 / 反思</span></div><div class="pr-meta-grid cols-4"><div><span class="pr-field-label">週次</span><span class="pr-field-blank"></span></div><div><span class="pr-field-label">本週主題</span><span class="pr-field-blank"></span></div><div><span class="pr-field-label">關鍵習慣</span><span class="pr-field-blank"></span></div><div><span class="pr-field-label">完成獎勵</span><span class="pr-field-blank"></span></div></div></div><div class="wk-layout"><div class="week-board"><div id="weekGridA" class="week-grid"></div></div><div class="wk-side"><div class="pr-card"><div class="pr-card-title"><span>本週得分</span><em>完成度觀察</em></div><div class="score-row"><span class="score-label"></span><span class="score-bar"></span><span class="score-value"></span></div><div class="score-row"><span class="score-label"></span><span class="score-bar"></span><span class="score-value"></span></div><div class="score-row"><span class="score-label"></span><span class="score-bar"></span><span class="score-value"></span></div></div><div class="pr-card"><div class="pr-card-title"><span>注意事項</span><em>本週留意</em></div><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span></div></div><div class="pr-card"><div class="pr-card-title"><span>週回顧</span><em>本週有效做法</em></div><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span></div></div></div></div><div class="pr-summary-box"><span class="pr-field-label">下週要繼續、停止、開始的事</span><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span></div></div></div><div class="pr-page-num">A · 每週</div></div>
+  <div class="wk-label mode-b">▸ 模式 B — A5 直向・本週焦點卡</div>
+  <div class="page page-a5-port mode-b"><div class="pr-shell quick-shell"><span class="pr-kicker">每週習慣追蹤表 · 快速版</span><div class="pr-header-band compact"><div class="pr-title-row"><strong style="font-size:14pt">本週焦點</strong><span>每週脈搏 / 一週快檢</span></div><div class="pr-meta-grid" style="grid-template-columns:1fr 1fr;border-top:none;"><div><span class="pr-field-label">週次</span><span class="pr-field-blank"></span></div><div><span class="pr-field-label">主習慣</span><span class="pr-field-blank"></span></div></div></div><div class="week-board"><div id="weekGridB" class="week-grid quick"></div></div><div class="pr-outline-stack"><div class="pr-outline-card"><span class="pr-outline-title">最容易斷掉的時段</span><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span></div></div><div class="pr-outline-card tight"><span class="pr-outline-title">週末回顧</span><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span></div></div></div></div><div class="pr-page-num">B · 週快檢</div></div>
+</div>
+<script src="../../../js/template-size.js"></script>
+<script>
+const pageStyles={a:'A4 portrait',b:'A5 portrait'};const dayLabels=['一','二','三','四','五','六','日'];let styleTag=document.createElement('style');styleTag.id='pg-size';document.head.appendChild(styleTag);
+function buildWeekGrid(targetId, rows){const grid=document.getElementById(targetId);grid.innerHTML=['<div class="week-head">習慣</div>'].concat(dayLabels.map(label=>`<div class="week-head">${label}</div>`)).concat(Array.from({length:rows},()=>['<div class="week-name"><span class="week-name-line"></span></div>'].concat(Array.from({length:7},()=>'<div class="week-check"></div>'))).flat()).join('')}
+function setMode(mode){document.body.classList.remove('sel-a','sel-b');document.body.classList.add('template-page','sel-'+mode);styleTag.textContent='@media print { @page { size: '+pageStyles[mode]+'; margin: 0; } }';document.querySelectorAll('.mode-cards .card').forEach((card,index)=>card.classList.toggle('active',['a','b'][index]===mode))}
+buildWeekGrid('weekGridA',6);buildWeekGrid('weekGridB',4);setMode('a');
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

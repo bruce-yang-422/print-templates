@@ -8,17 +8,32 @@
 </head>
 <body class="site-page">
 <header class="ui">
-  <div class="ui-nav">
+  <div class="ui-nav site-nav">
     <div class="ui-title">列印模板庫 <small>Print Templates</small></div>
+    <button class="filter-toggle" id="filterToggle" type="button" aria-expanded="false" aria-controls="siteFilterPanel">
+      <span class="filter-toggle-icon" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+      篩選
+    </button>
   </div>
-  <div class="ui-toolbar" style="align-items: flex-start; flex-direction: column; gap: 12px; padding-top: 16px;">
-    <!-- Group Filter -->
-    <div style="display:flex; gap: 14px; align-items: center; width: 100%; flex-wrap: wrap;">
+  <div class="filter-backdrop" id="filterBackdrop"></div>
+  <div class="site-filter-panel" id="siteFilterPanel" aria-hidden="true">
+    <div class="site-filter-header">
+      <div class="ui-title">篩選 <small>Filters</small></div>
+      <button class="filter-close" id="filterClose" type="button" aria-label="收起篩選">收起</button>
+    </div>
+    <div class="ui-toolbar site-toolbar">
+      <!-- Group Filter -->
+      <div class="site-filter-group">
       <span class="toolbar-label">分類</span>
       <div class="mode-cards" id="optCategory">
         <button class="card active" data-cat="all"><strong>全部</strong></button>
         <button class="card" data-cat="planner">計畫</button>
+        <button class="card" data-cat="habit">自我管理</button>
+        <button class="card" data-cat="health">健康管理</button>
         <button class="card" data-cat="work">工作</button>
+        <button class="card" data-cat="business">商務</button>
         <button class="card" data-cat="meeting">會議</button>
         <button class="card" data-cat="goals">目標</button>
         <button class="card" data-cat="life">生活</button>
@@ -26,19 +41,20 @@
         <button class="card" data-cat="ecommerce">電商</button>
         <button class="card" data-cat="marketing">行銷</button>
       </div>
-    </div>
-    <!-- Feature Tags Filter -->
-    <div style="display:flex; gap: 14px; align-items: flex-start; width: 100%;">
-      <span class="toolbar-label" style="margin-top: 8px;">特色</span>
-      <div class="mode-cards" id="optTags">
-        <!-- populated by JS -->
+      </div>
+      <!-- Feature Tags Filter -->
+      <div class="site-filter-group site-filter-group-tags">
+        <span class="toolbar-label">特色</span>
+        <div class="mode-cards" id="optTags">
+          <!-- populated by JS -->
+        </div>
       </div>
     </div>
   </div>
 </header>
 
-<main class="site-content" style="padding: 180px 32px 80px; max-width: 1400px; margin: 0 auto;">
-  <div class="result-bar" style="margin-bottom: 24px; padding-left: 4px;">
+<main class="site-content">
+  <div class="result-bar">
     <span class="page-label" id="resultCount"></span>
   </div>
   <div class="template-grid" id="templateGrid"></div>
@@ -66,6 +82,54 @@ const TEMPLATES = [
   {
     id: 'yearly-plan', name: '年計畫', category: 'planner', tags: ['排程管理', '目標追蹤', 'OKR'],
     desc: '12 個月一覽與年度主題版，適合全年節奏與重點規劃。', href: 'templates/planner/yearly/yearly.html', preview: 'previews/planner/yearly.svg'
+  },
+
+  // --- HABIT / SELF-MANAGEMENT ---
+  {
+    id: 'habit-tracker', name: '習慣追蹤表', category: 'habit', tags: ['習慣養成', '自我管理', '檢查表'],
+    desc: '通用習慣追蹤版面，適合記錄連續打卡、完成率與提醒提示。', href: 'templates/habit/habit-tracker/habit-tracker.html', preview: 'previews/habit/habit-tracker.svg'
+  },
+  {
+    id: 'weekly-habit-tracker', name: '每週習慣追蹤表', category: 'habit', tags: ['習慣養成', '自我管理', '進度檢討'],
+    desc: '以一週為單位檢視習慣完成度，適合建立每週固定節奏。', href: 'templates/habit/weekly-habit-tracker/weekly-habit-tracker.html', preview: 'previews/habit/weekly-habit-tracker.svg'
+  },
+  {
+    id: 'monthly-habit-tracker', name: '每月習慣追蹤表', category: 'habit', tags: ['習慣養成', '目標追蹤', '進度檢討'],
+    desc: '按月檢視習慣與打卡趨勢，適合追蹤長期行為變化。', href: 'templates/habit/monthly-habit-tracker/monthly-habit-tracker.html', preview: 'previews/habit/monthly-habit-tracker.svg'
+  },
+  {
+    id: 'routine-planner', name: '日常流程規劃表', category: 'habit', tags: ['自我管理', '排程管理', '時間軸'],
+    desc: '規劃晨間、工作與晚間流程，幫助建立穩定日常節奏。', href: 'templates/habit/routine-planner/routine-planner.html', preview: 'previews/habit/routine-planner.svg'
+  },
+  {
+    id: 'goal-tracker', name: '目標追蹤表', category: 'habit', tags: ['目標追蹤', '自我管理', '進度檢討'],
+    desc: '聚焦單一目標的里程碑、進展與阻礙，適合長期推進個人計畫。', href: 'templates/habit/goal-tracker/goal-tracker.html', preview: 'previews/habit/goal-tracker.svg'
+  },
+  {
+    id: 'daily-check-in', name: '每日檢視表', category: 'habit', tags: ['自我管理', '檢查表', '進度檢討'],
+    desc: '以情緒、專注與今日亮點回顧自己，建立穩定的日常覺察。', href: 'templates/habit/daily-check-in/daily-check-in.html', preview: 'previews/habit/daily-check-in.svg'
+  },
+
+  // --- HEALTH ---
+  {
+    id: 'exercise-log', name: '運動紀錄表', category: 'health', tags: ['健康管理', '進度檢討', '檢查表'],
+    desc: '記錄訓練內容、時長、強度與身體感受，適合每次運動後填寫。', href: 'templates/health/exercise-log/exercise-log.html', preview: 'previews/health/exercise-log.svg'
+  },
+  {
+    id: 'meal-log', name: '飲食紀錄表', category: 'health', tags: ['健康管理', '檢查表', '時間軸'],
+    desc: '依餐次整理飲食內容、飲水與飽足感，便於回顧每日飲食習慣。', href: 'templates/health/meal-log/meal-log.html', preview: 'previews/health/meal-log.svg'
+  },
+  {
+    id: 'sleep-tracker', name: '睡眠追蹤表', category: 'health', tags: ['健康管理', '時間軸', '進度檢討'],
+    desc: '追蹤入睡、起床、睡眠品質與晚間習慣，觀察睡眠節奏。', href: 'templates/health/sleep-tracker/sleep-tracker.html', preview: 'previews/health/sleep-tracker.svg'
+  },
+  {
+    id: 'body-metrics', name: '體重／身體數據追蹤', category: 'health', tags: ['健康管理', '營運與數據', '進度檢討'],
+    desc: '整理體重與身體圍度等數據，適合定期量測與比較趨勢。', href: 'templates/health/body-metrics/body-metrics.html', preview: 'previews/health/body-metrics.svg'
+  },
+  {
+    id: 'blood-pressure', name: '血壓紀錄表', category: 'health', tags: ['健康管理', '營運與數據', '檢查表'],
+    desc: '記錄每日血壓與心率，追蹤健康變化與趨勢。', href: 'templates/health/blood-pressure.html', preview: 'previews/health/blood-pressure.svg'
   },
 
   // --- LIFE ---
@@ -126,12 +190,16 @@ const TEMPLATES = [
 
   // --- NOTES ---
   {
-    id: 'cornell', name: 'Cornell 筆記', category: 'notes', tags: ['結構筆記', '閱讀研究', '網格與點陣'],
+    id: 'cornell', name: '康奈爾筆記', category: 'notes', tags: ['結構筆記', '閱讀研究', '網格與點陣'],
     desc: '關鍵字欄、主筆記欄與摘要區，支援課堂與閱讀整理。', href: 'templates/cornell/cornell.html', preview: 'previews/notes/cornell.svg'
   },
   {
     id: 'topic-notes', name: '主題筆記', category: 'notes', tags: ['結構筆記', '閱讀研究', '空白與橫線'],
     desc: '主題整理、關鍵字、下一步與摘要區塊。', href: 'templates/notes/topic-notes/topic-notes.html', preview: 'previews/notes/topic-notes.svg'
+  },
+  {
+    id: 'lecture-notes', name: '課堂／聽講筆記', category: 'notes', tags: ['學習筆記', '結構筆記', '空白與橫線'],
+    desc: '針對課堂、演講與分享整理重點、術語、問題與後續行動。', href: 'templates/notes/lecture-notes/lecture-notes.html', preview: 'previews/notes/lecture-notes.svg'
   },
   {
     id: 'bujo-index', name: '子彈筆記索引', category: 'notes', tags: ['結構筆記', '網格與點陣', '檢查表'],
@@ -168,21 +236,82 @@ const TEMPLATES = [
   {
     id: 'content-calendar', name: '內容行事曆', category: 'marketing', tags: ['行銷與社群', '排程管理', '團隊同步'],
     desc: '月視圖與發佈流程追蹤，適合內容團隊月度協作。', href: 'templates/marketing/content-calendar/content-calendar.html', preview: 'previews/marketing/content-calendar.svg'
+  },
+
+  // --- BUSINESS ---
+  {
+    id: 'swot-analysis', name: 'SWOT 分析', category: 'business', tags: ['商業分析', '企劃草圖', '結構筆記'],
+    desc: '用四象限整理優勢、劣勢、機會與威脅，快速收斂策略方向。', href: 'templates/business/swot/swot.html', preview: 'previews/business/swot.svg'
   }
 ];
 
 const ALL_TAGS = [
   '排程管理', '時間軸', '目標追蹤', 'OKR', '進度檢討', '團隊同步',
   '會議與決策', '工作回報', '企劃草圖', '腦力激盪', '影音分鏡',
-  '結構筆記', '閱讀研究', '檢查表', '電商上架', '商品定價',
-  '營運與數據', '行銷與社群', '網格與點陣', '空白與橫線'
+  '結構筆記', '閱讀研究', '學習筆記', '檢查表', '電商上架', '商品定價',
+  '營運與數據', '行銷與社群', '網格與點陣', '空白與橫線',
+  '習慣養成', '自我管理', '健康管理', '商業分析'
 ];
 
-let activeCats = [];
+const TEMPLATE_SUBTITLES = {
+  'daily-plan': 'Daily Planner',
+  'weekly-plan': 'Weekly Planner',
+  'monthly-plan': 'Monthly Planner',
+  'quarterly-plan': 'Quarterly Plan',
+  'yearly-plan': 'Yearly Planner',
+  'habit-tracker': 'Habit Tracker',
+  'weekly-habit-tracker': 'Weekly Habit Tracker',
+  'monthly-habit-tracker': 'Monthly Habit Tracker',
+  'routine-planner': 'Routine Planner',
+  'goal-tracker': 'Goal Tracker',
+  'daily-check-in': 'Daily Check-in',
+  'exercise-log': 'Exercise Log',
+  'meal-log': 'Meal Log',
+  'sleep-tracker': 'Sleep Tracker',
+  'body-metrics': 'Body Metrics Tracker',
+  'blood-pressure': 'Blood Pressure Log',
+  'travel-itinerary': 'Travel Itinerary',
+  'reading-notes': 'Reading Notes',
+  'work-journal': 'Work Journal',
+  'work-report': 'Work Report',
+  'project-brief': 'Project Brief',
+  'storyboard': 'Storyboard',
+  'standup': 'Daily Standup',
+  'meeting': 'Meeting Notes',
+  'daily-ops': 'Daily Ops Meeting',
+  'project-meeting': 'Project Meetings',
+  'creative-meeting': 'Creative Meetings',
+  'goals': 'Goal Breakdown',
+  'cornell': 'Cornell Notes',
+  'topic-notes': 'Topic Notes',
+  'lecture-notes': 'Lecture Notes',
+  'bujo-index': 'BuJo Index',
+  'dot-grid': 'Grid / Dot / Lines',
+  'product-listing': 'Product Listing Checklist',
+  'promo-plan': 'Promotion Planning Sheet',
+  'pricing': 'Pricing Worksheet',
+  'weekly-ops': 'Weekly Ops Summary',
+  'social-plan': 'Social Post Plan',
+  'content-calendar': 'Content Calendar',
+  'swot-analysis': 'SWOT Analysis'
+};
+
+let activeCat = 'all';
 let activeTags = [];
+const filterToggle = document.getElementById('filterToggle');
+const filterClose = document.getElementById('filterClose');
+const filterBackdrop = document.getElementById('filterBackdrop');
+const filterPanel = document.getElementById('siteFilterPanel');
+const mobileFilterMq = window.matchMedia('(max-width: 720px)');
 
 function initTags() {
   const container = document.getElementById('optTags');
+  const clearBtn = document.createElement('button');
+  clearBtn.className = 'card tag-btn active';
+  clearBtn.dataset.tag = '__clear__';
+  clearBtn.textContent = '全部顯示';
+  container.appendChild(clearBtn);
+
   ALL_TAGS.forEach(tag => {
     const btn = document.createElement('button');
     btn.className = 'card tag-btn';
@@ -190,6 +319,36 @@ function initTags() {
     btn.textContent = tag;
     container.appendChild(btn);
   });
+}
+
+function syncTagButtons() {
+  document.querySelectorAll('#optTags .card').forEach(chip => {
+    const isClear = chip.dataset.tag === '__clear__';
+    chip.classList.toggle('active', isClear ? activeTags.length === 0 : activeTags.includes(chip.dataset.tag));
+  });
+}
+
+function syncFilterDrawerState() {
+  const isMobile = mobileFilterMq.matches;
+  const isOpen = document.body.classList.contains('filter-open');
+  filterToggle.setAttribute('aria-expanded', isMobile && isOpen ? 'true' : 'false');
+  filterPanel.setAttribute('aria-hidden', isMobile ? String(!isOpen) : 'false');
+}
+
+function closeFilterDrawer() {
+  document.body.classList.remove('filter-open');
+  syncFilterDrawerState();
+}
+
+function openFilterDrawer() {
+  if (!mobileFilterMq.matches) return;
+  document.body.classList.add('filter-open');
+  syncFilterDrawerState();
+}
+
+function toggleFilterDrawer() {
+  if (document.body.classList.contains('filter-open')) closeFilterDrawer();
+  else openFilterDrawer();
 }
 
 function createTemplateCard(template) {
@@ -205,6 +364,7 @@ function createTemplateCard(template) {
     </div>
     <div class="tpl-info">
       <div class="tpl-name">${template.name}</div>
+      <div class="tpl-subtitle">${TEMPLATE_SUBTITLES[template.id] || ''}</div>
       <div class="tpl-tags">${topicTags}</div>
       <div class="tpl-desc">${template.desc}</div>
     </div>`;
@@ -217,7 +377,7 @@ function render() {
   grid.innerHTML = '';
 
   const filtered = TEMPLATES.filter(tpl => {
-    let catMatch = activeCats.length === 0 || activeCats.includes('all') || activeCats.includes(tpl.category);
+    let catMatch = activeCat === 'all' || tpl.category === activeCat;
     let tagMatch = activeTags.length === 0 || activeTags.some(t => tpl.tags.includes(t));
     return catMatch && tagMatch;
   });
@@ -232,22 +392,26 @@ function render() {
   filtered.forEach(template => grid.appendChild(createTemplateCard(template)));
 }
 
+filterToggle.addEventListener('click', toggleFilterDrawer);
+filterClose.addEventListener('click', closeFilterDrawer);
+filterBackdrop.addEventListener('click', closeFilterDrawer);
+filterPanel.addEventListener('click', (e) => {
+  if (e.target === filterPanel) closeFilterDrawer();
+});
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeFilterDrawer();
+});
+window.addEventListener('resize', () => {
+  if (!mobileFilterMq.matches) closeFilterDrawer();
+  else syncFilterDrawerState();
+});
+
 document.getElementById('optCategory').addEventListener('click', (e) => {
   const btn = e.target.closest('.card');
   if (!btn) return;
-  const val = btn.dataset.cat;
-  
-  if (val === 'all') {
-    activeCats = ['all'];
-  } else {
-    activeCats = activeCats.filter(c => c !== 'all');
-    if (activeCats.includes(val)) activeCats = activeCats.filter(c => c !== val);
-    else activeCats.push(val);
-  }
-  if (activeCats.length === 0) activeCats = ['all'];
-  
+  activeCat = btn.dataset.cat;
   document.querySelectorAll('#optCategory .card').forEach(chip => {
-    chip.classList.toggle('active', activeCats.includes(chip.dataset.cat));
+    chip.classList.toggle('active', chip.dataset.cat === activeCat);
   });
   render();
 });
@@ -256,17 +420,18 @@ document.getElementById('optTags').addEventListener('click', (e) => {
   const btn = e.target.closest('.card');
   if (!btn) return;
   const val = btn.dataset.tag;
-  
-  if (activeTags.includes(val)) activeTags = activeTags.filter(t => t !== val);
+
+  if (val === '__clear__') activeTags = [];
+  else if (activeTags.includes(val)) activeTags = activeTags.filter(t => t !== val);
   else activeTags.push(val);
-  
-  document.querySelectorAll('#optTags .card').forEach(chip => {
-    chip.classList.toggle('active', activeTags.includes(chip.dataset.tag));
-  });
+
+  syncTagButtons();
   render();
 });
 
 initTags();
+syncTagButtons();
+syncFilterDrawerState();
 render();
 </script>
 </body>

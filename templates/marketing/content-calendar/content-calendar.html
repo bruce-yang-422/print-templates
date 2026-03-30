@@ -2,6 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>內容行事曆模板</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +33,7 @@ body.sel-b .mode-b { display: block; }
 .grid { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(5, 1fr); }
 .cell { border-right: 0.4pt solid #eee; border-bottom: 0.4pt solid #eee; padding: 1.8mm 2mm; display: flex; flex-direction: column; }
 .cell:nth-child(7n) { border-right: none; }
-.num { font-size: 7pt; font-weight: 700; color: #bbb; margin-bottom: 1mm; }
+.num { width: 8mm; height: 5.8mm; border: 0.45pt solid #d8d8d8; border-radius: 1.2mm; font-size: 7pt; font-weight: 700; color: #bbb; margin-bottom: 1mm; align-self: flex-start; }
 .cell-line { border-bottom: 0.4pt solid #efefef; flex: 1; margin-bottom: .5mm; }
 .side { display: grid; grid-template-rows: auto auto 1fr; gap: 4mm; }
 .box { border: 0.4pt solid #ddd; padding: 3mm; }
@@ -100,40 +101,40 @@ body.sel-b .mode-b { display: block; }
       <div class="calendar-shell">
         <div class="calendar-box">
           <div class="weekdays">
-            <div class="weekday">Mon</div><div class="weekday">Tue</div><div class="weekday">Wed</div><div class="weekday">Thu</div><div class="weekday">Fri</div><div class="weekday">Sat</div><div class="weekday">Sun</div>
+            <div class="weekday">Sun</div><div class="weekday">Mon</div><div class="weekday">Tue</div><div class="weekday">Wed</div><div class="weekday">Thu</div><div class="weekday">Fri</div><div class="weekday">Sat</div>
           </div>
-          <div class="grid">
-            <div class="cell"><div class="num">1</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">2</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">3</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">4</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">5</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">6</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">7</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">8</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">9</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">10</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">11</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">12</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">13</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">14</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">15</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">16</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">17</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">18</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">19</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">20</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">21</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">22</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">23</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">24</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">25</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">26</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">27</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">28</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">29</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">30</div><div class="cell-line"></div><div class="cell-line"></div></div>
-            <div class="cell"><div class="num">31</div><div class="cell-line"></div><div class="cell-line"></div></div>
+                    <div class="grid">
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
+            <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
             <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
             <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>
             <div class="cell"><div class="num"></div><div class="cell-line"></div><div class="cell-line"></div></div>

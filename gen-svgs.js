@@ -50,6 +50,41 @@ const tpl = {
     return s;
   },
 
+  'habit-tracker': () => {
+    let s = h.rect(40, 30, 90, 8, '#d2d2d2', 'none');
+    for (let r = 0; r < 5; r++) {
+      s += h.rect(40, 48 + r * 20, 54, 16, '#fafafa', '#ddd');
+      for (let c = 0; c < 10; c++) s += h.rect(100 + c * 16, 48 + r * 20, 12, 16, 'none', '#e6e6e6', 1);
+    }
+    return s;
+  },
+
+  'weekly-habit-tracker': () => {
+    let s = h.rect(40, 30, 120, 8, '#d2d2d2', 'none');
+    for (let c = 0; c < 7; c++) s += h.rect(72 + c * 27, 48, 22, 16, '#f5f5f5', '#ddd');
+    for (let r = 0; r < 5; r++) {
+      s += h.rect(40, 66 + r * 18, 26, 14, '#fafafa', '#ddd');
+      for (let c = 0; c < 7; c++) s += h.circle(83 + c * 27, 73 + r * 18, 4, 'none', '#c8c8c8', 1.2);
+    }
+    return s;
+  },
+
+  'monthly-habit-tracker': () => {
+    let s = h.rect(40, 30, 100, 8, '#d2d2d2', 'none');
+    for (let r = 0; r < 4; r++) {
+      s += h.rect(40, 48 + r * 24, 38, 18, '#fafafa', '#ddd');
+      for (let c = 0; c < 12; c++) s += h.rect(84 + c * 14, 48 + r * 24, 10, 18, 'none', '#e7e7e7', 1);
+    }
+    s += h.lines(40, 152, 220, 2, 10);
+    return s;
+  },
+
+  'routine-planner': () => h.rect(40, 30, 100, 8, '#d2d2d2', 'none') + h.line(74, 52, 74, 154, '#ddd', 2) + h.circle(74, 68, 5, '#fff', '#999', 1.5) + h.circle(74, 102, 5, '#fff', '#999', 1.5) + h.circle(74, 136, 5, '#fff', '#999', 1.5) + h.rect(88, 56, 162, 24, '#fafafa', '#ddd') + h.rect(88, 90, 162, 24, '#fafafa', '#ddd') + h.rect(88, 124, 162, 24, '#fafafa', '#ddd'),
+
+  'goal-tracker': () => h.rect(40, 30, 90, 8, '#d2d2d2', 'none') + h.rect(40, 48, 220, 30, 'none', '#ccc') + h.rect(50, 60, 150, 8, '#d7d7d7', 'none', 0, 4) + h.rect(40, 90, 68, 56, 'none', '#ddd') + h.rect(116, 90, 68, 56, 'none', '#ddd') + h.rect(192, 90, 68, 56, 'none', '#ddd'),
+
+  'daily-check-in': () => h.rect(40, 30, 92, 8, '#d2d2d2', 'none') + h.circle(78, 66, 12, 'none', '#ccc', 1.5) + h.circle(128, 66, 12, 'none', '#ccc', 1.5) + h.circle(178, 66, 12, 'none', '#ccc', 1.5) + h.lines(40, 96, 220, 3, 14) + h.rect(40, 142, 105, 24, 'none', '#ddd') + h.rect(155, 142, 105, 24, 'none', '#ddd'),
+
   'travel-itinerary': () => {
     let s = h.rect(40,35,50,8, '#d2d2d2', 'none') + h.rect(180,35,80,40, 'none', '#ccc', 1.5, 6) + h.line(180,55,260,55, '#ccc', 1.5, '4,4'); // Boarding pass
     s += h.line(60, 50, 60, 150, '#ccc', 2); // Timeline
@@ -94,6 +129,8 @@ const tpl = {
 
   'topic-notes': () => h.rect(40, 35, 220, 20, '#fafafa', '#ccc') + h.rect(40, 65, 220, 90) + h.lines(40, 80, 220, 4, 16, '#eaeaea'),
 
+  'lecture-notes': () => h.rect(40, 30, 104, 8, '#d2d2d2', 'none') + h.rect(40, 46, 56, 108, 'none', '#ddd') + h.rect(104, 46, 156, 74, 'none', '#ddd') + h.rect(104, 128, 156, 26, 'none', '#ddd') + h.lines(112, 58, 138, 3, 16),
+
   'bujo-index': () => h.rect(40,30,80,8, '#d2d2d2', 'none') + h.rect(40, 50, 220, 100, 'none', '#eaeaea') + h.line(220, 50, 220, 150, '#eaeaea') + h.lines(40, 70, 220, 4, 20, '#eaeaea') + h.circle(50, 60, 3) + h.circle(50, 80, 3) + h.circle(50, 100, 3),
 
   'reading-notes': () => h.rect(40,30,80,8, '#d2d2d2', 'none') + h.rect(40, 50, 45, 65) + h.rect(100, 50, 160, 65) + h.lines(40, 135, 220, 2, 15) + h.circle(110, 100, 4, '#ccc', 'none') + h.circle(125, 100, 4, '#ccc', 'none') + h.circle(140, 100, 4, '#ccc', 'none'),
@@ -123,7 +160,19 @@ const tpl = {
     let s = h.rect(40,30,80,6, '#d2d2d2', 'none');
     for(let r=0; r<4; r++) for(let c=0; c<6; c++) s += h.rect(40+c*38, 45+r*26, 32, 20) + h.rect(42+c*38, 47+r*26, 12, 12, '#eaeaea', 'none');
     return s;
-  }
+  },
+
+  'exercise-log': () => h.rect(40, 30, 92, 8, '#d2d2d2', 'none') + h.rect(40, 48, 220, 26, 'none', '#ddd') + h.rect(40, 84, 220, 70, 'none', '#ddd') + h.line(110, 84, 110, 154, '#e7e7e7') + h.line(176, 84, 176, 154, '#e7e7e7') + h.lines(40, 102, 220, 3, 16),
+
+  'meal-log': () => h.rect(40, 30, 82, 8, '#d2d2d2', 'none') + h.rect(40, 48, 105, 46, 'none', '#ddd') + h.rect(155, 48, 105, 46, 'none', '#ddd') + h.rect(40, 104, 105, 46, 'none', '#ddd') + h.rect(155, 104, 105, 46, 'none', '#ddd'),
+
+  'sleep-tracker': () => h.rect(40, 30, 92, 8, '#d2d2d2', 'none') + h.rect(40, 48, 220, 24, 'none', '#ddd') + h.line(94, 48, 94, 72, '#e7e7e7') + h.line(148, 48, 148, 72, '#e7e7e7') + h.line(202, 48, 202, 72, '#e7e7e7') + h.lines(40, 92, 220, 4, 14) + h.circle(224, 62, 12, 'none', '#ccc', 1.5),
+
+  'body-metrics': () => h.rect(40, 30, 112, 8, '#d2d2d2', 'none') + h.rect(40, 48, 130, 102, 'none', '#ddd') + h.line(72, 48, 72, 150, '#e7e7e7') + h.line(104, 48, 104, 150, '#e7e7e7') + h.line(136, 48, 136, 150, '#e7e7e7') + h.rect(182, 48, 78, 22, '#fafafa', '#ddd') + h.rect(182, 78, 78, 22, '#fafafa', '#ddd') + h.rect(182, 108, 78, 42, 'none', '#ddd'),
+
+  'blood-pressure': () => h.rect(40, 30, 92, 8, '#d2d2d2', 'none') + h.rect(40, 48, 220, 26, 'none', '#ddd') + h.line(95, 48, 95, 74, '#e7e7e7') + h.line(150, 48, 150, 74, '#e7e7e7') + h.line(205, 48, 205, 74, '#e7e7e7') + h.rect(40, 86, 128, 64, 'none', '#ddd') + h.rect(178, 86, 82, 64, 'none', '#ddd'),
+
+  'swot-analysis': () => h.rect(40, 30, 84, 8, '#d2d2d2', 'none') + h.rect(40, 48, 105, 48, 'none', '#ccc') + h.rect(155, 48, 105, 48, 'none', '#ccc') + h.rect(40, 106, 105, 48, 'none', '#ccc') + h.rect(155, 106, 105, 48, 'none', '#ccc')
 };
 
 const templates = [
@@ -132,7 +181,18 @@ const templates = [
   { id: 'monthly-plan', preview: 'previews/planner/monthly.svg', name: '月計畫' },
   { id: 'quarterly-plan', preview: 'previews/planner/quarterly.svg', name: '季計畫' },
   { id: 'yearly-plan', preview: 'previews/planner/yearly.svg', name: '年計畫' },
+  { id: 'habit-tracker', preview: 'previews/habit/habit-tracker.svg', name: '習慣追蹤表' },
+  { id: 'weekly-habit-tracker', preview: 'previews/habit/weekly-habit-tracker.svg', name: '每週習慣追蹤表' },
+  { id: 'monthly-habit-tracker', preview: 'previews/habit/monthly-habit-tracker.svg', name: '每月習慣追蹤表' },
+  { id: 'routine-planner', preview: 'previews/habit/routine-planner.svg', name: '日常流程規劃表' },
+  { id: 'goal-tracker', preview: 'previews/habit/goal-tracker.svg', name: '目標追蹤表' },
+  { id: 'daily-check-in', preview: 'previews/habit/daily-check-in.svg', name: '每日檢視表' },
   { id: 'travel-itinerary', preview: 'previews/planner/travel.svg', name: '旅行行程表' },
+  { id: 'exercise-log', preview: 'previews/health/exercise-log.svg', name: '運動紀錄表' },
+  { id: 'meal-log', preview: 'previews/health/meal-log.svg', name: '飲食紀錄表' },
+  { id: 'sleep-tracker', preview: 'previews/health/sleep-tracker.svg', name: '睡眠追蹤表' },
+  { id: 'body-metrics', preview: 'previews/health/body-metrics.svg', name: '體重／身體數據追蹤' },
+  { id: 'blood-pressure', preview: 'previews/health/blood-pressure.svg', name: '血壓紀錄表' },
   { id: 'work-journal', preview: 'previews/work/work-journal.svg', name: '工作日誌' },
   { id: 'work-report', preview: 'previews/work/report.svg', name: '工作報告' },
   { id: 'project-brief', preview: 'previews/work/project-brief.svg', name: '專案簡報' },
@@ -143,8 +203,9 @@ const templates = [
   { id: 'project-meeting', preview: 'previews/meeting/project.svg', name: '專案與決策會議' },
   { id: 'creative-meeting', preview: 'previews/meeting/creative.svg', name: '創意與產品會議' },
   { id: 'goals', preview: 'previews/goals/goals.svg', name: '目標分解' },
-  { id: 'cornell', preview: 'previews/notes/cornell.svg', name: 'Cornell 筆記' },
+  { id: 'cornell', preview: 'previews/notes/cornell.svg', name: '康奈爾筆記' },
   { id: 'topic-notes', preview: 'previews/notes/topic-notes.svg', name: '主題筆記' },
+  { id: 'lecture-notes', preview: 'previews/notes/lecture-notes.svg', name: '課堂／聽講筆記' },
   { id: 'bujo-index', preview: 'previews/notes/bujo-index.svg', name: '子彈筆記索引' },
   { id: 'reading-notes', preview: 'previews/notes/reading-notes.svg', name: '讀書筆記' },
   { id: 'dot-grid', preview: 'previews/notes/dot-grid.svg', name: '方格/點陣/橫線' },
@@ -153,7 +214,8 @@ const templates = [
   { id: 'pricing', preview: 'previews/ecommerce/pricing.svg', name: '商品定價試算表' },
   { id: 'weekly-ops', preview: 'previews/ecommerce/weekly-ops.svg', name: '電商週營運摘要' },
   { id: 'social-plan', preview: 'previews/marketing/social-plan.svg', name: '社群發文計畫表' },
-  { id: 'content-calendar', preview: 'previews/marketing/content-calendar.svg', name: '內容行事曆' }
+  { id: 'content-calendar', preview: 'previews/marketing/content-calendar.svg', name: '內容行事曆' },
+  { id: 'swot-analysis', preview: 'previews/business/swot.svg', name: 'SWOT 分析' }
 ];
 
 const basePath = 'D:/Tools/print-templates';

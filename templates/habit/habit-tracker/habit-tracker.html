@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>習慣追蹤表 Habit Tracker</title>
+<link rel="stylesheet" href="../../../css/style.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+.habit-pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.habit-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.quick-shell { height: 210mm; padding: 9mm 10mm 7mm 10mm; }
+.habit-layout { display: grid; grid-template-columns: 1.45fr .75fr; gap: 4mm; min-height: 0; flex: 1; }
+.habit-side { display: flex; flex-direction: column; gap: 4mm; }
+.habit-matrix { border: 0.4pt solid #ddd; background: #fff; }
+.habit-matrix-grid { display: grid; }
+.habit-head, .habit-name, .habit-cell { min-height: 7.4mm; border-right: 0.4pt solid #ececec; border-bottom: 0.4pt solid #ececec; display: flex; align-items: center; justify-content: center; font-size: 6pt; }
+.habit-head { background: #fafafa; color: #888; letter-spacing: .08em; text-transform: uppercase; }
+.habit-name { justify-content: flex-start; padding: 0 2.4mm; }
+.habit-name-line { width: 100%; border-bottom: 0.4pt solid #ddd; height: 4.4mm; }
+.habit-matrix-grid > :nth-child(15n) { border-right: none; }
+.quick-shell .habit-matrix-grid { grid-template-columns: 28mm repeat(7, 1fr) !important; }
+.quick-shell .habit-matrix-grid > :nth-child(8n) { border-right: none; }
+.streak-row { display: grid; grid-template-columns: 18mm 1fr 10mm; gap: 2mm; align-items: center; margin-bottom: 2.2mm; }
+.streak-label, .streak-count { border-bottom: 0.4pt solid #ddd; height: 4mm; }
+.streak-bar { height: 3mm; border: 0.4pt solid #ddd; }
+@media print {
+  .ui, .habit-label { display: none !important; }
+  .habit-pages { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+}
+</style>
+</head>
+<body class="template-page sel-a">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>列印模板庫</a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">習慣追蹤表 <small>Habit Tracker</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 週期版 <span style="font-size:9px;opacity:.5">A4直・14日習慣格</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 快速版 <span style="font-size:9px;opacity:.5">A5直・7日打卡</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right"><span class="hint">Chrome → 存PDF → 邊距「無」</span><button class="btn-print" onclick="window.print()">列印 / 存 PDF</button></div>
+  </div>
+</div>
+<div class="pages habit-pages">
+  <div class="habit-label mode-a">▸ 模式 A — A4 直向・通用習慣追蹤</div>
+  <div class="page page-port mode-a">
+    <div class="pr-shell">
+      <span class="pr-kicker">習慣追蹤表 · Habit Tracker</span>
+      <div class="pr-header-band">
+        <div class="pr-title-row"><strong>習慣追蹤表</strong><span>習慣設計 / 提醒 / 連續紀錄 / 回顧</span></div>
+        <div class="pr-meta-grid cols-4">
+          <div><span class="pr-field-label">追蹤主題</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">週期</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">開始日</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">完成定義</span><span class="pr-field-blank"></span></div>
+        </div>
+      </div>
+      <div class="habit-layout">
+        <div class="habit-matrix"><div id="habitMatrixA" class="habit-matrix-grid"></div></div>
+        <div class="habit-side">
+          <div class="pr-card"><div class="pr-card-title"><span>提醒設計</span><em>觸發 / 獎勵 / 阻力</em></div><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span></div></div>
+          <div class="pr-card"><div class="pr-card-title"><span>目前連續天數</span><em>連續紀錄觀察</em></div><div class="streak-row"><span class="streak-label"></span><span class="streak-bar"></span><span class="streak-count"></span></div><div class="streak-row"><span class="streak-label"></span><span class="streak-bar"></span><span class="streak-count"></span></div><div class="streak-row"><span class="streak-label"></span><span class="streak-bar"></span><span class="streak-count"></span></div></div>
+          <div class="pr-card"><div class="pr-card-title"><span>反思</span><em>有幫助的事 / 容易中斷的事</em></div><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span></div></div>
+        </div>
+      </div>
+      <div class="pr-summary-box"><span class="pr-field-label">下個週期要保留或調整什麼</span><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span></div></div>
+    </div>
+    <div class="pr-page-num">A · 習慣</div>
+  </div>
+  <div class="habit-label mode-b">▸ 模式 B — A5 直向・一週打卡</div>
+  <div class="page page-a5-port mode-b">
+    <div class="pr-shell quick-shell">
+      <span class="pr-kicker">習慣追蹤表 · 一週快檢</span>
+      <div class="pr-header-band compact">
+        <div class="pr-title-row"><strong style="font-size:14pt">本週習慣</strong><span>7 天快速檢視</span></div>
+        <div class="pr-meta-grid" style="grid-template-columns:1fr 1fr;border-top:none;"><div><span class="pr-field-label">主題</span><span class="pr-field-blank"></span></div><div><span class="pr-field-label">週次</span><span class="pr-field-blank"></span></div></div>
+      </div>
+      <div class="habit-matrix"><div id="habitMatrixB" class="habit-matrix-grid"></div></div>
+      <div class="pr-outline-stack"><div class="pr-outline-card"><span class="pr-outline-title">提醒句</span><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span></div></div><div class="pr-outline-card tight"><span class="pr-outline-title">本週回顧</span><div class="pr-lines"><span class="pr-line"></span><span class="pr-line"></span></div></div></div>
+    </div>
+    <div class="pr-page-num">B · 快檢</div>
+  </div>
+</div>
+<script src="../../../js/template-size.js"></script>
+<script>
+const pageStyles = { a: 'A4 portrait', b: 'A5 portrait' };
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+function renderHabitMatrix(targetId, days, rows, labels) {
+  const grid = document.getElementById(targetId);
+  grid.style.gridTemplateColumns = `${targetId === 'habitMatrixA' ? '34mm' : '28mm'} repeat(${days}, 1fr)`;
+  const cells = ['<div class="habit-head">習慣</div>']
+    .concat(labels.map(label => `<div class="habit-head">${label}</div>`))
+    .concat(Array.from({ length: rows }, () => ['<div class="habit-name"><span class="habit-name-line"></span></div>'].concat(Array.from({ length: days }, () => '<div class="habit-cell"></div>'))).flat());
+  grid.innerHTML = cells.join('');
+}
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => card.classList.toggle('active', ['a', 'b'][index] === mode));
+}
+renderHabitMatrix('habitMatrixA', 14, 6, Array.from({ length: 14 }, (_, index) => String(index + 1)));
+renderHabitMatrix('habitMatrixB', 7, 4, ['一', '二', '三', '四', '五', '六', '日']);
+setMode('a');
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
