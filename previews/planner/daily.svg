@@ -1,18 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 594">
-  <rect width="420" height="594" fill="#ece6de"/>
-  <rect x="30" y="24" width="360" height="546" rx="18" fill="#fff" stroke="#d9d1c6"/>
-  <rect x="64" y="56" width="6" height="470" fill="#ded7cd"/>
-  <rect x="86" y="58" width="210" height="12" rx="6" fill="#c49d62"/>
-  <g stroke="#ddd6cc" stroke-width="2">
-    <line x1="104" y1="112" x2="334" y2="112"/>
-    <line x1="104" y1="150" x2="334" y2="150"/>
-    <line x1="104" y1="188" x2="334" y2="188"/>
-    <line x1="104" y1="226" x2="334" y2="226"/>
-    <line x1="104" y1="264" x2="334" y2="264"/>
-    <line x1="104" y1="302" x2="334" y2="302"/>
-    <line x1="104" y1="340" x2="334" y2="340"/>
-    <line x1="104" y1="378" x2="334" y2="378"/>
-    <line x1="104" y1="430" x2="334" y2="430"/>
-    <line x1="104" y1="468" x2="334" y2="468"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 594 594">
+  <rect width="594" height="594" fill="#ece6de"/>
+  <g transform="translate(87 0)">
+    <rect width="420" height="594" fill="#ece6de"/>
+      <rect x="30" y="24" width="360" height="546" rx="18" fill="#fff" stroke="#d9d1c6"/>
+      <rect x="64" y="56" width="6" height="470" fill="#ded7cd"/>
+      <rect x="86" y="58" width="210" height="12" rx="6" fill="#c49d62"/>
+      <g stroke="#ddd6cc" stroke-width="2">
+        <line x1="104" y1="112" x2="334" y2="112"/>
+        <line x1="104" y1="150" x2="334" y2="150"/>
+        <line x1="104" y1="188" x2="334" y2="188"/>
+        <line x1="104" y1="226" x2="334" y2="226"/>
+        <line x1="104" y1="264" x2="334" y2="264"/>
+        <line x1="104" y1="302" x2="334" y2="302"/>
+        <line x1="104" y1="340" x2="334" y2="340"/>
+        <line x1="104" y1="378" x2="334" y2="378"/>
+        <line x1="104" y1="430" x2="334" y2="430"/>
+        <line x1="104" y1="468" x2="334" y2="468"/>
+      </g>
   </g>
 </svg>

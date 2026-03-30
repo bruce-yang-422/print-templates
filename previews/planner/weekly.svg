@@ -1,16 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 594 420">
-  <rect width="594" height="420" fill="#ece6de"/>
-  <rect x="24" y="30" width="546" height="360" rx="18" fill="#fff" stroke="#d9d1c6"/>
-  <rect x="54" y="56" width="6" height="308" fill="#ded7cd"/>
-  <rect x="78" y="56" width="438" height="12" rx="6" fill="#b1846f"/>
-  <g fill="#faf8f4" stroke="#d8d2c8" stroke-width="2">
-    <rect x="78" y="98" width="58" height="186"/><rect x="136" y="98" width="58" height="186"/>
-    <rect x="194" y="98" width="58" height="186"/><rect x="252" y="98" width="58" height="186"/>
-    <rect x="310" y="98" width="58" height="186"/><rect x="368" y="98" width="58" height="186"/>
-    <rect x="426" y="98" width="58" height="186"/>
-  </g>
-  <g stroke="#ddd6cc" stroke-width="2">
-    <line x1="78" y1="316" x2="484" y2="316"/>
-    <line x1="78" y1="342" x2="484" y2="342"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 594 594">
+  <rect width="594" height="594" fill="#ece6de"/>
+  <g transform="translate(0 87)">
+    <rect width="594" height="420" fill="#ece6de"/>
+      <rect x="24" y="30" width="546" height="360" rx="18" fill="#fff" stroke="#d9d1c6"/>
+      <rect x="54" y="56" width="6" height="308" fill="#ded7cd"/>
+      <rect x="78" y="56" width="438" height="12" rx="6" fill="#b1846f"/>
+      <g fill="#faf8f4" stroke="#d8d2c8" stroke-width="2">
+        <rect x="78" y="98" width="58" height="186"/><rect x="136" y="98" width="58" height="186"/>
+        <rect x="194" y="98" width="58" height="186"/><rect x="252" y="98" width="58" height="186"/>
+        <rect x="310" y="98" width="58" height="186"/><rect x="368" y="98" width="58" height="186"/>
+        <rect x="426" y="98" width="58" height="186"/>
+      </g>
+      <g stroke="#ddd6cc" stroke-width="2">
+        <line x1="78" y1="316" x2="484" y2="316"/>
+        <line x1="78" y1="342" x2="484" y2="342"/>
+      </g>
   </g>
 </svg>

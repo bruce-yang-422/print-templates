@@ -194,21 +194,21 @@ body.site-page .badge-soon {
 
 body.site-page .tpl-thumb {
   width: 100%;
-  aspect-ratio: 1 / 1.414;
+  aspect-ratio: 1 / 1;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
 }
 
 body.site-page .tpl-thumb.land {
-  aspect-ratio: 1.414 / 1;
+  aspect-ratio: 1 / 1;
 }
 
 body.site-page .tpl-preview-img {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 body.site-page .tpl-info {
@@ -663,6 +663,7 @@ body.template-page .date-picker {
 }
 
 body.template-page .page {
+  --bind-gap: 15mm;
   background: var(--tpl-paper);
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.14);
   overflow: hidden;
@@ -691,7 +692,7 @@ body.template-page .page::before {
   top: 0;
   bottom: 0;
   left: 0;
-  width: 10mm;
+  width: var(--bind-gap);
   background: #fff;
   z-index: 4;
   pointer-events: none;
@@ -702,7 +703,7 @@ body.template-page .page::after {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 10mm;
+  left: var(--bind-gap);
   border-left: 0.6pt solid #d6d6d6;
   z-index: 5;
   pointer-events: none;
@@ -720,13 +721,65 @@ body.template-page .page-land {
 
 body.template-page .page-a5,
 body.template-page .page-a5-port {
+  --bind-gap: 12mm;
   width: 148mm;
   height: 210mm;
 }
 
 body.template-page .page-a5-land {
+  --bind-gap: 12mm;
   width: 210mm;
   height: 148mm;
+}
+
+body.template-page .page-port > .a-wrap,
+body.template-page .page-port > .b-wrap,
+body.template-page .page-port > .rpt-wrap,
+body.template-page .page-port > .pr-shell,
+body.template-page .page-port > .inner-a4 {
+  padding-left: 19mm !important;
+}
+
+body.template-page .page-land > .wrap,
+body.template-page .page-land > .b-wrap,
+body.template-page .page-land > .pr-shell {
+  padding-left: 17mm !important;
+}
+
+body.template-page .page-a5 > .b-wrap,
+body.template-page .page-a5 > .c-wrap,
+body.template-page .page-a5 > .pr-shell,
+body.template-page .page-a5-port > .b-wrap,
+body.template-page .page-a5-port > .quick-shell,
+body.template-page .page-a5-port > .pr-shell {
+  padding-left: 14mm !important;
+}
+
+body.template-page .page-a5 .inner-a5,
+body.template-page .page-a5-port .inner-a5 {
+  padding-left: 14mm !important;
+}
+
+body.template-page .inner-a5-bind {
+  padding-left: 22mm !important;
+  background-image: linear-gradient(
+    to right,
+    transparent 0,
+    transparent 12mm,
+    #d6d6d6 12mm,
+    #d6d6d6 calc(12mm + 0.6pt),
+    transparent calc(12mm + 0.6pt)
+  ) !important;
+}
+
+body.template-page .a-header,
+body.template-page .a-left,
+body.template-page .a-review,
+body.template-page .wk-head,
+body.template-page .cal-head,
+body.template-page .trk-ch,
+body.template-page .trk-right {
+  padding-left: 19mm !important;
 }
 
 body.template-page .pr-shell {
