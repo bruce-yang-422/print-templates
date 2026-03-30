@@ -2,9 +2,13 @@
 
 可直接用瀏覽器開啟、列印或另存 PDF 的 HTML 模板專案。
 
+專案網址：
+
+- [GitHub Repository](https://github.com/bruce-yang-422/print-templates)
+
 目前專案分成兩層：
 
-- 網站介面：使用新的彩色主題色票，集中由 `css/style.css` 管理
+- 網站介面：使用 Apple 風格靈感的灰白藍主題，集中由 `css/style.css` 管理
 - 模板列印頁：維持黑白灰階、左側 `10mm` 裝訂區，並支援 `A4 / A5 / A4裁A5`
 
 ---
@@ -64,13 +68,13 @@
 
 ### 網站介面
 
-- 首頁與模板頁螢幕 UI 使用同一套彩色主題
-- 主要色票：
-  - `Pearl Aqua` `#6dd3ce`
-  - `Tea Green` `#c8e9a0`
-  - `Tangerine Dream` `#f7a278`
-  - `Vintage Berry` `#a13d63`
-  - `Midnight Violet` `#351e29`
+- 首頁與模板頁螢幕 UI 使用同一套 Apple 風格靈感主題
+- 主色方向：
+  - 背景灰白 `#f5f5f7`
+  - 主文字深灰 `#1d1d1f`
+  - 次文字灰 `#6e6e73`
+  - Apple 藍重點 `#0071e3`
+  - 淺藍高光 `#2997ff`
 
 ### 列印模板
 
