@@ -2,9 +2,9 @@
 
 可直接用瀏覽器開啟、列印或另存 PDF 的 HTML 模板專案。
 
-專案網址：
+前台網站：
 
-- [GitHub Repository](https://github.com/bruce-yang-422/print-templates)
+- [print-templates](https://bruce-yang-422.github.io/print-templates/)
 
 目前專案分成兩層：
 

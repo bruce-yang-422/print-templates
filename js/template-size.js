@@ -39,6 +39,13 @@
     return { width: 210, height: 297, orientation: 'portrait' };
   }
 
+  function isPreCutA5Spread(page, source) {
+    if (source.orientation !== 'landscape') return false;
+
+    const a5Panels = page.querySelectorAll('.inner-a5-bind');
+    return a5Panels.length >= 2;
+  }
+
   function mm(value) {
     return value + 'mm';
   }
@@ -87,7 +94,7 @@
     stage.appendChild(sheet);
   }
 
-  function getTargetSpec(source) {
+  function getTargetSpec(page, source) {
     if (sizeMode === 'a5') {
       return {
         type: 'single',
@@ -98,6 +105,15 @@
     }
 
     if (sizeMode === 'cut') {
+      if (isPreCutA5Spread(page, source)) {
+        return {
+          type: 'single',
+          paper: 'A4 landscape',
+          width: 297,
+          height: 210,
+        };
+      }
+
       if (source.orientation === 'landscape') {
         return {
           type: 'cut',
@@ -132,7 +148,7 @@
     stage.innerHTML = '';
 
     const source = getSourceSpec(page);
-    const target = getTargetSpec(source);
+    const target = getTargetSpec(page, source);
 
     if (target.type === 'cut') {
       renderCut(stage, page, source, target);
