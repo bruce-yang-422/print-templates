@@ -202,13 +202,13 @@ body.site-page .empty-state {
 }
 
 body.site-page .site-footer {
-  padding: 0 32px 48px;
+  margin-top: 56px;
+  padding-bottom: 48px;
 }
 
 body.site-page .site-footer-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 18px 20px 0;
+  width: 100%;
+  padding: 18px 4px 0;
   border-top: 1px solid rgba(210, 210, 215, 0.92);
   display: flex;
   justify-content: space-between;
@@ -243,7 +243,8 @@ body.site-page .site-footer-copy {
   }
 
   body.site-page .site-footer {
-    padding: 0 16px 32px;
+    margin-top: 40px;
+    padding-bottom: 32px;
   }
 
   body.site-page .site-footer-inner {
