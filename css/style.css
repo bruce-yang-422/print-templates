@@ -650,6 +650,23 @@ body.template-page .date-select option {
   color: var(--site-ink);
 }
 
+body.template-page .date-input {
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid rgba(210, 210, 215, 0.92);
+  color: var(--site-ink);
+  border-radius: 999px;
+  font-size: 11px;
+  font-family: inherit;
+  padding: 4px 10px;
+  cursor: pointer;
+  outline: none;
+  min-width: 136px;
+}
+
+body.template-page .date-input:hover {
+  border-color: var(--site-accent-deep);
+}
+
 body.template-page .picker-sep {
   color: var(--site-ink-soft) !important;
   font-size: 11px;
@@ -770,6 +787,11 @@ body.template-page .page-land > .wrap,
 body.template-page .page-land > .b-wrap,
 body.template-page .page-land > .pr-shell {
   padding-left: 17mm !important;
+}
+
+body.template-page .page-land > .wk-tbl {
+  width: calc(100% - var(--bind-gap)) !important;
+  margin-left: var(--bind-gap);
 }
 
 body.template-page .page-a5 > .b-wrap,

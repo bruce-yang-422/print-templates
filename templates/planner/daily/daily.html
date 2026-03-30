@@ -36,16 +36,17 @@ body.sel-c .mode-c { display: block; }
 .ck-sq   { display: inline-block; width: 2.8mm; height: 2.8mm; border: 0.6pt solid #999; vertical-align: middle; margin-right: 1mm; }
 
 /* ════ Mode A: 時間軸 A4直 ════ */
-.a-header { padding: 11mm 14mm 4mm; border-bottom: 0.75pt solid #111; }
-.a-body   { display: flex; height: 257mm; }
-.a-left   { width: 55%; border-right: 0.4pt solid #ddd; padding: 4mm 4mm 4mm 14mm; }
-.a-right  { flex: 1; padding: 4mm 14mm 4mm 5mm; display: flex; flex-direction: column; }
+.page.mode-a { display: flex; flex-direction: column; }
+.a-header { padding: 11mm 14mm 4mm; border-bottom: 0.75pt solid #111; flex-shrink: 0; }
+.a-body   { display: flex; flex: 1; min-height: 0; }
+.a-left   { width: 55%; border-right: 0.4pt solid #ddd; padding: 4mm 4mm 4mm 14mm; min-height: 0; }
+.a-right  { flex: 1; padding: 4mm 14mm 4mm 5mm; display: flex; flex-direction: column; min-height: 0; }
 .time-tbl { width: 100%; border-collapse: collapse; }
 .t-lbl    { font-size: 5.5pt; color: #bbb; width: 13mm; text-align: right; padding-right: 3mm; padding-bottom: 1mm; vertical-align: bottom; white-space: nowrap; }
 .t-line   { border-bottom: 0.4pt solid #ddd; height: 12.5mm; }
 .t-noon   { border-bottom: 0.6pt dashed #ccc !important; }
 .t-eve    { border-bottom: 0.6pt dashed #ccc !important; }
-.a-review { border-top: 0.75pt solid #111; padding: 2.5mm 14mm; display: flex; align-items: baseline; gap: 5mm; }
+.a-review { border-top: 0.75pt solid #111; padding: 2.5mm 14mm; display: flex; align-items: baseline; gap: 5mm; flex-shrink: 0; }
 
 /* ════ Mode B: 區塊 A4直 ════ */
 .b-wrap  { padding: 11mm 14mm 8mm; height: 297mm; display: flex; flex-direction: column; }
@@ -73,6 +74,7 @@ body.sel-c .mode-c { display: block; }
   .page  { box-shadow: none !important; page-break-after: always; break-after: page; }
   .mode-a, .mode-b, .mode-c { display: none !important; }
   body.sel-a .mode-a, body.sel-b .mode-b, body.sel-c .mode-c { display: block !important; }
+  body.sel-a .page.mode-a { display: flex !important; }
 }
 </style>
 <link rel="stylesheet" href="../../../css/style.css">
@@ -102,6 +104,10 @@ body.sel-c .mode-c { display: block; }
       <button type="button" class="card size-card" data-print-size="a5">A5</button>
       <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
     </div>
+    <div class="date-picker">
+      <span class="toolbar-label" style="margin-left:8px">日期</span>
+      <input class="date-input" type="date" id="day-date" onchange="renderDay()">
+    </div>
     <div class="toolbar-right">
       <span class="hint">Chrome → 存PDF → 邊距「無」</span>
       <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
@@ -117,8 +123,8 @@ body.sel-c .mode-c { display: block; }
   <div class="a-header">
     <span class="pg-type">Daily Planner · 日計畫</span>
     <table style="width:100%;border-collapse:collapse"><tr>
-      <td><span class="f-lbl">日期</span><span class="blank" style="width:28mm"></span></td>
-      <td style="padding-left:4mm"><span class="f-lbl">週</span><span class="blank" style="width:9mm"></span></td>
+      <td><span class="f-lbl">日期</span><span id="day-date-a" style="display:inline-block;min-width:28mm;border-bottom:0.6pt solid #111;padding-bottom:.5mm;font-size:8pt;color:#555"></span></td>
+      <td style="padding-left:4mm"><span class="f-lbl">週</span><span id="day-week-a" style="display:inline-block;min-width:9mm;border-bottom:0.6pt solid #111;padding-bottom:.5mm;font-size:8pt;color:#555"></span></td>
       <td style="text-align:right">
         <span style="font-size:6.5pt;color:#666">
           <span class="ck-sq"></span>好&ensp;<span class="ck-sq"></span>普&ensp;<span class="ck-sq"></span>累
@@ -194,8 +200,8 @@ body.sel-c .mode-c { display: block; }
     <div class="b-header">
       <span class="pg-type">Daily Planner · 日計畫</span>
       <table style="width:100%;border-collapse:collapse"><tr>
-        <td><span class="f-lbl">日期</span><span class="blank" style="width:28mm"></span></td>
-        <td style="padding-left:4mm"><span class="f-lbl">週</span><span class="blank" style="width:9mm"></span></td>
+        <td><span class="f-lbl">日期</span><span id="day-date-b" style="display:inline-block;min-width:28mm;border-bottom:0.6pt solid #111;padding-bottom:.5mm;font-size:8pt;color:#555"></span></td>
+        <td style="padding-left:4mm"><span class="f-lbl">週</span><span id="day-week-b" style="display:inline-block;min-width:9mm;border-bottom:0.6pt solid #111;padding-bottom:.5mm;font-size:8pt;color:#555"></span></td>
         <td style="text-align:right"><span style="font-size:6.5pt;color:#666"><span class="ck-sq"></span>好&ensp;<span class="ck-sq"></span>普&ensp;<span class="ck-sq"></span>累</span></td>
       </tr></table>
       <div class="b-goal"><span class="f-lbl">今日主目標</span><span class="blank" style="flex:1"></span></div>
@@ -248,8 +254,8 @@ body.sel-c .mode-c { display: block; }
     <div class="c-header">
       <span style="font-size:5.5pt;letter-spacing:.18em;text-transform:uppercase;color:#bbb;display:block;margin-bottom:2mm">Daily Planner · 日計畫</span>
       <table style="width:100%;border-collapse:collapse"><tr>
-        <td><span style="font-size:5.5pt;color:#aaa;padding-right:1mm">日期</span><span style="border-bottom:0.6pt solid #111;display:inline-block;width:22mm;height:3.5mm"></span></td>
-        <td style="padding-left:3mm"><span style="font-size:5.5pt;color:#aaa;padding-right:1mm">週</span><span style="border-bottom:0.6pt solid #111;display:inline-block;width:7mm;height:3.5mm"></span></td>
+        <td><span style="font-size:5.5pt;color:#aaa;padding-right:1mm">日期</span><span id="day-date-c" style="border-bottom:0.6pt solid #111;display:inline-block;min-width:22mm;padding-bottom:.4mm;font-size:6.5pt;color:#555"></span></td>
+        <td style="padding-left:3mm"><span style="font-size:5.5pt;color:#aaa;padding-right:1mm">週</span><span id="day-week-c" style="border-bottom:0.6pt solid #111;display:inline-block;min-width:7mm;padding-bottom:.4mm;font-size:6.5pt;color:#555"></span></td>
         <td style="text-align:right"><span style="font-size:5.5pt;color:#666"><span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle"></span>好&ensp;<span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle"></span>普&ensp;<span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle"></span>累</span></td>
       </tr></table>
       <div style="margin-top:2mm;display:flex;align-items:baseline">
@@ -287,17 +293,36 @@ body.sel-c .mode-c { display: block; }
 </div><!-- /pages -->
 
 <script src="../../../js/template-size.js"></script>
+<script src="../../../js/calendar-data.js"></script>
 <script>
 const pgSize = { a:'portrait', b:'portrait', c:'portrait' };
 const pgPaper = { a:'A4', b:'A4', c:'A5' };
 let st = document.createElement('style'); st.id='pg-size'; document.head.appendChild(st);
+const Calendar = window.TemplateCalendar;
+
+function renderDay() {
+  const selected = Calendar.parseLocalDate(document.getElementById('day-date').value);
+  const selectedMeta = Calendar.getMeta(selected);
+  const dateLabel = Calendar.formatDateLabel(selected, selectedMeta);
+  const weekLabel = Calendar.formatWeekdayLabel(selected, selectedMeta);
+
+  document.getElementById('day-date-a').textContent = dateLabel;
+  document.getElementById('day-week-a').textContent = weekLabel;
+  document.getElementById('day-date-b').textContent = dateLabel;
+  document.getElementById('day-week-b').textContent = weekLabel;
+  document.getElementById('day-date-c').textContent = dateLabel;
+  document.getElementById('day-week-c').textContent = weekLabel;
+}
+
 function setMode(m) {
   document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
   document.body.classList.add('template-page', 'sel-' + m);
   st.textContent = '@media print { @page { size: ' + pgPaper[m] + ' ' + pgSize[m] + '; margin:0; } }';
   document.querySelectorAll('.mode-cards .card').forEach((c,i) => c.classList.toggle('active', ['a','b','c'][i]===m));
 }
+document.getElementById('day-date').value = Calendar.toInputValue(new Date());
 setMode('a');
+Calendar.load('../../../assets/2026_calendar.json').finally(renderDay);
 </script>
 </body>
 </html>
