@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>影音 / 線上課程學習筆記</title>
+<link rel="stylesheet" href="../../../css/style.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+.learn-pages { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.learn-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+.learn-shell { height: 297mm; display: flex; flex-direction: column; }
+.learn-shell.quick { height: 210mm; padding: 9mm 10mm 7mm 10mm; }
+.learn-meta { display: grid; grid-template-columns: 1.2fr .8fr .7fr .7fr; gap: 3mm; margin-top: 3mm; }
+.learn-meta.quick { grid-template-columns: 1fr 1fr; margin-top: 2.5mm; }
+.learn-grid { display: grid; grid-template-columns: 1.18fr .82fr; gap: 4mm; flex: 1; min-height: 0; margin-top: 4mm; }
+.learn-main, .learn-side { display: flex; flex-direction: column; gap: 4mm; min-height: 0; }
+.time-grid { display: grid; grid-template-columns: 18mm 1fr; gap: 2.2mm; align-items: end; margin-bottom: 1.6mm; }
+.time-chip { font-size: 6pt; letter-spacing: .08em; text-transform: uppercase; color: #888; border-bottom: 0.45pt solid #ddd; height: 5mm; display: flex; align-items: flex-end; }
+.segment-box { border: 0.4pt solid #ddd; padding: 2.6mm 3mm; min-height: 58mm; }
+.segment-box .pr-line:last-child { margin-bottom: 0; }
+.cta-card, .question-card { min-height: 42mm; }
+.summary-box { margin-top: auto; }
+.quick-stack { display: flex; flex-direction: column; gap: 3mm; flex: 1; }
+.quick-stack .pr-outline-card { flex: 1; }
+@media print {
+  .ui, .learn-label { display: none !important; }
+  .learn-pages { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+}
+</style>
+</head>
+<body class="template-page sel-a">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1L3 5l4 4"/></svg>
+      列印模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">影音 / 線上課程學習筆記 <small>Online Learning Notes</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 深度整理 <span style="font-size:9px;opacity:.5">A4直・章節＋摘要</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 速記版 <span style="font-size:9px;opacity:.5">A5直・隨聽隨記</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="pages learn-pages">
+  <div class="learn-label mode-a">▸ 模式 A — A4 直向・影音 / Podcast / 線上課程深度整理</div>
+  <div class="page page-port mode-a">
+    <div class="pr-shell learn-shell">
+      <span class="pr-kicker">Online Learning Notes · video / podcast / course</span>
+      <div class="pr-header-band">
+        <div class="pr-title-row">
+          <strong>影音 / 線上課程學習筆記</strong>
+          <span>youtube / podcast / hahow / pressplay / webinar</span>
+        </div>
+        <div class="learn-meta">
+          <div><span class="pr-field-label">節目 / 課程 / 單元名稱</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">平台 / 講者</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">日期</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">長度 / 章節</span><span class="pr-field-blank"></span></div>
+        </div>
+      </div>
+
+      <div class="learn-grid">
+        <div class="learn-main">
+          <div class="pr-card">
+            <div class="pr-card-title"><span>關鍵片段 / 章節重點</span><em>timeline capture</em></div>
+            <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
+            <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
+            <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
+            <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
+            <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
+            <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
+          </div>
+          <div class="segment-box">
+            <span class="pr-field-label">內容整理 / 我的理解</span>
+            <div class="pr-lines">
+              <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="learn-side">
+          <div class="pr-card cta-card">
+            <div class="pr-card-title"><span>金句 / 值得回放</span><em>quotes</em></div>
+            <div class="pr-lines">
+              <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+            </div>
+          </div>
+          <div class="pr-card question-card">
+            <div class="pr-card-title"><span>待查 / 想追問</span><em>questions</em></div>
+            <div class="pr-lines">
+              <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+            </div>
+          </div>
+          <div class="pr-card question-card">
+            <div class="pr-card-title"><span>可行動作 / 實作清單</span><em>action items</em></div>
+            <div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div>
+            <div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div>
+            <div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div>
+            <div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pr-summary-box summary-box">
+        <span class="pr-field-label">一句總結 / 今天真正學到什麼</span>
+        <div class="pr-lines">
+          <span class="pr-line"></span><span class="pr-line"></span><span class="pr-line"></span>
+        </div>
+      </div>
+    </div>
+    <div class="pr-page-num">A · Learn</div>
+  </div>
+
+  <div class="learn-label mode-b">▸ 模式 B — A5 直向・隨聽隨記版</div>
+  <div class="page page-a5-port mode-b">
+    <div class="pr-shell learn-shell quick">
+      <span class="pr-kicker">Online Learning Notes · Quick Capture</span>
+      <div class="pr-header-band compact">
+        <div class="pr-title-row">
+          <strong style="font-size:14pt">學習快記</strong>
+          <span>capture / takeaway / next step</span>
+        </div>
+        <div class="learn-meta quick">
+          <div><span class="pr-field-label">內容主題</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">平台 / 日期</span><span class="pr-field-blank"></span></div>
+        </div>
+      </div>
+
+      <div class="quick-stack">
+        <div class="pr-outline-card">
+          <span class="pr-outline-title">三個重點</span>
+          <div class="pr-bullet-row"><span class="pr-bullet-dot"></span><span class="pr-mini-line" style="flex:1"></span></div>
+          <div class="pr-bullet-row"><span class="pr-bullet-dot"></span><span class="pr-mini-line" style="flex:1"></span></div>
+          <div class="pr-bullet-row"><span class="pr-bullet-dot"></span><span class="pr-mini-line" style="flex:1"></span></div>
+          <div class="pr-bullet-row"><span class="pr-bullet-dot"></span><span class="pr-mini-line" style="flex:1"></span></div>
+        </div>
+        <div class="pr-outline-card">
+          <span class="pr-outline-title">關鍵時間 / 片段</span>
+          <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
+          <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
+          <div class="time-grid"><span class="time-chip">00:00</span><span class="pr-mini-line" style="flex:1"></span></div>
+        </div>
+        <div class="pr-outline-card tight">
+          <span class="pr-outline-title">下一步</span>
+          <div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div>
+          <div class="pr-check-row"><span class="pr-sq"></span><span class="pr-mini-line" style="flex:1"></span></div>
+        </div>
+      </div>
+    </div>
+    <div class="pr-page-num">B · Quick</div>
+  </div>
+</div>
+
+<script src="../../../js/template-size.js"></script>
+<script>
+const pageStyles = { a: 'A4 portrait', b: 'A5 portrait' };
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
+    card.classList.toggle('active', ['a', 'b'][index] === mode);
+  });
+}
+setMode('a');
+</script>
+</body>
+</html>

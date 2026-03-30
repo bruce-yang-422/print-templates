@@ -1,10 +1,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 214">
-  <rect width="100%" height="100%" fill="#ffffff" />
-  <rect x="24" y="16" width="252" height="182" fill="#ffffff" stroke="#e1e1e1" stroke-width="1.5" rx="6" />
-  <g opacity="0.6">
-    <rect x="40" y="35" width="120" height="12" fill="#d2d2d2" stroke="none" stroke-width="1.5" rx="0" /><rect x="40" y="60" width="105" height="30" fill="#fafafa" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="155" y="60" width="105" height="30" fill="#fafafa" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="40" y="100" width="220" height="60" fill="none" stroke="#ccc" stroke-width="1.5" rx="0" />
+  <rect width="300" height="214" fill="#f0f0f0"/>
+  <rect x="18" y="10" width="264" height="188" rx="3" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <rect x="18" y="10" width="264" height="3" fill="#1a1a1a"/>
+  <line x1="30" y1="10" x2="30" y2="198" stroke="#e8e8e8" stroke-width="0.8"/>
+  <g opacity="0.65">
+    <!-- Bold title bar full width -->
+    <rect x="34" y="18" width="228" height="9" rx="1" fill="#c8c8c8"/>
+    <!-- Meta grid 3 cells -->
+    <rect x="34" y="32" width="72" height="12" rx="1" fill="#fafafa" stroke="#e4e4e4" stroke-width="0.8"/>
+    <rect x="112" y="32" width="72" height="12" rx="1" fill="#fafafa" stroke="#e4e4e4" stroke-width="0.8"/>
+    <rect x="190" y="32" width="72" height="12" rx="1" fill="#fafafa" stroke="#e4e4e4" stroke-width="0.8"/>
+    <!-- Large description box -->
+    <rect x="34" y="50" width="228" height="36" rx="1" fill="#fafafa" stroke="#e4e4e4" stroke-width="0.8"/>
+    <line x1="34" y1="60" x2="262" y2="60" stroke="#e8e8e8" stroke-width="0.8"/>
+    <line x1="34" y1="70" x2="262" y2="70" stroke="#e8e8e8" stroke-width="0.8"/>
+    <!-- Two columns of bullet lists -->
+    <rect x="34" y="92" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="44" y1="94" x2="144" y2="94" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="34" y="104" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="44" y1="106" x2="144" y2="106" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="34" y="116" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="44" y1="118" x2="144" y2="118" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="34" y="128" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="44" y1="130" x2="144" y2="130" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="34" y="140" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="44" y1="142" x2="144" y2="142" stroke="#e0e0e0" stroke-width="1"/>
+    <!-- Right column -->
+    <rect x="152" y="92" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="162" y1="94" x2="260" y2="94" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="152" y="104" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="162" y1="106" x2="260" y2="106" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="152" y="116" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="162" y1="118" x2="260" y2="118" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="152" y="128" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="162" y1="130" x2="260" y2="130" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="152" y="140" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="162" y1="142" x2="260" y2="142" stroke="#e0e0e0" stroke-width="1"/>
   </g>
-  <rect x="24" y="158" width="252" height="40" fill="rgba(255,255,255,0.85)" />
-  <path d="M 24 158 L 276 158" stroke="rgba(0,0,0,0.05)" stroke-width="1" />
-  <text x="150" y="178" dominant-baseline="middle" text-anchor="middle" font-size="13" fill="#111" font-family="'PingFang TC', sans-serif" font-weight="600" letter-spacing="0.05em">專案簡報</text>
+  <rect x="18" y="158" width="264" height="40" fill="rgba(255,255,255,0.92)"/>
+  <line x1="18" y1="158" x2="282" y2="158" stroke="#e0e0e0" stroke-width="0.8"/>
+  <text x="150" y="174" dominant-baseline="middle" text-anchor="middle" font-size="13" fill="#111111" font-family="'PingFang TC','Microsoft JhengHei',sans-serif" font-weight="600" letter-spacing="0.04em">專案簡報</text>
+  <text x="150" y="191" dominant-baseline="middle" text-anchor="middle" font-size="8" fill="#aaaaaa" font-family="'PingFang TC','Microsoft JhengHei',sans-serif" letter-spacing="0.08em">Project Brief</text>
 </svg>

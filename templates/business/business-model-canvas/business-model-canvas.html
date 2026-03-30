@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>商業模式九宮格 / 價值主張畫布</title>
+<link rel="stylesheet" href="../../../css/style.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.mode-a, .mode-b { display: none; }
+body.sel-a .mode-a { display: block; }
+body.sel-b .mode-b { display: block; }
+.pages-wrap { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+
+.bmc-shell { height: 100%; padding-top: 10mm; padding-bottom: 8mm; display: flex; flex-direction: column; }
+.bmc-kicker { margin-bottom: 3mm; }
+.bmc-head { border-bottom: 1.5pt solid #111; padding-bottom: 4mm; margin-bottom: 4.5mm; }
+.bmc-title { display: flex; justify-content: space-between; gap: 6mm; align-items: end; }
+.bmc-title strong { font-size: 17pt; letter-spacing: .04em; }
+.bmc-title span { font-size: 7pt; color: #666; letter-spacing: .08em; text-transform: uppercase; }
+.bmc-grid { flex: 1; display: grid; grid-template-columns: 1.08fr 1fr 1fr 1fr 1.08fr; grid-template-rows: 1fr 1fr auto; gap: 3mm; min-height: 0; }
+.bmc-box { border: 0.8pt solid #222; border-radius: 3mm; padding: 3mm; display: flex; flex-direction: column; min-height: 0; }
+.bmc-box.tall { grid-row: 1 / span 2; }
+.bmc-box.wide { grid-column: span 2; min-height: 28mm; }
+.bmc-box.vp { border-width: 1.1pt; }
+.bmc-box h3 { font-size: 9pt; line-height: 1.25; margin-bottom: 1.5mm; }
+.bmc-box h3 em { font-style: normal; color: #7f6f20; font-weight: 700; }
+.bmc-box p { font-size: 6.4pt; line-height: 1.45; color: #666; margin-bottom: 2.5mm; }
+.bmc-lines { display: flex; flex-direction: column; gap: 0; flex: 1; }
+.bmc-lines span { display: block; border-bottom: 0.5pt solid #d7d7d7; height: 7.2mm; }
+.bmc-footer { margin-top: 3mm; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3mm; }
+.bmc-note { border: 0.7pt solid #cfcfcf; padding: 2.2mm 2.6mm; min-height: 18mm; }
+.bmc-note strong { display: block; font-size: 6.2pt; letter-spacing: .12em; text-transform: uppercase; color: #777; margin-bottom: 1.4mm; }
+.bmc-note .pr-line { margin-top: 0; }
+
+.vpc-shell { height: 100%; padding-top: 10mm; padding-bottom: 8mm; display: flex; flex-direction: column; }
+.vpc-head { border-bottom: 1.5pt solid #111; padding-bottom: 4mm; margin-bottom: 5mm; }
+.vpc-title { display: flex; justify-content: space-between; align-items: end; gap: 6mm; }
+.vpc-title strong { font-size: 17pt; letter-spacing: .04em; }
+.vpc-title span { font-size: 7pt; color: #666; letter-spacing: .08em; text-transform: uppercase; }
+.vpc-grid { flex: 1; display: grid; grid-template-columns: 1.08fr 1fr; gap: 4mm; min-height: 0; }
+.vpc-panel { border: 0.9pt solid #222; border-radius: 3mm; padding: 3.4mm; display: flex; flex-direction: column; min-height: 0; }
+.vpc-panel h3 { font-size: 11pt; margin-bottom: 1.5mm; }
+.vpc-panel > p { font-size: 6.5pt; color: #666; margin-bottom: 3mm; line-height: 1.45; }
+.vpc-left { display: grid; grid-template-columns: .95fr 1.15fr; gap: 3mm; flex: 1; min-height: 0; }
+.vpc-stack { display: flex; flex-direction: column; gap: 3mm; min-height: 0; }
+.vpc-card { border: 0.7pt solid #bbb; border-radius: 2.4mm; padding: 2.6mm; display: flex; flex-direction: column; min-height: 0; flex: 1; }
+.vpc-card.product { justify-content: space-between; }
+.vpc-card h4 { font-size: 8.3pt; margin-bottom: 1mm; }
+.vpc-card p { font-size: 6.2pt; line-height: 1.45; color: #666; margin-bottom: 1.8mm; }
+.vpc-lines { flex: 1; display: flex; flex-direction: column; }
+.vpc-lines span { display: block; border-bottom: 0.5pt solid #d8d8d8; height: 7mm; }
+.vpc-right-wrap { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 3mm; min-height: 0; }
+.vpc-right-wrap .jobs { grid-column: 2; grid-row: 1 / span 2; }
+.vpc-summary { margin-top: 4mm; border: 1.1pt solid #222; border-radius: 3mm; padding: 3mm; }
+.vpc-summary strong { display: block; font-size: 8pt; margin-bottom: 2mm; }
+
+@media print {
+  .ui, .page-label { display: none !important; }
+  .pages-wrap { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+  .mode-a, .mode-b { display: none !important; }
+  body.sel-a .mode-a { display: block !important; }
+  body.sel-b .mode-b { display: block !important; }
+}
+</style>
+</head>
+<body class="template-page sel-a">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M7 1L3 5l4 4"/>
+      </svg>
+      列印模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">商業模式九宮格 <small>Business Model Canvas</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">版面</span>
+    <div class="mode-cards">
+      <button class="card active" onclick="setMode('a')"><strong>A</strong> 九宮格 <span style="font-size:9px;opacity:.5">A4橫・商業模式</span></button>
+      <button class="card" onclick="setMode('b')"><strong>B</strong> 價值主張 <span style="font-size:9px;opacity:.5">A4直・顧客對接</span></button>
+    </div>
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="pages pages-wrap">
+  <div class="page-label mode-a">▸ 模式 A — Business Model Canvas 商業模式九宮格</div>
+  <div class="page page-land mode-a">
+    <div class="pr-shell bmc-shell">
+      <span class="pr-kicker bmc-kicker">商務策略 · Business Model Canvas</span>
+      <div class="bmc-head">
+        <div class="bmc-title">
+          <strong>商業模式九宮格 / 商業模式規劃表</strong>
+          <span>Customer Segments · Value Proposition · Revenue Streams</span>
+        </div>
+        <div class="pr-meta-grid cols-4" style="margin-top:3mm;">
+          <div><span class="pr-field-label">品牌 / 專案</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">市場 / 類別</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">版本 / 階段</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">日期</span><span class="pr-field-blank"></span></div>
+        </div>
+      </div>
+
+      <div class="bmc-grid">
+        <section class="bmc-box tall">
+          <h3><em>8 / KP</em> 關鍵合作夥伴</h3>
+          <p>商業模式運作所需之供應商與合作夥伴網絡。</p>
+          <div class="bmc-spacer"></div>
+        </section>
+
+        <section class="bmc-box">
+          <h3><em>7 / KA</em> 關鍵活動</h3>
+          <p>為了提供價值、接觸市場與維持營運，最重要的事情是什麼？</p>
+          <div class="bmc-spacer"></div>
+        </section>
+
+        <section class="bmc-box vp tall">
+          <h3><em>2 / VP</em> 價值主張</h3>
+          <p>針對目標客群，我們解決了什麼問題，或創造了哪些明確價值？</p>
+          <div class="bmc-spacer"></div>
+        </section>
+
+        <section class="bmc-box">
+          <h3><em>4 / CR</em> 顧客關係</h3>
+          <p>我們想建立什麼樣的互動關係，又如何維繫與提升留存？</p>
+          <div class="bmc-spacer"></div>
+        </section>
+
+        <section class="bmc-box tall">
+          <h3><em>1 / CS</em> 目標客層</h3>
+          <p>主要服務哪些客群？他們的差異、情境與共通特徵是什麼？</p>
+          <div class="bmc-spacer"></div>
+        </section>
+
+        <section class="bmc-box">
+          <h3><em>6 / KR</em> 關鍵資源</h3>
+          <p>支撐價值主張與營運的核心資產，例如品牌、人才、技術或資金。</p>
+          <div class="bmc-spacer"></div>
+        </section>
+
+        <section class="bmc-box">
+          <h3><em>3 / CH</em> 通路</h3>
+          <p>顧客在哪裡認識我們、評估我們、購買我們，又如何交付與售後？</p>
+          <div class="bmc-spacer"></div>
+        </section>
+
+        <section class="bmc-box wide">
+          <h3><em>9 / C$</em> 成本結構</h3>
+          <p>運作整個商業模式會發生哪些固定成本、變動成本與主要成本驅動？</p>
+          <div class="bmc-spacer"></div>
+        </section>
+
+        <section class="bmc-box wide">
+          <h3><em>5 / R$</em> 收益流</h3>
+          <p>提供價值後如何收費、收多少、有哪些定價與變現方式？</p>
+          <div class="bmc-spacer"></div>
+        </section>
+      </div>
+
+      <div class="bmc-footer">
+        <div class="bmc-note">
+          <strong>價值假設</strong>
+          <span class="pr-line"></span>
+          <span class="pr-line"></span>
+        </div>
+        <div class="bmc-note">
+          <strong>最大風險</strong>
+          <span class="pr-line"></span>
+          <span class="pr-line"></span>
+        </div>
+        <div class="bmc-note">
+          <strong>下一步驗證</strong>
+          <span class="pr-line"></span>
+          <span class="pr-line"></span>
+        </div>
+      </div>
+      <div class="pr-page-num">BMC</div>
+    </div>
+  </div>
+
+  <div class="page-label mode-b">▸ 模式 B — Value Proposition 價值主張 / 顧客素描</div>
+  <div class="page page-port mode-b">
+    <div class="pr-shell vpc-shell">
+      <span class="pr-kicker">商務策略 · Value Proposition Design</span>
+      <div class="vpc-head">
+        <div class="vpc-title">
+          <strong>價值主張畫布 / 顧客素描</strong>
+          <span>Product & Service · Pain Relievers · Gain Creators · Customer Jobs</span>
+        </div>
+        <div class="pr-meta-grid cols-3" style="margin-top:3mm;">
+          <div><span class="pr-field-label">產品 / 方案</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">目標客群</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">日期 / 版本</span><span class="pr-field-blank"></span></div>
+        </div>
+      </div>
+
+      <div class="vpc-grid">
+        <section class="vpc-panel">
+          <h3>價值主張 Value Proposition</h3>
+          <p>從供給端出發，整理你提供的產品與服務，以及如何減痛與增益。</p>
+          <div class="vpc-left">
+            <div class="vpc-card product">
+              <div>
+                <h4>產品 / 服務</h4>
+                <p>提供給顧客的主要方案、功能、服務包或內容。</p>
+              </div>
+              <div class="vpc-lines"><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+            <div class="vpc-stack">
+              <div class="vpc-card">
+                <h4>創造效益 Gain Creators</h4>
+                <p>產品如何放大顧客獲益、提高效率、帶來驚喜與成就感。</p>
+                <div class="vpc-lines"><span></span><span></span><span></span><span></span></div>
+              </div>
+              <div class="vpc-card">
+                <h4>解決痛點 Pain Relievers</h4>
+                <p>產品如何降低摩擦、消除顧客擔憂，或協助完成原本做不到的事情。</p>
+                <div class="vpc-lines"><span></span><span></span><span></span><span></span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="vpc-panel">
+          <h3>顧客素描 Customer Profile</h3>
+          <p>從需求端出發，描繪顧客想完成的任務、主要痛點，以及期待的獲益。</p>
+          <div class="vpc-right-wrap">
+            <div class="vpc-card">
+              <h4>顧客獲益 Gains</h4>
+              <p>顧客希望得到哪些結果、體驗與正向改變？</p>
+              <div class="vpc-lines"><span></span><span></span><span></span><span></span></div>
+            </div>
+            <div class="vpc-card jobs">
+              <h4>顧客任務 Jobs</h4>
+              <p>顧客在工作、生活或決策中真正想完成的是什麼？</p>
+              <div class="vpc-lines"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+            <div class="vpc-card">
+              <h4>顧客痛點 Pains</h4>
+              <p>哪些障礙、風險、顧慮或不便，讓顧客難以完成任務？</p>
+              <div class="vpc-lines"><span></span><span></span><span></span><span></span></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="vpc-summary">
+        <strong>對接檢查 Fit Check</strong>
+        <div class="pr-bullet-row"><span class="pr-bullet-dot"></span><span class="pr-mini-line" style="flex:1"></span></div>
+        <div class="pr-bullet-row"><span class="pr-bullet-dot"></span><span class="pr-mini-line" style="flex:1"></span></div>
+        <div class="pr-bullet-row"><span class="pr-bullet-dot"></span><span class="pr-mini-line" style="flex:1"></span></div>
+      </div>
+      <div class="pr-page-num">VP FIT</div>
+    </div>
+  </div>
+</div>
+
+<script src="../../../js/template-size.js"></script>
+<script>
+const pageStyles = { a: 'A4 landscape', b: 'A4 portrait' };
+let styleTag = document.createElement('style');
+styleTag.id = 'pg-size';
+document.head.appendChild(styleTag);
+function setMode(mode) {
+  document.body.classList.remove('sel-a', 'sel-b');
+  document.body.classList.add('template-page', 'sel-' + mode);
+  styleTag.textContent = '@media print { @page { size: ' + pageStyles[mode] + '; margin: 0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((card, index) => {
+    card.classList.toggle('active', ['a', 'b'][index] === mode);
+  });
+}
+setMode('a');
+</script>
+</body>
+</html>
+

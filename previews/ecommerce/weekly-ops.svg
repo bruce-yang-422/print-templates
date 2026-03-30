@@ -1,10 +1,41 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 214">
-  <rect width="100%" height="100%" fill="#ffffff" />
-  <rect x="24" y="16" width="252" height="182" fill="#ffffff" stroke="#e1e1e1" stroke-width="1.5" rx="6" />
-  <g opacity="0.6">
-    <rect x="40" y="40" width="105" height="50" fill="none" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="155" y="40" width="105" height="50" fill="none" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="40" y="100" width="105" height="50" fill="none" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="155" y="100" width="105" height="50" fill="none" stroke="#ccc" stroke-width="1.5" rx="0" /><rect x="155" y="100" width="105" height="12" fill="#f0f0f0" stroke="none" stroke-width="1.5" rx="0" /><rect x="40" y="40" width="105" height="12" fill="#f0f0f0" stroke="none" stroke-width="1.5" rx="0" />
+  <rect width="300" height="214" fill="#f0f0f0"/>
+  <rect x="18" y="10" width="264" height="188" rx="3" fill="#ffffff" stroke="#d8d8d8" stroke-width="1"/>
+  <rect x="18" y="10" width="264" height="3" fill="#7c3aed"/>
+  <line x1="30" y1="10" x2="30" y2="198" stroke="#e8e8e8" stroke-width="0.8"/>
+  <g opacity="0.65">
+    <!-- Header -->
+    <rect x="34" y="18" width="228" height="8" rx="1" fill="#d0d0d0"/>
+    <line x1="34" y1="30" x2="262" y2="30" stroke="#d8d8d8" stroke-width="0.8"/>
+    <!-- Left: KPI table (3 rows) -->
+    <rect x="34" y="34" width="110" height="7" rx="1" fill="#eeeeee"/>
+    <line x1="34" y1="41" x2="144" y2="41" stroke="#e4e4e4" stroke-width="0.8"/>
+    <line x1="88" y1="34" x2="88" y2="100" stroke="#e4e4e4" stroke-width="0.8"/>
+    <rect x="34" y="41" width="110" height="10" rx="0" fill="none" stroke="#e4e4e4" stroke-width="0.8"/>
+    <rect x="34" y="51" width="110" height="10" rx="0" fill="none" stroke="#e4e4e4" stroke-width="0.8"/>
+    <rect x="34" y="61" width="110" height="10" rx="0" fill="none" stroke="#e4e4e4" stroke-width="0.8"/>
+    <rect x="34" y="71" width="110" height="10" rx="0" fill="none" stroke="#e4e4e4" stroke-width="0.8"/>
+    <rect x="34" y="81" width="110" height="10" rx="0" fill="none" stroke="#e4e4e4" stroke-width="0.8"/>
+    <!-- Right: 5 task checkbox rows -->
+    <rect x="34" y="106" width="228" height="7" rx="1" fill="#eeeeee"/>
+    <rect x="154" y="34" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="164" y1="36" x2="260" y2="36" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="154" y="44" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="164" y1="46" x2="260" y2="46" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="154" y="54" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="164" y1="56" x2="260" y2="56" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="154" y="64" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="164" y1="66" x2="260" y2="66" stroke="#e0e0e0" stroke-width="1"/>
+    <rect x="154" y="74" width="5" height="5" rx="0.5" fill="none" stroke="#c0c0c0" stroke-width="0.8"/>
+    <line x1="164" y1="76" x2="260" y2="76" stroke="#e0e0e0" stroke-width="1"/>
+    <!-- Bottom notes -->
+    <rect x="34" y="116" width="228" height="36" rx="1" fill="#fafafa" stroke="#e4e4e4" stroke-width="0.8"/>
+    <line x1="34" y1="126" x2="262" y2="126" stroke="#e8e8e8" stroke-width="0.8"/>
+    <line x1="34" y1="136" x2="262" y2="136" stroke="#e8e8e8" stroke-width="0.8"/>
+    <line x1="34" y1="146" x2="262" y2="146" stroke="#e8e8e8" stroke-width="0.8"/>
   </g>
-  <rect x="24" y="158" width="252" height="40" fill="rgba(255,255,255,0.85)" />
-  <path d="M 24 158 L 276 158" stroke="rgba(0,0,0,0.05)" stroke-width="1" />
-  <text x="150" y="178" dominant-baseline="middle" text-anchor="middle" font-size="13" fill="#111" font-family="'PingFang TC', sans-serif" font-weight="600" letter-spacing="0.05em">電商週營運摘要</text>
+  <rect x="18" y="158" width="264" height="40" fill="rgba(255,255,255,0.92)"/>
+  <line x1="18" y1="158" x2="282" y2="158" stroke="#e0e0e0" stroke-width="0.8"/>
+  <text x="150" y="174" dominant-baseline="middle" text-anchor="middle" font-size="13" fill="#111111" font-family="'PingFang TC','Microsoft JhengHei',sans-serif" font-weight="600" letter-spacing="0.04em">每週營運</text>
+  <text x="150" y="191" dominant-baseline="middle" text-anchor="middle" font-size="8" fill="#aaaaaa" font-family="'PingFang TC','Microsoft JhengHei',sans-serif" letter-spacing="0.08em">Weekly Ops</text>
 </svg>

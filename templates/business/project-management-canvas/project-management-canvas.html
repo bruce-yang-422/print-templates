@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>專案管理九宮 | Project Management Canvas</title>
+<link rel="stylesheet" href="../../../css/style.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; color: #1a1a1a; }
+a { color: inherit; text-decoration: none; }
+.pages-wrap { padding: 104px 0 48px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.page-label { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #999; padding-bottom: 6px; }
+
+.pm-shell { height: 100%; padding-top: 8mm; padding-bottom: 6mm; display: flex; flex-direction: column; }
+.pm-head { border-bottom: 1.5pt solid #111; padding-bottom: 3.5mm; margin-bottom: 4mm; }
+.pm-head-top { display: flex; justify-content: space-between; align-items: end; gap: 6mm; }
+.pm-head-top strong { font-size: 17pt; letter-spacing: .04em; }
+.pm-head-top span { font-size: 7pt; color: #666; letter-spacing: .08em; text-transform: uppercase; }
+.pm-grid { flex: 1; display: grid; grid-template-columns: 2.55fr 1.55fr 1.55fr 1.6fr 2fr; grid-template-rows: 1.08fr 0.96fr 0.82fr; gap: 2.8mm; min-height: 0; }
+.pm-card { border: 0.9pt solid #222; border-radius: 3mm; padding: 3mm; display: flex; flex-direction: column; min-height: 0; }
+.pm-card.bg-blue { background: #eef7ff; }
+.pm-card.bg-amber { background: #fff2de; }
+.pm-card.bg-yellow { background: #fff9de; }
+.pm-card.bg-red { background: #ffe7e7; }
+.pm-card.bg-teal { background: #e8f7f7; }
+.pm-card.bg-green { background: #edf8e9; }
+.pm-card.bg-brown { background: #f4ece8; }
+.pm-card.bg-purple { background: #f5ebfb; }
+.pm-card.bg-lime { background: #eff8df; }
+
+.pm-card.task { grid-column: 1; grid-row: 1 / 3; }
+.pm-card.people { grid-column: 5; grid-row: 1 / 3; }
+.pm-card.plan { grid-column: 2; grid-row: 1; }
+.pm-card.goal { grid-column: 3; grid-row: 1 / 3; }
+.pm-card.risk { grid-column: 4; grid-row: 1; }
+.pm-card.timeline { grid-column: 2; grid-row: 2; }
+.pm-card.comm { grid-column: 4; grid-row: 2; }
+.pm-card.resource { grid-column: 1 / 4; grid-row: 3; }
+.pm-card.value { grid-column: 4 / 6; grid-row: 3; }
+
+.pm-title { display: flex; justify-content: space-between; align-items: start; gap: 2mm; margin-bottom: 2.2mm; }
+.pm-title strong { font-size: 11pt; line-height: 1.18; }
+.pm-title em { font-style: normal; color: #666; font-size: 6.1pt; text-transform: uppercase; letter-spacing: .08em; }
+.pm-title .num { display: inline-flex; align-items: center; justify-content: center; width: 6.2mm; height: 6.2mm; border-radius: 999px; background: #111; color: #fff; font-size: 7pt; font-weight: 700; flex: 0 0 auto; }
+.pm-sub { font-size: 6.1pt; color: #555; line-height: 1.4; margin-bottom: 2mm; }
+.pm-bullets { display: flex; flex-direction: column; gap: 1.2mm; margin-bottom: 2.2mm; }
+.pm-bullets span { font-size: 7pt; line-height: 1.35; color: #2b2b2b; }
+.pm-bullets span::before { content: "• "; }
+.pm-spacer { flex: 1; min-height: 0; }
+
+.pm-order { margin-top: 3mm; display: grid; grid-template-columns: repeat(5, 1fr); gap: 2.4mm; }
+.pm-order-box { border: 0.7pt solid #d5d5d5; border-radius: 2.6mm; padding: 2.1mm 2.4mm; min-height: 16mm; background: #fafafa; }
+.pm-order-box strong { display: block; font-size: 6.2pt; color: #777; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 1.2mm; }
+.pm-order-box p { font-size: 6.8pt; line-height: 1.4; color: #333; }
+.pm-footer { margin-top: 2.8mm; border-top: 1pt solid #d8d8d8; padding-top: 2.2mm; display: flex; justify-content: space-between; gap: 4mm; align-items: center; }
+.pm-footer p { font-size: 7.1pt; line-height: 1.4; color: #4b4b4b; }
+
+@media print {
+  .ui, .page-label { display: none !important; }
+  .pages-wrap { padding: 0 !important; gap: 0 !important; }
+  .page { box-shadow: none !important; page-break-after: always; break-after: page; }
+}
+</style>
+</head>
+<body class="template-page">
+<div class="ui">
+  <div class="ui-nav">
+    <a href="../../../index.html" class="back-link">
+      <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M7 1L3 5l4 4"/>
+      </svg>
+      列印模板庫
+    </a>
+    <span class="nav-sep">/</span>
+    <div class="ui-title">專案管理九宮 <small>Project Management Canvas</small></div>
+  </div>
+  <div class="ui-toolbar">
+    <span class="toolbar-label">尺寸</span>
+    <div class="size-cards">
+      <button type="button" class="card size-card active" data-print-size="a4">A4</button>
+      <button type="button" class="card size-card" data-print-size="a5">A5</button>
+      <button type="button" class="card size-card" data-print-size="cut">A4裁A5</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="hint">Chrome → 存PDF → 邊距「無」</span>
+      <button class="btn-print" onclick="window.print()">列印 / 存 PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="pages pages-wrap">
+  <div class="page-label">▸ A4 橫向・專案接收到開工前的對齊九宮</div>
+  <div class="page page-land">
+    <div class="pr-shell pm-shell">
+      <div class="pm-head">
+        <span class="pr-kicker">商務策略 · Project Management Canvas</span>
+        <div class="pm-head-top">
+          <strong>專案管理九宮</strong>
+          <span>先接住 → 再驗證 → 回頭對齊 → 才動手</span>
+        </div>
+        <div class="pr-meta-grid cols-4" style="margin-top:2.8mm;">
+          <div><span class="pr-field-label">專案 / 任務</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">需求提出者</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">負責人</span><span class="pr-field-blank"></span></div>
+          <div><span class="pr-field-label">日期 / 版本</span><span class="pr-field-blank"></span></div>
+        </div>
+      </div>
+
+      <div class="pm-grid">
+        <section class="pm-card task bg-blue">
+          <div class="pm-title"><div><strong><span class="num">1</span> 任務背景</strong><em>Task Background</em></div></div>
+          <div class="pm-sub">為什麼現在做這件事？目前的痛點是什麼？如果不做，後果會是什麼？</div>
+          <div class="pm-bullets">
+            <span>先記錄事實，不推論動機</span>
+            <span>用原始任務描述接住需求</span>
+          </div>
+          <div class="pm-spacer"></div>
+        </section>
+
+        <section class="pm-card plan bg-red">
+          <div class="pm-title"><div><strong><span class="num">4</span> 交付成果與計畫</strong><em>Execution Plan</em></div></div>
+          <div class="pm-sub">具體產出會是什麼？形式、數量、交付節點先寫清楚。</div>
+          <div class="pm-bullets"><span>先寫形式與數量，不先鎖細規</span></div>
+          <div class="pm-spacer"></div>
+        </section>
+
+        <section class="pm-card goal bg-yellow">
+          <div class="pm-title"><div><strong><span class="num">3</span> 專案目標</strong><em>Success Definition</em></div></div>
+          <div class="pm-sub">這次專案完成後，真正被驗收的一句話是什麼？</div>
+          <div class="pm-bullets">
+            <span>先照抄需求方用語，後續再校正</span>
+            <span>改寫成可驗收、可判斷完成的標準</span>
+          </div>
+          <div class="pm-spacer"></div>
+        </section>
+
+        <section class="pm-card risk bg-lime">
+          <div class="pm-title"><div><strong><span class="num">9</span> 風險與限制</strong><em>Potential Risks</em></div></div>
+          <div class="pm-sub">什麼可能導致失敗？限制條件有哪些？備案是什麼？</div>
+          <div class="pm-bullets"><span>優先寫最可能爆炸的 1 至 2 點</span></div>
+          <div class="pm-spacer"></div>
+        </section>
+
+        <section class="pm-card people bg-amber">
+          <div class="pm-title"><div><strong><span class="num">2</span> 利害關係人</strong><em>Stakeholders</em></div></div>
+          <div class="pm-sub">誰會核准、誰會驗收、誰會卡住你？誰真正會被影響？</div>
+          <div class="pm-bullets">
+            <span>把決策者與執行相關人分開想</span>
+            <span>標出關鍵窗口與最終驗收者</span>
+          </div>
+          <div class="pm-spacer"></div>
+        </section>
+
+        <section class="pm-card timeline bg-purple">
+          <div class="pm-title"><div><strong><span class="num">8</span> 關鍵時程</strong><em>Key Timeline</em></div></div>
+          <div class="pm-sub">截止日、第一檢查點、里程碑與節奏怎麼排？</div>
+          <div class="pm-spacer"></div>
+        </section>
+
+        <section class="pm-card comm bg-teal">
+          <div class="pm-title"><div><strong><span class="num">5</span> 溝通回報</strong><em>Communication</em></div></div>
+          <div class="pm-sub">多久回報一次？用什麼格式？什麼情況需要升級處理？</div>
+          <div class="pm-spacer"></div>
+        </section>
+
+        <section class="pm-card resource bg-brown">
+          <div class="pm-title"><div><strong><span class="num">7</span> 資源需求</strong><em>Required Resources</em></div></div>
+          <div class="pm-sub">人力、預算、權限、工具、跨部門支援是否足夠支撐目前假設？</div>
+          <div class="pm-bullets">
+            <span>錢 / 人 / 權 / 時間是否足夠</span>
+            <span>若不足，要降規、拆階段或改交付</span>
+          </div>
+          <div class="pm-spacer"></div>
+        </section>
+
+        <section class="pm-card value bg-green">
+          <div class="pm-title"><div><strong><span class="num">6</span> 專案價值</strong><em>Expected Value</em></div></div>
+          <div class="pm-sub">這件事最後能解決什麼問題？對公司、主管、團隊與你自己分別有何效益？</div>
+          <div class="pm-bullets">
+            <span>這格最後才寫，避免空話太早定錨</span>
+            <span>寫清楚成果如何被看見、被認帳</span>
+          </div>
+          <div class="pm-spacer"></div>
+        </section>
+      </div>
+
+      <div class="pm-order">
+        <div class="pm-order-box"><strong>第 1 循環</strong><p>1 → 3 → 4 → 8<br>先接住，不承諾、不開工。</p></div>
+        <div class="pm-order-box"><strong>第 2 循環</strong><p>2 → 7 → 9<br>檢查可行性、風險與限制。</p></div>
+        <div class="pm-order-box"><strong>第 3 循環</strong><p>回修 1 → 3 → 4 → 8 → 5<br>把理解對齊成正式版。</p></div>
+        <div class="pm-order-box"><strong>第 4 循環</strong><p>6 預期效益<br>最後才補價值定錨。</p></div>
+        <div class="pm-order-box"><strong>禁止事項</strong><p>未寫 2 / 7 / 9 前，不要鎖死規格；未完成對齊前，不要直接開工。</p></div>
+      </div>
+
+      <div class="pm-footer">
+        <p><strong>Project Management Canvas 是風險緩衝器，不是表格。</strong></p>
+        <div class="pr-page-num">PM CANVAS</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../../../js/template-size.js"></script>
+<script>
+let styleTag = document.createElement('style');
+styleTag.textContent = '@media print { @page { size: A4 landscape; margin: 0; } }';
+document.head.appendChild(styleTag);
+</script>
+</body>
+</html>
+
+

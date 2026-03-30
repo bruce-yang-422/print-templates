@@ -37,7 +37,7 @@
         <button class="card" data-cat="meeting">會議</button>
         <button class="card" data-cat="goals">目標</button>
         <button class="card" data-cat="life">生活</button>
-        <button class="card" data-cat="notes">筆記</button>
+        <button class="card" data-cat="learning">學習</button>
         <button class="card" data-cat="ecommerce">電商</button>
         <button class="card" data-cat="marketing">行銷</button>
       </div>
@@ -144,8 +144,12 @@ const TEMPLATES = [
     desc: '完整逐日行程與 A5 快速攜帶版，適合旅遊規劃與行李整理。', href: 'templates/planner/travel/travel.html', preview: 'previews/planner/travel.svg'
   },
   {
-    id: 'reading-notes', name: '讀書筆記', category: 'life', tags: ['閱讀研究', '結構筆記', '空白與橫線'],
-    desc: '書籍資訊、金句摘錄、重點整理與行動欄位。', href: 'templates/notes/reading-notes/reading-notes.html', preview: 'previews/notes/reading-notes.svg'
+    id: 'bujo-index', name: '子彈筆記索引', category: 'life', tags: ['結構筆記', '網格與點陣', '檢查表'],
+    desc: '頁碼、主題與集合索引整理，適合 Bullet Journal 總索引。', href: 'templates/notes/bujo-index/bujo-index.html', preview: 'previews/notes/bujo-index.svg'
+  },
+  {
+    id: 'dot-grid', name: '方格 / 點陣 / 橫線頁', category: 'life', tags: ['網格與點陣', '企劃草圖', '空白與橫線'],
+    desc: '方格紙、點陣紙、米字格與橫線紙，適合草稿手帳與日常書寫。', href: 'templates/notes/dot-grid/dot-grid.html', preview: 'previews/notes/dot-grid.svg'
   },
 
   // --- WORK ---
@@ -194,26 +198,26 @@ const TEMPLATES = [
     desc: '主題拆解、里程碑與 OKR 草稿，適合個人規劃或團隊協作。', href: 'templates/goals/goals.html', preview: 'previews/goals/goals.svg'
   },
 
-  // --- NOTES ---
+  // --- LEARNING ---
   {
-    id: 'cornell', name: '康奈爾筆記', category: 'notes', tags: ['結構筆記', '閱讀研究', '網格與點陣'],
+    id: 'reading-notes', name: '讀書筆記', category: 'learning', tags: ['閱讀研究', '結構筆記', '空白與橫線'],
+    desc: '書籍資訊、金句摘錄、重點整理與行動欄位。', href: 'templates/notes/reading-notes/reading-notes.html', preview: 'previews/notes/reading-notes.svg'
+  },
+  {
+    id: 'cornell', name: '康奈爾筆記', category: 'learning', tags: ['結構筆記', '閱讀研究', '網格與點陣'],
     desc: '關鍵字欄、主筆記欄與摘要區，支援課堂與閱讀整理。', href: 'templates/cornell/cornell.html', preview: 'previews/notes/cornell.svg'
   },
   {
-    id: 'topic-notes', name: '主題筆記', category: 'notes', tags: ['結構筆記', '閱讀研究', '空白與橫線'],
+    id: 'topic-notes', name: '主題筆記', category: 'learning', tags: ['結構筆記', '閱讀研究', '空白與橫線'],
     desc: '主題整理、關鍵字、下一步與摘要區塊。', href: 'templates/notes/topic-notes/topic-notes.html', preview: 'previews/notes/topic-notes.svg'
   },
   {
-    id: 'lecture-notes', name: '課堂／聽講筆記', category: 'notes', tags: ['學習筆記', '結構筆記', '空白與橫線'],
+    id: 'lecture-notes', name: '課堂／聽講筆記', category: 'learning', tags: ['學習筆記', '結構筆記', '空白與橫線'],
     desc: '針對課堂、演講與分享整理重點、術語、問題與後續行動。', href: 'templates/notes/lecture-notes/lecture-notes.html', preview: 'previews/notes/lecture-notes.svg'
   },
   {
-    id: 'bujo-index', name: '子彈筆記索引', category: 'notes', tags: ['結構筆記', '網格與點陣', '檢查表'],
-    desc: '頁碼、主題與集合索引整理，適合 Bullet Journal 總索引。', href: 'templates/notes/bujo-index/bujo-index.html', preview: 'previews/notes/bujo-index.svg'
-  },
-  {
-    id: 'dot-grid', name: '方格 / 點陣 / 橫線頁', category: 'notes', tags: ['網格與點陣', '企劃草圖', '空白與橫線'],
-    desc: '方格紙、點陣紙、米字格與橫線紙，適合草稿手帳。', href: 'templates/notes/dot-grid/dot-grid.html', preview: 'previews/notes/dot-grid.svg'
+    id: 'online-learning-notes', name: '影音 / 線上課程學習筆記', category: 'learning', tags: ['學習筆記', '結構筆記', '時間軸'],
+    desc: '針對 YouTube、Podcast、Hahow、PressPlay 等內容整理章節、金句與可行動作。', href: 'templates/notes/online-learning-notes/online-learning-notes.html', preview: 'previews/learning/online-learning-notes.svg'
   },
 
   // --- ECOMMERCE ---
@@ -248,6 +252,14 @@ const TEMPLATES = [
   {
     id: 'swot-analysis', name: 'SWOT 分析', category: 'business', tags: ['商業分析', '企劃草圖', '結構筆記'],
     desc: '用四象限整理優勢、劣勢、機會與威脅，快速收斂策略方向。', href: 'templates/business/swot/swot.html', preview: 'previews/business/swot.svg'
+  },
+  {
+    id: 'business-model-canvas', name: '商業模式九宮格', category: 'business', tags: ['商業分析', '企劃草圖', '結構筆記'],
+    desc: '整合九宮格與價值主張思考，梳理客層、價值、營運要素與獲利模式。', href: 'templates/business/business-model-canvas/business-model-canvas.html', preview: 'previews/business/business-model-canvas.svg'
+  },
+  {
+    id: 'project-management-canvas', name: '專案管理九宮', category: 'business', tags: ['商業分析', '企劃草圖', '結構筆記'],
+    desc: '用九宮格快速接住需求、盤點利害關係人、風險、資源與開工前對齊重點。', href: 'templates/business/project-management-canvas/project-management-canvas.html', preview: 'previews/business/project-management-canvas.svg'
   }
 ];
 
@@ -278,6 +290,8 @@ const TEMPLATE_SUBTITLES = {
   'blood-pressure': 'Blood Pressure Log',
   'travel-itinerary': 'Travel Itinerary',
   'reading-notes': 'Reading Notes',
+  'bujo-index': 'BuJo Index',
+  'dot-grid': 'Grid / Dot / Lines',
   'work-journal': 'Work Journal',
   'work-report': 'Work Report',
   'project-brief': 'Project Brief',
@@ -291,15 +305,16 @@ const TEMPLATE_SUBTITLES = {
   'cornell': 'Cornell Notes',
   'topic-notes': 'Topic Notes',
   'lecture-notes': 'Lecture Notes',
-  'bujo-index': 'BuJo Index',
-  'dot-grid': 'Grid / Dot / Lines',
+  'online-learning-notes': 'Online Learning Notes',
   'product-listing': 'Product Listing Checklist',
   'promo-plan': 'Promotion Planning Sheet',
   'pricing': 'Pricing Worksheet',
   'weekly-ops': 'Weekly Ops Summary',
   'social-plan': 'Social Post Plan',
   'content-calendar': 'Content Calendar',
-  'swot-analysis': 'SWOT Analysis'
+  'swot-analysis': 'SWOT Analysis',
+  'business-model-canvas': 'Business Model Canvas',
+  'project-management-canvas': 'Project Management Canvas'
 };
 
 let activeCat = 'all';

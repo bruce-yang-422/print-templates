@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Management Canvas - 專案管理精實畫布</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", "微軟正黑體", Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        @page {
+            size: A4 landscape;
+            margin: 0.3cm 0.5cm;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-hint {
+                display: none !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .container {
+                box-shadow: none;
+                padding: 3mm 5mm !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                min-height: 100% !important;
+            }
+            .header {
+                margin-bottom: 3px !important;
+                padding-bottom: 2px !important;
+            }
+            .header h1 {
+                font-size: 18pt !important;
+                margin-bottom: 1px !important;
+            }
+            .header .subtitle {
+                font-size: 9pt !important;
+            }
+            .footer {
+                margin-top: 3px !important;
+                padding-top: 2px !important;
+                font-size: 7pt !important;
+            }
+            .cell {
+                box-shadow: none !important;
+            }
+            * {
+                box-shadow: none !important;
+            }
+        }
+
+        .container {
+            max-width: 297mm;
+            min-height: 210mm;
+            margin: 0 auto;
+            background: white;
+            padding: 10mm;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+        }
+
+        .header h1 {
+            font-size: 20pt;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .header .subtitle {
+            font-size: 10pt;
+            color: #666;
+        }
+
+        .canvas-grid {
+            display: grid;
+            grid-template-columns: 2.5fr 1.5fr 1.5fr 1.5fr 2fr;
+            grid-template-rows: 2.2fr 1.5fr 1.3fr;
+            gap: 5px;
+            height: calc(210mm - 50mm);
+            min-height: 160mm;
+        }
+        
+        @media print {
+            .canvas-grid {
+                height: calc(210mm - 35mm) !important;
+                min-height: calc(210mm - 35mm) !important;
+                gap: 4px !important;
+            }
+        }
+
+        .cell {
+            border: 2.5px solid #333;
+            border-radius: 8px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .cell-header {
+            font-size: 9.5pt;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 6px;
+            padding-bottom: 4px;
+            border-bottom: 1.5px solid rgba(0,0,0,0.25);
+            line-height: 1.3;
+        }
+
+        .cell-number {
+            display: inline-block;
+            background: #333;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 10pt;
+            font-weight: bold;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+        .cell-title-main {
+            font-size: 10.5pt;
+            display: block;
+        }
+
+        .cell-title-sub {
+            font-size: 8pt;
+            color: #555;
+            font-weight: normal;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .cell-content {
+            flex: 1;
+            font-size: 8.5pt;
+            color: #333;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fill-area {
+            flex: 1;
+            min-height: 40px;
+            border: 1px solid #999;
+            padding: 5px;
+            margin-top: 5px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 3px;
+            font-size: 9pt;
+            line-height: 1.6;
+            resize: none;
+            font-family: "Microsoft JhengHei", "微軟正黑體", Arial, sans-serif;
+            overflow-y: auto;
+        }
+        
+        .fill-area:focus {
+            outline: 2px solid #2196F3;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .hint-list {
+            margin-top: 5px;
+            font-size: 8pt;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .hint-list li {
+            margin-left: 14px;
+            margin-bottom: 2px;
+        }
+
+        .icon {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            font-size: 18pt;
+            opacity: 0.15;
+        }
+
+        /* 區塊順序與編號 - 按照填寫順序重新編號 */
+        .cell-1 { background: #C5E3F6; } /* 淺藍 - 1.任務背景 */
+        .cell-2 { background: #FFD4A3; } /* 淺橙 - 2.相關人員 */
+        .cell-3 { background: #FFF9C4; } /* 淺黃 - 3.成功定義 */
+        .cell-4 { background: #FFCDD2; } /* 淺紅 - 4.執行方案 */
+        .cell-5 { background: #B2EBF2; } /* 青綠 - 5.溝通回報 */
+        .cell-6 { background: #A5D6A7; } /* 深綠 - 6.預期效益 */
+        .cell-7 { background: #BCAAA4; } /* 棕色 - 7.所需資源 */
+        .cell-8 { background: #E1BEE7; } /* 淺紫 - 8.關鍵時程 */
+        .cell-9 { background: #C8E6C9; } /* 淺綠 - 9.潛在風險 */
+
+        /* 佈局配置 - 基於你的文件說明 */
+        /* 左側高大塊 - 1.任務背景 */
+        .cell-1 { 
+            grid-column: 1; 
+            grid-row: 1 / 3;
+        }
+        
+        /* 上排中間三小塊 */
+        .cell-4 { grid-column: 2; grid-row: 1; } /* 4.執行方案 */
+        .cell-3 { grid-column: 3; grid-row: 1; } /* 3.成功定義 */
+        .cell-9 { grid-column: 4; grid-row: 1; } /* 9.潛在風險 */
+        
+        /* 中間兩塊 */
+        .cell-8 { grid-column: 2; grid-row: 2; } /* 8.關鍵時程 */
+        .cell-5 { 
+            grid-column: 3 / 5; /* 跨兩列 */
+            grid-row: 2; 
+        } /* 5.溝通回報 */
+        
+        /* 右側高窄塊 - 2.相關人員 */
+        .cell-2 { 
+            grid-column: 5; 
+            grid-row: 1 / 3;
+        }
+        
+        /* 底部兩大塊 */
+        .cell-7 { 
+            grid-column: 1 / 4; /* 跨三列 */
+            grid-row: 3; 
+        } /* 7.所需資源 */
+        .cell-6 { 
+            grid-column: 4 / 6; /* 跨兩列 */
+            grid-row: 3; 
+        } /* 6.預期效益 */
+
+        .footer {
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 1px solid #ccc;
+            font-size: 8pt;
+            color: #666;
+            text-align: center;
+        }
+
+        .print-hint {
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 5px;
+            font-size: 11pt;
+        }
+    </style>
+</head>
+<body>
+    <div class="print-hint no-print">
+        💡 提示：直接在框框內輸入內容，完成後按 Ctrl+P (Windows) 或 Cmd+P (Mac) 即可列印為 A4 橫向尺寸
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>專案管理畫布 Project Management Canvas</h1>
+            <div class="subtitle">先接住 → 再驗證 → 回頭對齊 → 才動手</div>
+        </div>
+
+        <div class="canvas-grid">
+            <!-- 1. 任務背景 -->
+            <div class="cell cell-1">
+                <span class="icon">❓</span>
+                <div class="cell-header">
+                    <span class="cell-number">1</span>
+                    <span class="cell-title-main">任務背景（問題）</span>
+                    <span class="cell-title-sub">Task Background (Problem)</span>
+                </div>
+                <div class="cell-content">
+                    <textarea class="fill-area" placeholder="在此填寫內容..."></textarea>
+                    <ul class="hint-list">
+                        <li>僅記錄事實（發生什麼），不推論動機</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2. 相關人員 -->
+            <div class="cell cell-2">
+                <span class="icon">⚙️</span>
+                <div class="cell-header">
+                    <span class="cell-number">2</span>
+                    <span class="cell-title-main">相關人員（群體）</span>
+                    <span class="cell-title-sub">Stakeholders (Group)</span>
+                </div>
+                <div class="cell-content">
+                    <textarea class="fill-area" placeholder="在此填寫內容..."></textarea>
+                    <ul class="hint-list">
+                        <li>真正驗收者是誰？誰會卡你？</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 3. 成功定義 -->
+            <div class="cell cell-3">
+                <span class="icon">🎯</span>
+                <div class="cell-header">
+                    <span class="cell-number">3</span>
+                    <span class="cell-title-main">成功定義（獨特價值主張）</span>
+                    <span class="cell-title-sub">Success Definition (UVP)</span>
+                </div>
+                <div class="cell-content">
+                    <textarea class="fill-area" placeholder="在此填寫內容..."></textarea>
+                    <ul class="hint-list">
+                        <li>原話照寫老闆語言，標註「待對齊」</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 4. 執行方案 -->
+            <div class="cell cell-4">
+                <span class="icon">⚠️</span>
+                <div class="cell-header">
+                    <span class="cell-number">4</span>
+                    <span class="cell-title-main">執行方案（解決方案）</span>
+                    <span class="cell-title-sub">Execution Plan (Solution)</span>
+                </div>
+                <div class="cell-content">
+                    <textarea class="fill-area" placeholder="在此填寫內容..."></textarea>
+                    <ul class="hint-list">
+                        <li>只寫形式＋數量，不寫細規</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 9. 潛在風險 -->
+            <div class="cell cell-9">
+                <span class="icon">🤝</span>
+                <div class="cell-header">
+                    <span class="cell-number">9</span>
+                    <span class="cell-title-main">潛在風險（不公平優勢）</span>
+                    <span class="cell-title-sub">Potential Risks (Unfair Advantage)</span>
+                </div>
+                <div class="cell-content">
+                    <textarea class="fill-area" placeholder="在此填寫內容..."></textarea>
+                    <ul class="hint-list">
+                        <li>最可能爆炸的 1–2 點＋備案</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 5. 溝通回報 -->
+            <div class="cell cell-5">
+                <span class="icon">✉️</span>
+                <div class="cell-header">
+                    <span class="cell-number">5</span>
+                    <span class="cell-title-main">溝通回報（管道）</span>
+                    <span class="cell-title-sub">Communication (Channels)</span>
+                </div>
+                <div class="cell-content">
+                    <textarea class="fill-area" placeholder="在此填寫內容..."></textarea>
+                    <ul class="hint-list">
+                        <li>回報頻率、形式、升級條件</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 7. 所需資源 -->
+            <div class="cell cell-7">
+                <span class="icon">🔧</span>
+                <div class="cell-header">
+                    <span class="cell-number">7</span>
+                    <span class="cell-title-main">所需資源（成本結構）</span>
+                    <span class="cell-title-sub">Required Resources (Cost Structure)</span>
+                </div>
+                <div class="cell-content">
+                    <textarea class="fill-area" placeholder="在此填寫內容..."></textarea>
+                    <ul class="hint-list">
+                        <li>錢／人／權是否支撐第 1 循環假設</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 8. 關鍵時程 -->
+            <div class="cell cell-8">
+                <span class="icon">📅</span>
+                <div class="cell-header">
+                    <span class="cell-number">8</span>
+                    <span class="cell-title-main">關鍵時程（指標）</span>
+                    <span class="cell-title-sub">Key Timeline (Metrics)</span>
+                </div>
+                <div class="cell-content">
+                    <textarea class="fill-area" placeholder="在此填寫內容..."></textarea>
+                    <ul class="hint-list">
+                        <li>老闆死線＋第一個檢查點</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 6. 預期效益 -->
+            <div class="cell cell-6">
+                <span class="icon">🏆</span>
+                <div class="cell-header">
+                    <span class="cell-number">6</span>
+                    <span class="cell-title-main">預期效益（效益）</span>
+                    <span class="cell-title-sub">Expected Value (Benefits)</span>
+                </div>
+                <div class="cell-content">
+                    <textarea class="fill-area" placeholder="在此填寫內容..."></textarea>
+                    <ul class="hint-list">
+                        <li>對老闆：解決什麼問題</li>
+                        <li>對你：如何被記得、被認帳</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <strong>Project Management Canvas 是風險緩衝器，不是表格。</strong><br>
+            填寫順序：第1循環 1→3→4→8 | 第2循環 2→7→9 | 第3循環 回修1→3→4→8→5 | 第4循環 6 | 第5循環 反推修正4
+        </div>
+    </div>
+</body>
+</html>
