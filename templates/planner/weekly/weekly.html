@@ -16,11 +16,16 @@ body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; ba
 .page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
 .page-land { width: 297mm; height: 210mm; }
 .page-port { width: 210mm; height: 297mm; }
+.page-a6   { width: 105mm; height: 148mm; }
+/* A6 頂部裝訂：覆寫預設左側裝訂偽元素 */
+.page-a6::before { left: 0; right: 0; top: 0; bottom: auto; width: 100%; height: 20mm; }
+.page-a6::after  { left: 0; right: 0; top: 20mm; bottom: auto; width: 100%; height: 0; border-left: none; border-top: 0.6pt solid #d6d6d6; }
 
 /* Mode control */
-.mode-a, .mode-b { display: none; }
+.mode-a, .mode-b, .mode-c { display: none; }
 body.sel-a .mode-a { display: block; }
 body.sel-b .mode-b { display: block; }
+body.sel-c .mode-c { display: block; }
 
 /* ════ 共用 ════ */
 .pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; display: block; }
@@ -116,15 +121,28 @@ body.sel-b .mode-b { display: block; }
 .b-reflect td { border: 0.4pt solid #ddd; padding: 2.5mm 3mm; vertical-align: top; width: 50%; }
 .b-r-hd { font-size: 5.5pt; letter-spacing: .08em; color: #bbb; text-transform: uppercase; margin-bottom: 1.5mm; display: block; }
 
+/* ════ Mode C：A6 精簡直（頂部裝訂 20mm）════ */
+.wc-wrap   { padding: 23mm 5mm 5mm; height: 148mm; display: flex; flex-direction: column; box-sizing: border-box; }
+.wc-head   { padding-bottom: 2mm; margin-bottom: 2mm; flex-shrink: 0; }
+.wc-lbl    { font-size: 5pt; letter-spacing: .1em; color: #aaa; padding-right: 1mm; white-space: nowrap; }
+.wc-days   { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.wc-day    { flex: 1; display: flex; align-items: center; gap: 2mm; border-bottom: 0.4pt solid #ccc; padding: 1mm 0; min-height: 0; }
+.wc-day-name { font-size: 5.5pt; font-weight: 700; letter-spacing: .04em; width: 7mm; flex-shrink: 0; line-height: 1; }
+.wc-day-date { font-size: 4.5pt; color: #bbb; width: 9mm; flex-shrink: 0; line-height: 1; }
+.wc-day.weekend .wc-day-name { color: #bbb; }
+.wc-day.holiday .wc-day-name { color: #666; }
+.wc-holiday-text { font-size: 3.8pt; color: #777; width: 14mm; flex-shrink: 0; line-height: 1.2; margin-bottom: 0.5mm; }
+
 /* ════ Print ════ */
 @media print {
   body { background: none; }
   .ui, .page-label { display: none !important; }
   .pages { padding: 0 !important; gap: 0 !important; }
   .page  { box-shadow: none !important; page-break-after: always; break-after: page; }
-  .mode-a, .mode-b { display: none !important; }
+  .mode-a, .mode-b, .mode-c { display: none !important; }
   body.sel-a .mode-a { display: block !important; }
   body.sel-b .mode-b { display: block !important; }
+  body.sel-c .mode-c { display: block !important; }
 }
 </style>
 <link rel="stylesheet" href="../../../css/style.css">
@@ -146,6 +164,7 @@ body.sel-b .mode-b { display: block; }
     <div class="mode-cards">
       <button class="card active" onclick="setMode('a')"><strong>A</strong> 七欄日程 <span style="font-size:9px;opacity:.5">A4橫・週一至週日</span></button>
       <button class="card" onclick="setMode('b')"><strong>B</strong> 清單 <span style="font-size:9px;opacity:.5">A4直・七日區塊</span></button>
+      <button class="card" onclick="setMode('c')"><strong>C</strong> 口袋 <span style="font-size:9px;opacity:.5">A6直・頂部裝訂</span></button>
     </div>
     <span class="toolbar-label">尺寸</span>
     <div class="size-cards">
@@ -308,12 +327,70 @@ body.sel-b .mode-b { display: block; }
   </div>
 </div>
 
+<!-- ══ MODE C：A6 精簡直（頂部裝訂）══ -->
+<div class="page-label mode-c">▸ 模式 C — A6 直向・精簡版（頂部裝訂 20mm）</div>
+<div class="page page-a6 mode-c">
+  <div class="wc-wrap">
+    <div class="wc-head">
+      <span style="font-size:4.8pt;letter-spacing:.18em;text-transform:uppercase;color:#bbb;display:block;margin-bottom:1.5mm">Weekly Planner · 週計畫</span>
+      <div style="display:flex;align-items:baseline;gap:3mm;margin-bottom:1.5mm">
+        <span><span class="wc-lbl">第</span><span id="week-no-c" style="font-size:7pt;color:#555;font-weight:600"></span><span class="wc-lbl" style="padding-left:.5mm">週</span></span>
+        <span><span id="week-start-c" style="font-size:5.5pt;color:#555"></span><span class="wc-lbl" style="padding:0 .5mm">—</span><span id="week-end-c" style="font-size:5.5pt;color:#555"></span></span>
+      </div>
+      <div style="display:flex;align-items:baseline">
+        <span class="wc-lbl">目標</span>
+        <span style="border-bottom:0.6pt solid #111;display:inline-block;flex:1;height:3mm"></span>
+      </div>
+    </div>
+
+    <div class="wc-days">
+      <div class="wc-day" data-slot-c="1">
+        <span class="wc-day-name" id="c-day-name-1">週一</span>
+        <span class="wc-day-date" id="c-day-date-1"></span>
+        <span class="wc-holiday-text" id="c-day-holiday-1"></span>
+      </div>
+      <div class="wc-day" data-slot-c="2">
+        <span class="wc-day-name" id="c-day-name-2">週二</span>
+        <span class="wc-day-date" id="c-day-date-2"></span>
+        <span class="wc-holiday-text" id="c-day-holiday-2"></span>
+      </div>
+      <div class="wc-day" data-slot-c="3">
+        <span class="wc-day-name" id="c-day-name-3">週三</span>
+        <span class="wc-day-date" id="c-day-date-3"></span>
+        <span class="wc-holiday-text" id="c-day-holiday-3"></span>
+      </div>
+      <div class="wc-day" data-slot-c="4">
+        <span class="wc-day-name" id="c-day-name-4">週四</span>
+        <span class="wc-day-date" id="c-day-date-4"></span>
+        <span class="wc-holiday-text" id="c-day-holiday-4"></span>
+      </div>
+      <div class="wc-day" data-slot-c="5">
+        <span class="wc-day-name" id="c-day-name-5">週五</span>
+        <span class="wc-day-date" id="c-day-date-5"></span>
+        <span class="wc-holiday-text" id="c-day-holiday-5"></span>
+      </div>
+      <div class="wc-day weekend" data-slot-c="6">
+        <span class="wc-day-name" id="c-day-name-6">週六</span>
+        <span class="wc-day-date" id="c-day-date-6"></span>
+        <span class="wc-holiday-text" id="c-day-holiday-6"></span>
+      </div>
+      <div class="wc-day weekend" data-slot-c="7">
+        <span class="wc-day-name" id="c-day-name-7">週日</span>
+        <span class="wc-day-date" id="c-day-date-7"></span>
+        <span class="wc-holiday-text" id="c-day-holiday-7"></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 </div><!-- /pages -->
 
 <script src="../../../js/template-size.js"></script>
 <script src="../../../js/calendar-data.js"></script>
 <script>
-const pgSize = { a:'landscape', b:'portrait', c:'landscape' };
+const pgSize  = { a:'landscape', b:'portrait', c:'portrait' };
+const pgPaper = { a:'A4', b:'A4', c:'A6' };
 let st = document.createElement('style'); st.id='pg-size'; document.head.appendChild(st);
 const Calendar = window.TemplateCalendar;
 const WEEK_START_STORAGE_KEY = 'preferredWeekStartMode';
@@ -481,6 +558,9 @@ function renderWeek(offsetWeeks = 0) {
   document.getElementById('week-end-a').textContent = Calendar.formatMd(effectiveEnd);
   document.getElementById('week-start-b').textContent = Calendar.formatMd(effectiveStart);
   document.getElementById('week-end-b').textContent = Calendar.formatMd(effectiveEnd);
+  document.getElementById('week-no-c').textContent = weekNo;
+  document.getElementById('week-start-c').textContent = Calendar.formatMd(effectiveStart);
+  document.getElementById('week-end-c').textContent = Calendar.formatMd(effectiveEnd);
 
   const labels = WEEK_LABELS[weekStartMode];
   const order = WEEK_ORDERS[weekStartMode];
@@ -504,13 +584,26 @@ function renderWeek(offsetWeeks = 0) {
     document.getElementById('b-day-name-' + slot).textContent = labels[i];
     document.getElementById('a-day-date-' + slot).textContent = inRange ? label : '';
     document.getElementById('b-day-date-' + slot).textContent = inRange ? label : '';
-    
+
+    // Mode C (A6) day cells
+    const cNameEl = document.getElementById('c-day-name-' + slot);
+    const cDateEl = document.getElementById('c-day-date-' + slot);
+    const cHolidayEl = document.getElementById('c-day-holiday-' + slot);
+    if (cNameEl) cNameEl.textContent = labels[i];
+    if (cDateEl) cDateEl.textContent = inRange ? label : '';
+    if (cHolidayEl) cHolidayEl.textContent = (inRange && holidayText) ? holidayText : '';
+    const cDayEl = document.querySelector('[data-slot-c="' + slot + '"]');
+    if (cDayEl) {
+      cDayEl.classList.toggle('weekend', isWeekend && !isHoliday);
+      cDayEl.classList.toggle('holiday', isHoliday);
+    }
+
     // 添加假期文本到日期欄頭
     const aHolidayEl = document.getElementById('a-day-holiday-' + slot);
     const bHolidayEl = document.getElementById('b-day-holiday-' + slot);
     if (aHolidayEl) aHolidayEl.textContent = (inRange && holidayText) ? holidayText : '';
     if (bHolidayEl) bHolidayEl.textContent = (inRange && holidayText) ? holidayText : '';
-    
+
     document.querySelectorAll('[data-slot="' + slot + '"]').forEach((element) => {
       element.classList.toggle('weekend', isWeekend && !isHoliday);
       element.classList.toggle('holiday', isHoliday);
@@ -526,8 +619,20 @@ function renderWeek(offsetWeeks = 0) {
 function setMode(m) {
   document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
   document.body.classList.add('template-page', 'sel-' + m);
-  st.textContent = '@media print { @page { size: A4 ' + pgSize[m] + '; margin:0; } }';
-  document.querySelectorAll('.mode-cards .card').forEach((c,i) => c.classList.toggle('active', ['a','b'][i]===m));
+  const paper = pgPaper[m] || 'A4';
+  st.textContent = '@media print { @page { size: ' + paper + ' ' + pgSize[m] + '; margin:0; } }';
+  document.querySelectorAll('.mode-cards .card').forEach((c,i) => c.classList.toggle('active', ['a','b','c'][i]===m));
+
+  // 模式 C（A6）：固定 A6，隱藏尺寸與起始按鈕
+  const sizeCards = document.querySelectorAll('.size-cards .size-card');
+  const weekStartChips = document.getElementById('weekStartChips');
+  if (m === 'c') {
+    sizeCards.forEach(btn => { btn.style.display = 'none'; });
+    if (weekStartChips) weekStartChips.style.opacity = '0.4';
+  } else {
+    sizeCards.forEach(btn => { btn.style.display = 'block'; });
+    if (weekStartChips) weekStartChips.style.opacity = '';
+  }
 }
 
 document.getElementById('weekStartChips').addEventListener('click', (event) => {

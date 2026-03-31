@@ -16,12 +16,17 @@ body { font-family: 'PingFang TC','Microsoft JhengHei','Heiti TC',sans-serif; ba
 .page::after { content: ''; position: absolute; top: 0; bottom: 0; left: 10mm; border-left: 0.6pt solid #d6d6d6; z-index: 5; pointer-events: none; }
 .page-port { width: 210mm; height: 297mm; }
 .page-a5  { width: 148mm; height: 210mm; }
+.page-a6  { width: 105mm; height: 148mm; }
+/* A6 頂部裝訂：覆寫預設左側裝訂偽元素 */
+.page-a6::before { left: 0; right: 0; top: 0; bottom: auto; width: 100%; height: 20mm; }
+.page-a6::after  { left: 0; right: 0; top: 20mm; bottom: auto; width: 100%; height: 0; border-left: none; border-top: 0.6pt solid #d6d6d6; }
 
 /* Mode control */
-.mode-a, .mode-b, .mode-c { display: none; }
+.mode-a, .mode-b, .mode-c, .mode-d { display: none; }
 body.sel-a .mode-a { display: block; }
 body.sel-b .mode-b { display: block; }
 body.sel-c .mode-c { display: block; }
+body.sel-d .mode-d { display: block; }
 
 /* ════ 共用元件 ════ */
 .pg-type { font-size: 6pt; letter-spacing: .2em; text-transform: uppercase; color: #bbb; margin-bottom: 3mm; display: block; }
@@ -70,14 +75,24 @@ body.sel-a .page.mode-a { display: flex; flex-direction: column; }
 .c-simple-text { font-size: 7pt; color: #555; line-height: 1.2; }
 .c-review { border-top: 0.75pt solid #111; padding-top: 2mm; margin-top: 2mm; }
 
+/* ════ Mode D: A6 精簡直（頂部裝訂 20mm）════ */
+.d-wrap   { padding: 23mm 5mm 5mm; height: 148mm; display: flex; flex-direction: column; box-sizing: border-box; }
+.d-header { border-bottom: 0.75pt solid #111; padding-bottom: 2mm; margin-bottom: 2.5mm; flex-shrink: 0; }
+.d-lbl    { font-size: 5pt; letter-spacing: .1em; color: #aaa; padding-right: 1mm; white-space: nowrap; }
+.d-sec    { font-size: 4.8pt; letter-spacing: .12em; text-transform: uppercase; color: #888; font-weight: 600; display: block; margin-top: 2mm; margin-bottom: 1.5mm; }
+.d-row    { display: flex; align-items: flex-end; margin-bottom: 1mm; gap: 1.5mm; }
+.d-line   { flex: 1; border-bottom: 0.4pt solid #ddd; height: 5mm; }
+.d-sq     { display: inline-block; width: 2.8mm; height: 2.8mm; border: 0.6pt solid #888; flex-shrink: 0; margin-bottom: 0.5mm; }
+.d-review { border-top: 0.75pt solid #111; padding-top: 2mm; margin-top: auto; flex-shrink: 0; }
+
 /* ════ Print ════ */
 @media print {
   body { background: none; }
   .ui, .page-label { display: none !important; }
   .pages { padding: 0 !important; gap: 0 !important; }
   .page  { box-shadow: none !important; page-break-after: always; break-after: page; }
-  .mode-a, .mode-b, .mode-c { display: none !important; }
-  body.sel-a .mode-a, body.sel-b .mode-b, body.sel-c .mode-c { display: block !important; }
+  .mode-a, .mode-b, .mode-c, .mode-d { display: none !important; }
+  body.sel-a .mode-a, body.sel-b .mode-b, body.sel-c .mode-c, body.sel-d .mode-d { display: block !important; }
   body.sel-a .page.mode-a { display: flex !important; }
 }
 </style>
@@ -101,6 +116,7 @@ body.sel-a .page.mode-a { display: flex; flex-direction: column; }
       <button class="card active" onclick="setMode('a')"><strong>A</strong> 時間軸 <span style="font-size:9px;opacity:.5">A4直・6–22時</span></button>
       <button class="card" onclick="setMode('b')"><strong>B</strong> 區塊 <span style="font-size:9px;opacity:.5">A4直・上午/下午/晚上</span></button>
       <button class="card" onclick="setMode('c')"><strong>C</strong> 精簡 <span style="font-size:9px;opacity:.5">A5直・輕量版</span></button>
+      <button class="card" onclick="setMode('d')"><strong>D</strong> 口袋 <span style="font-size:9px;opacity:.5">A6直・頂部裝訂</span></button>
     </div>
     <span class="toolbar-label">尺寸</span>
     <div class="size-cards">
@@ -282,13 +298,63 @@ body.sel-a .page.mode-a { display: flex; flex-direction: column; }
   </div>
 </div>
 
+<!-- ══ MODE D：A6 精簡直（頂部裝訂）══ -->
+<div class="page-label mode-d">▸ 模式 D — A6 直向・精簡版（頂部裝訂 20mm）</div>
+<div class="page page-a6 mode-d">
+  <div class="d-wrap">
+    <div class="d-header">
+      <span style="font-size:4.8pt;letter-spacing:.18em;text-transform:uppercase;color:#bbb;display:block;margin-bottom:1.5mm">Daily Planner · 日計畫</span>
+      <table style="width:100%;border-collapse:collapse"><tr>
+        <td><span class="d-lbl">日期</span><span id="day-date-d" style="border-bottom:0.6pt solid #111;display:inline-block;min-width:18mm;padding-bottom:.3mm;font-size:5.5pt;color:#555"></span></td>
+        <td style="padding-left:2mm"><span class="d-lbl">週</span><span id="day-week-d" style="border-bottom:0.6pt solid #111;display:inline-block;min-width:6mm;padding-bottom:.3mm;font-size:5.5pt;color:#555"></span></td>
+        <td style="text-align:right">
+          <span style="font-size:4.8pt;color:#666">
+            <span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle"></span>好&ensp;<span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle"></span>普&ensp;<span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle"></span>累
+          </span>
+        </td>
+      </tr></table>
+      <div style="margin-top:1.5mm;display:flex;align-items:baseline">
+        <span class="d-lbl">目標</span>
+        <span style="border-bottom:0.6pt solid #111;display:inline-block;flex:1;height:3mm"></span>
+      </div>
+    </div>
+
+    <span class="d-sec">優先事項</span>
+    <div class="d-row"><span class="d-sq"></span><span class="d-line"></span></div>
+    <div class="d-row"><span class="d-sq"></span><span class="d-line"></span></div>
+    <div class="d-row"><span class="d-sq"></span><span class="d-line"></span></div>
+
+    <span class="d-sec">待辦</span>
+    <div class="d-row"><span class="d-sq"></span><span class="d-line"></span></div>
+    <div class="d-row"><span class="d-sq"></span><span class="d-line"></span></div>
+    <div class="d-row"><span class="d-sq"></span><span class="d-line"></span></div>
+    <div class="d-row"><span class="d-sq"></span><span class="d-line"></span></div>
+
+    <span class="d-sec">備注</span>
+    <div class="d-row"><span class="d-line"></span></div>
+    <div class="d-row"><span class="d-line"></span></div>
+    <div class="d-row"><span class="d-line"></span></div>
+
+    <div class="d-review">
+      <table style="width:100%;border-collapse:collapse"><tr>
+        <td style="vertical-align:bottom"><span class="d-lbl">回顧</span><span style="border-bottom:0.5pt solid #ccc;display:inline-block;width:30mm;height:3mm"></span></td>
+        <td style="text-align:right;vertical-align:bottom;white-space:nowrap">
+          <span style="font-size:4.8pt;color:#666">
+            <span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle;margin-right:.4mm"></span>25%&ensp;<span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle;margin-right:.4mm"></span>50%&ensp;<span style="display:inline-block;width:2.3mm;height:2.3mm;border:0.5pt solid #999;vertical-align:middle;margin-right:.4mm"></span>100%
+          </span>
+        </td>
+      </tr></table>
+    </div>
+  </div>
+</div>
+
 </div><!-- /pages -->
 
 <script src="../../../js/template-size.js"></script>
 <script src="../../../js/calendar-data.js"></script>
 <script>
-const pgSize = { a:'portrait', b:'portrait', c:'portrait' };
-const pgPaper = { a:'A4', b:'A4', c:'A5' };
+const pgSize = { a:'portrait', b:'portrait', c:'portrait', d:'portrait' };
+const pgPaper = { a:'A4', b:'A4', c:'A5', d:'A6' };
 let st = document.createElement('style'); st.id='pg-size'; document.head.appendChild(st);
 const Calendar = window.TemplateCalendar;
 
@@ -303,26 +369,28 @@ function renderDay() {
   document.getElementById('day-week-b').textContent = weekText;
   document.getElementById('day-date-c').textContent = dateText;
   document.getElementById('day-week-c').textContent = weekText;
+  document.getElementById('day-date-d').textContent = dateText;
+  document.getElementById('day-week-d').textContent = weekText;
 }
 
 function setMode(m) {
   document.body.classList.remove('sel-a', 'sel-b', 'sel-c', 'sel-d');
   document.body.classList.add('template-page', 'sel-' + m);
   st.textContent = '@media print { @page { size: ' + pgPaper[m] + ' ' + pgSize[m] + '; margin:0; } }';
-  document.querySelectorAll('.mode-cards .card').forEach((c,i) => c.classList.toggle('active', ['a','b','c'][i]===m));
-  
+  document.querySelectorAll('.mode-cards .card').forEach((c,i) => c.classList.toggle('active', ['a','b','c','d'][i]===m));
+
   // 根據模式控制尺寸按鈕的顯示
   const sizeCards = document.querySelectorAll('.size-cards .size-card');
   if (m === 'c') {
-    // 模式 C（精簡版）：只顯示 B5/A5/A4裁A5
+    // 模式 C（A5 精簡版）：隱藏 A4，顯示其餘
     sizeCards.forEach(btn => {
       btn.style.display = (btn.dataset.printSize === 'a4') ? 'none' : 'block';
     });
+  } else if (m === 'd') {
+    // 模式 D（A6 口袋版）：固定 A6，隱藏尺寸按鈕
+    sizeCards.forEach(btn => { btn.style.display = 'none'; });
   } else {
-    // 模式 A 和 B：顯示所有尺寸
-    sizeCards.forEach(btn => {
-      btn.style.display = 'block';
-    });
+    sizeCards.forEach(btn => { btn.style.display = 'block'; });
   }
 }
 // 日期保持空白，讓使用者手填
